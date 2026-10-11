@@ -19,6 +19,8 @@ import { remarkAdmonitions } from "./src/plugins/remark-admonitions";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time";
 import { rehypeTableScroll } from "./src/plugins/rehype-table-scroll";
 import { getPostLastModified } from "./src/utils/sitemap";
+import { remarkMermaid } from "./src/plugins/remark-mermaid";
+import { remarkHasMath } from "./src/plugins/remark-has-math";
 
 import rehypeExternalLinks from "rehype-external-links";
 import rehypeKatex from "rehype-katex";
@@ -41,11 +43,9 @@ export default defineConfig({
 		inlineStylesheets: "always",
 	},
 	integrations: [
-		partytown({
-			config: {
-				forward: ["dataLayer.push"],
-			},
-		}),
+		...(siteConfig.analytics?.googleAnalyticsId
+			? [partytown({ config: { forward: ["dataLayer.push"] } })]
+			: []),
 		expressiveCode(expressiveCodeOptions),
 		icon(),
 		sitemap({
@@ -115,7 +115,14 @@ export default defineConfig({
 					},
 				],
 			],
-			remarkPlugins: [remarkReadingTime, remarkDirective, remarkAdmonitions, remarkMath],
+			remarkPlugins: [
+				remarkMermaid,
+				remarkReadingTime,
+				remarkDirective,
+				remarkAdmonitions,
+				remarkMath,
+				remarkHasMath,
+			],
 			remarkRehype: {
 				footnoteLabelProperties: {
 					className: [""],
@@ -127,6 +134,7 @@ export default defineConfig({
 	prefetch: true,
 	vite: {
 		optimizeDeps: {
+			include: ["mermaid"],
 			exclude: ["@resvg/resvg-js"],
 		},
 		plugins: [tailwindcss(), rawFonts([".ttf", ".woff"])],
