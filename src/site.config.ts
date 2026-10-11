@@ -9,6 +9,7 @@ export const siteConfig: SiteConfig = {
 			day: "numeric",
 			month: "short",
 			year: "numeric",
+			timeZone: "Asia/Kolkata",
 		},
 	},
 	description:
