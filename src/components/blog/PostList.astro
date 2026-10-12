@@ -1,8 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { getPostSortDate } from "@/data/post";
+import { getPostHref, getPostSortDate } from "@/data/post";
 import { formatRailDate } from "@/utils/date";
-import { withBase } from "@/utils/path";
 
 interface Props {
 	posts: CollectionEntry<"post">[];
@@ -21,7 +20,7 @@ const Heading = headingLevel;
 		<a
 			class="post"
 			data-astro-prefetch
-			href={withBase(`/posts/${p.id}/`)}
+			href={getPostHref(p)}
 			style={`--i: ${startIndex + idx}`}
 		>
 			<div class="post-rail">
