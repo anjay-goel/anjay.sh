@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import ExternalIcon from "@/components/blog/ExternalIcon.astro";
 import { getPostHref, getPostSortDate } from "@/data/post";
 import { formatRailDate } from "@/utils/date";
 
@@ -30,7 +31,10 @@ const Heading = headingLevel;
 				<span class="post-dot" aria-hidden="true" />
 			</div>
 			<div class="post-body">
-				<Heading class="post-title">{p.data.title}</Heading>
+				<Heading class="post-title">
+					{p.data.title}
+					{p.data.externalUrl && <ExternalIcon />}
+				</Heading>
 				<p class="post-preview">{p.data.description}</p>
 			</div>
 		</a>

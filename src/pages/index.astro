@@ -1,4 +1,5 @@
 ---
+import ExternalIcon from "@/components/blog/ExternalIcon.astro";
 import PostList from "@/components/blog/PostList.astro";
 import { getAllPosts, getPostHref, getPostSortDate, sortMDByDate } from "@/data/post";
 import { showcase } from "@/data/showcase";
@@ -90,7 +91,7 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 							<h2 class="post-title">
 								<a class="post-cardlink" data-astro-prefetch href={getPostHref(featured)}>
 									{featured.data.title}
-								</a>
+								</a>{featured.data.externalUrl && <ExternalIcon />}
 							</h2>
 							<p class="post-excerpt">{featured.data.description}</p>
 							{!!featured.data.tags?.length && (
