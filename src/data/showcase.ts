@@ -18,7 +18,7 @@ export const showcase: ShowcaseItem[] = [
 		name: "DashReels",
 		href: "https://play.google.com/store/apps/details?id=com.dashtoon.video.reels&hl=en_IN",
 		stack: "App ·  Short Videos",
-		badge: "20M+ installs",
+		badge: "50M+ installs",
 		desc: "A mobile entertainment app offering short-form video content across multiple genres. Features include free short dramas, a personalized recommendation system, and an engaging, user-friendly experience.",
 	},
 	{

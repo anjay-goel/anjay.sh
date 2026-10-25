@@ -1,8 +1,8 @@
 ---
 import ExternalIcon from "@/components/blog/ExternalIcon.astro";
 import PostList from "@/components/blog/PostList.astro";
+import Socials from "@/components/Socials.astro";
 import { getAllPosts, getPostHref, getPostSortDate, sortMDByDate } from "@/data/post";
-import { showcase } from "@/data/showcase";
 import PageLayout from "@/layouts/Base.astro";
 import { siteConfig } from "@/site-config";
 import { formatRailDate, formatStampDate } from "@/utils/date";
@@ -17,7 +17,6 @@ const featured = timelinePosts[0];
 const rest = timelinePosts.slice(1);
 const archiveCount = allPosts.length;
 
-const profile = siteConfig.profile;
 const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 ---
 
@@ -51,27 +50,7 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 	/>
 	<section class="hero">
 		<p>{siteConfig.description}</p>
-		<div class="socials">
-			{profile?.github && (
-				<>
-					<a href={profile.github} rel="noreferrer" target="_blank">GitHub</a>
-					<span class="sep">·</span>
-				</>
-			)}
-			{profile?.linkedin && (
-				<>
-					<a href={profile.linkedin} rel="noreferrer" target="_blank">LinkedIn</a>
-					<span class="sep">·</span>
-				</>
-			)}
-			{profile?.email && (
-				<>
-					<a href={`mailto:${profile.email}`}>Email</a>
-					<span class="sep">·</span>
-				</>
-			)}
-			<a href={withBase("/rss.xml")}>RSS</a>
-		</div>
+		<Socials />
 	</section>
 
 	<section class="writing" aria-labelledby="writing-label">
@@ -114,63 +93,21 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 			</div>
 		</div>
 	</section>
-
-	{showcase.length > 0 && (
-		<section class="work" aria-labelledby="work-label">
-			<div class="section-label" id="work-label">Showcase</div>
-			<ul class="work-list">
-				{showcase.map((item, idx) => (
-					<li style={`--i: ${idx + 1}`}>
-						<a href={item.href} rel="noreferrer" target="_blank">
-							<div class="head">
-								<span class="name">{item.name}</span>
-								<span class="stack">{item.stack}</span>
-								{item.badge && <span class="badge">{item.badge}</span>}
-							</div>
-							<p>{item.desc}</p>
-						</a>
-					</li>
-				))}
-			</ul>
-		</section>
-	)}
 </PageLayout>
 
 <style>
 	/* ---------- Hero ---------- */
 	.hero {
 		margin-bottom: 76px;
+		font-size: 19.5px;
 	}
 	.hero p {
-		font-size: 19.5px;
 		line-height: 1.65;
 		color: hsl(var(--theme-text));
 		margin: 0 0 22px;
 		max-width: 60ch;
 		text-wrap: pretty;
 		white-space: pre-line;
-	}
-	.socials {
-		font-family: var(--font-sans);
-		font-size: 13.5px;
-		color: hsl(var(--theme-text) / 0.72);
-		margin-top: 18px;
-	}
-	.socials a {
-		color: hsl(var(--theme-text-muted));
-		text-decoration: underline;
-		text-decoration-color: hsl(var(--theme-text) / 0.35);
-		text-decoration-thickness: 1px;
-		text-underline-offset: 3px;
-		transition: color 0.2s ease, text-decoration-color 0.2s ease;
-	}
-	.socials a:hover {
-		color: hsl(var(--theme-accent));
-		text-decoration-color: hsl(var(--theme-accent));
-	}
-	.socials .sep {
-		color: var(--faint);
-		margin: 0 9px;
 	}
 
 	/* ---------- Writing timeline ---------- */
@@ -285,11 +222,6 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		text-decoration-color: hsl(var(--theme-accent));
 	}
 
-	.work {
-		margin-bottom: 88px;
-	}
-
-	.socials a:focus-visible,
 	.archive-link a:focus-visible {
 		outline: 2px solid hsl(var(--theme-accent));
 		outline-offset: 3px;
@@ -300,7 +232,7 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		.hero {
 			margin-bottom: 56px;
 		}
-		.hero p {
+		.hero {
 			font-size: 18px;
 		}
 		.post.featured .post-rail {
@@ -334,14 +266,8 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		.hero {
 			margin-bottom: 48px;
 		}
-		.hero p {
+		.hero {
 			font-size: 17px;
-		}
-		.socials {
-			font-size: 12.5px;
-		}
-		.socials .sep {
-			margin: 0 6px;
 		}
 		.writing {
 			margin-bottom: 64px;
@@ -351,9 +277,6 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		}
 		.post.featured .post-excerpt {
 			font-size: 15px;
-		}
-		.work {
-			margin-bottom: 56px;
 		}
 	}
 </style>

@@ -13,13 +13,13 @@ if (diagrams.length) {
 				await document.fonts.ready;
 				const dark = document.documentElement.dataset.theme === "dark";
 				const palette = dark
-					? { bg: "#131110", paper: "#1a1715", border: "#4f4a42", line: "#c8c1ae", text: "#f4f0e3" }
+					? { bg: "#151615", paper: "#1c1d1c", border: "#55534d", line: "#c2beb5", text: "#ebe7de" }
 					: {
-							bg: "#f6f1e6",
-							paper: "#fbf6ec",
-							border: "#b8ad9b",
-							line: "#4a4239",
-							text: "#25201b",
+							bg: "#f8f6f0",
+							paper: "#fcfbf7",
+							border: "#a9a498",
+							line: "#45433d",
+							text: "#1d1c19",
 						};
 				mermaid.initialize({
 					startOnLoad: false,

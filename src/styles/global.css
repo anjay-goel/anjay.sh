@@ -36,20 +36,20 @@
 	:root[data-theme="light"] {
 		color-scheme: light;
 		/* hsl-channel format — see tailwind.config.ts color mapping */
-		--theme-bg: 37deg 47% 93%;            /* #f6f1e6 */
-		--theme-text: 28deg 16% 13%;          /* #25201b */
-		--theme-text-muted: 25deg 14% 26%;    /* #4a4239 */
-		--theme-accent: 17deg 60% 34%;        /* #8a4423 */
-		--theme-accent-2: 28deg 16% 13%;      /* same as ink */
-		--theme-link: 17deg 60% 34%;          /* same as accent */
-		--theme-quote: 17deg 60% 34%;         /* same as accent */
+		--theme-bg: 45deg 36% 96%;            /* #f8f6f0 */
+		--theme-text: 45deg 7% 11%;           /* #1d1c19 */
+		--theme-text-muted: 45deg 6% 25%;     /* #45433d */
+		--theme-accent: 211deg 45% 36%;       /* #335a85 */
+		--theme-accent-2: 45deg 7% 11%;       /* same as ink */
+		--theme-link: 201deg 46% 29%;         /* #28546c */
+		--theme-quote: 211deg 45% 36%;        /* same as accent */
 
 		/* Concrete-color palette tokens (see file header for rationale) */
-		--paper: #fbf6ec;
-		--hairline: #d9cfb9;
-		--faint: #b8ad9b;
-		--accent-soft: rgba(138, 68, 35, 0.1);
-		--accent-soft-strong: rgba(138, 68, 35, 0.18);
+		--paper: #fcfbf7;
+		--hairline: #d6d1c5;
+		--faint: #a9a498;
+		--accent-soft: rgba(51, 90, 133, 0.1);
+		--accent-soft-strong: rgba(51, 90, 133, 0.18);
 
 		/* Callout accents — hues spread for distinguishability, kept muted for the theme */
 		--aside-note: 212deg 20% 46%;       /* dusty blue */
@@ -61,19 +61,19 @@
 
 	:root[data-theme="dark"] {
 		color-scheme: dark;
-		--theme-bg: 20deg 9% 7%;              /* #131110 */
-		--theme-text: 42deg 35% 92%;          /* #f4f0e3 */
-		--theme-text-muted: 36deg 18% 73%;    /* #c8c1ae */
-		--theme-accent: 30deg 49% 59%;        /* #c89761 */
-		--theme-accent-2: 42deg 35% 92%;      /* same as ink */
-		--theme-link: 30deg 49% 59%;          /* same as accent */
-		--theme-quote: 30deg 49% 59%;         /* same as accent */
+		--theme-bg: 120deg 2% 8%;            /* #151615 */
+		--theme-text: 42deg 25% 90%;          /* #ebe7de */
+		--theme-text-muted: 42deg 10% 74%;     /* #c2beb5 */
+		--theme-accent: 210deg 59% 76%;       /* #9fc3e6 */
+		--theme-accent-2: 42deg 25% 90%;      /* same as ink */
+		--theme-link: 191deg 46% 73%;         /* #9ccfda */
+		--theme-quote: 210deg 59% 76%;        /* same as accent */
 
-		--paper: #1a1715;
-		--hairline: #2a2622;
-		--faint: #4f4a42;
-		--accent-soft: rgba(200, 151, 97, 0.12);
-		--accent-soft-strong: rgba(200, 151, 97, 0.22);
+		--paper: #1c1d1c;
+		--hairline: #2e2f2d;
+		--faint: #55534d;
+		--accent-soft: rgba(159, 195, 230, 0.12);
+		--accent-soft-strong: rgba(159, 195, 230, 0.22);
 
 		--aside-note: 212deg 28% 68%;       /* dusty blue */
 		--aside-tip: 96deg 30% 62%;         /* green */
@@ -282,11 +282,13 @@ ul.work-list {
 }
 ul.work-list li {
 	padding: 22px 0;
-	border-top: 1px solid var(--hairline);
 	transition: border-color 0.35s ease;
 }
-ul.work-list li:last-child {
-	border-bottom: 1px solid var(--hairline);
+ul.work-list li + li {
+	border-top: 1px solid var(--hairline);
+}
+ul.work-list li:first-child {
+	padding-top: 0;
 }
 ul.work-list a {
 	text-decoration: none;
@@ -421,6 +423,7 @@ ul.work-list a:focus-visible {
 	.work > .intro,
 	ul.work-list > li,
 	.bio > *,
+	.about > .socials,
 	.hero > *,
 	.section-label,
 	.post-header > *,
@@ -440,6 +443,7 @@ ul.work-list a:focus-visible {
 	.bio > *:nth-child(3) { --i: 2; }
 	.bio > *:nth-child(4) { --i: 3; }
 	.bio > *:nth-child(5) { --i: 4; }
+	.about > .socials { --i: 2; }
 	.work > .intro { --i: 0; }
 	ul.work-list > li:nth-child(1) { --i: 1; }
 	ul.work-list > li:nth-child(2) { --i: 2; }

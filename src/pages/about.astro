@@ -1,5 +1,6 @@
 ---
 import { getEntry, render } from "astro:content";
+import Socials from "@/components/Socials.astro";
 import PageLayout from "@/layouts/Base.astro";
 import { siteConfig } from "@/site-config";
 import { absoluteUrl } from "@/utils/path";
@@ -64,6 +65,7 @@ const avatarUrl = profile?.avatar ? absoluteUrl(profile.avatar, Astro.site) : un
 		<div class="bio">
 			<Content />
 		</div>
+		<Socials />
 	</section>
 </PageLayout>
 
@@ -71,9 +73,15 @@ const avatarUrl = profile?.avatar ? absoluteUrl(profile.avatar, Astro.site) : un
 	.about {
 		margin-bottom: 64px;
 	}
-	.bio {
+	.about :global(.socials) {
+		margin-top: 22px;
+	}
+	.bio,
+	.about :global(.socials) {
 		font-family: var(--font-serif);
 		font-size: 17.5px;
+	}
+	.bio {
 		line-height: 1.75;
 		color: hsl(var(--theme-text));
 		max-width: var(--reading-width);
@@ -119,13 +127,17 @@ const avatarUrl = profile?.avatar ? absoluteUrl(profile.avatar, Astro.site) : un
 	}
 
 	@media (max-width: 720px) {
-		.bio {
+		.bio,
+		.about :global(.socials) {
 			font-size: 17px;
+		}
+		.bio {
 			line-height: 1.7;
 		}
 	}
 	@media (max-width: 420px) {
-		.bio {
+		.bio,
+		.about :global(.socials) {
 			font-size: 16.5px;
 		}
 	}

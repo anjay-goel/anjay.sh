@@ -31,9 +31,6 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 	/>
 	<section class="work" aria-labelledby="work-label">
 		<div class="section-label" id="work-label">Showcase</div>
-		<p class="intro">
-			A handful of projects I've built.
-		</p>
 		<ul class="work-list">
 			{
 				showcase.map((item) => (
@@ -57,28 +54,9 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 	.work {
 		margin-bottom: 88px;
 	}
-	.intro {
-		font-family: var(--font-serif);
-		font-size: 17.5px;
-		line-height: 1.7;
-		color: hsl(var(--theme-text));
-		margin: 0 0 36px;
-		max-width: 60ch;
-		text-wrap: pretty;
-	}
-
-	@media (max-width: 720px) {
-		.intro {
-			font-size: 17px;
-			margin-bottom: 28px;
-		}
-	}
 	@media (max-width: 420px) {
 		.work {
 			margin-bottom: 56px;
-		}
-		.intro {
-			font-size: 16.5px;
 		}
 	}
 </style>

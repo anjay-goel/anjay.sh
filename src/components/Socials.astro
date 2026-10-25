@@ -1,0 +1,63 @@
+---
+import { siteConfig } from "@/site-config";
+import { withBase } from "@/utils/path";
+import { Icon } from "astro-icon/components";
+
+const profile = siteConfig.profile;
+---
+
+<div class="socials">
+	<span>Find me on</span>
+	<ul>
+		{profile?.github && (
+			<li><a aria-label="GitHub" href={profile.github} rel="noreferrer" target="_blank"><Icon name="tabler:brand-github" aria-hidden="true" /></a></li>
+		)}
+		{profile?.linkedin && (
+			<li><a aria-label="LinkedIn" href={profile.linkedin} rel="noreferrer" target="_blank"><Icon name="tabler:brand-linkedin" aria-hidden="true" /></a></li>
+		)}
+		{profile?.email && (
+			<li><a aria-label="Email" href={`mailto:${profile.email}`}><Icon name="tabler:mail" aria-hidden="true" /></a></li>
+		)}
+		<li><a aria-label="RSS" href={withBase("/rss.xml")}><Icon name="tabler:rss" aria-hidden="true" /></a></li>
+	</ul>
+</div>
+
+<style>
+	.socials {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		column-gap: 10px;
+		line-height: 1.65;
+		color: hsl(var(--theme-text-muted));
+	}
+	.socials ul {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.socials a {
+		display: inline-flex;
+		padding: 6px;
+		color: hsl(var(--theme-text-muted));
+		transition: color 0.2s ease;
+	}
+	.socials a :global(svg) {
+		width: 22px;
+		height: 22px;
+	}
+	.socials a :global(svg *) {
+		stroke-width: 1.5;
+	}
+	.socials a:hover {
+		color: hsl(var(--theme-accent));
+	}
+	.socials a:focus-visible {
+		outline: 2px solid hsl(var(--theme-accent));
+		outline-offset: 3px;
+		border-radius: 3px;
+	}
+</style>
