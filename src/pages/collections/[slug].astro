@@ -1,0 +1,142 @@
+---
+import { render } from "astro:content";
+import type { GetStaticPaths } from "astro";
+import CollectionHero from "@/components/collections/CollectionHero.astro";
+import MoreCollections from "@/components/collections/MoreCollections.astro";
+import PostRow from "@/components/ui/PostRow.astro";
+import { collectionsCopy } from "@/content/copy/collections";
+import { metaCopy } from "@/content/copy/meta";
+import { type CollectionDoc, getCollections, orderCollectionPosts } from "@/data/collections";
+import { getPostSummaries, type PostSummary } from "@/data/post";
+import Base from "@/layouts/Base.astro";
+import { withBase } from "@/utils/path";
+import { toRoman } from "@/utils/roman";
+
+export const getStaticPaths = (async () => {
+	const collections = await getCollections();
+	const summaries = await getPostSummaries();
+	return collections.map((collection) => ({
+		params: { slug: collection.id },
+		props: {
+			collection,
+			posts: orderCollectionPosts(collection, summaries),
+			others: collections.filter((c) => c.id !== collection.id),
+		},
+	}));
+}) satisfies GetStaticPaths;
+
+interface Props {
+	collection: CollectionDoc;
+	posts: PostSummary[];
+	others: CollectionDoc[];
+}
+
+const { collection, posts, others } = Astro.props;
+const { Content } = await render(collection);
+const isSeries = collection.data.kind === "series";
+const first = posts[0];
+const meta = {
+	title: collection.data.title,
+	description: collection.data.description,
+};
+---
+
+<Base meta={meta}>
+	<a class="back" href={withBase(collectionsCopy.back.href)} data-astro-prefetch>
+		<svg class="back-icon" aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H4" /><path d="M10 6l-6 6l6 6" /></svg>{collectionsCopy.back.text}
+	</a>
+	<CollectionHero collection={collection} />
+	<div class="intro">
+		<div class="intro-prose reading">
+			<Content />
+		</div>
+		{
+			isSeries && first && (
+				<a class="btn intro-start" href={first.href} data-astro-prefetch>
+					{collectionsCopy.start(metaCopy.part(toRoman(1)))}
+				</a>
+			)
+		}
+	</div>
+	<ul class="rows" aria-label={isSeries ? collectionsCopy.partsLabel : collectionsCopy.postsLabel}>
+		{
+			posts.map((post) => (
+				<li>
+					<PostRow post={post} dateFormat="full" showLabel={isSeries} headingLevel="h2" />
+				</li>
+			))
+		}
+	</ul>
+	<MoreCollections collections={others} />
+</Base>
+
+<style>
+	.back {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		height: 44px;
+		margin-top: 24px;
+		font-size: var(--text-14);
+		color: var(--muted);
+		text-decoration: none;
+		transition: color var(--dur) var(--ease);
+	}
+	.back:hover {
+		color: var(--accent);
+	}
+	.intro {
+		max-width: var(--article-col);
+		padding-bottom: 64px;
+	}
+	.intro-prose {
+		font-size: var(--text-21);
+		line-height: 1.7;
+		color: var(--ink);
+	}
+	.intro-prose :global(p) {
+		margin: 20px 0 0;
+	}
+	.intro-prose :global(p:first-child) {
+		margin-top: 0;
+	}
+	.intro-start {
+		margin-top: 28px;
+		border-radius: var(--radius-xl);
+	}
+	.intro-start:focus-visible {
+		border-radius: var(--radius-xl);
+	}
+	.rows {
+		display: flex;
+		flex-direction: column;
+		gap: 44px;
+		max-width: 920px;
+		margin: 0;
+		padding: 0 0 104px;
+		list-style: none;
+	}
+	@media (max-width: 767px) {
+		.back {
+			margin-top: 8px;
+		}
+		.intro {
+			padding: 28px 0 0;
+		}
+		.intro-prose {
+			font-size: var(--text-18);
+		}
+		.intro-prose :global(p) {
+			margin-top: 16px;
+		}
+		.intro-start {
+			display: flex;
+			height: 50px;
+			margin-top: 22px;
+		}
+		.rows {
+			gap: 28px;
+			padding: 40px 0 48px;
+		}
+	}
+</style>

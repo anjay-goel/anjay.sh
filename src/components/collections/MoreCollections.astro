@@ -1,0 +1,123 @@
+---
+import CollectionCover from "@/components/art/CollectionCover.astro";
+import Card from "@/components/ui/Card.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import { collectionsCopy } from "@/content/copy/collections";
+import { type CollectionDoc, collectionCountLabel, collectionHref } from "@/data/collections";
+
+interface Props {
+	collections: CollectionDoc[];
+}
+
+const { collections } = Astro.props;
+---
+
+<section class="more" aria-labelledby="more-collections">
+	<SectionHeading class="more-heading" id="more-collections" title={collectionsCopy.more} />
+	<ul class="more-list">
+		{
+			collections.map((c) => (
+				<li class="more-item">
+					<Card class="more-card" href={collectionHref(c)} padding="none" data-astro-prefetch>
+						<span class="more-cover" aria-hidden="true">
+							<CollectionCover name={c.data.cover} />
+						</span>
+						<span class="more-body">
+							<span class="more-title card-title">{c.data.title}</span>
+							<span class="more-count meta">{collectionCountLabel(c)}</span>
+						</span>
+					</Card>
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<style>
+	.more {
+		padding-bottom: 104px;
+	}
+	.more :global(.more-heading) {
+		margin-bottom: 28px;
+	}
+	.more-list {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 20px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.more-item {
+		display: flex;
+		min-width: 0;
+	}
+	.more-item :global(.more-card) {
+		flex: 1;
+	}
+	.more-cover {
+		display: block;
+		height: 131px;
+		border-bottom: 1px solid var(--rule);
+		background: var(--panel);
+	}
+	.more-body {
+		display: block;
+		padding: 18px 20px 20px;
+	}
+	.more-title {
+		display: block;
+		font-family: var(--font-sans);
+		font-size: var(--text-21);
+		font-weight: 600;
+		line-height: 1.3;
+		color: var(--ink);
+	}
+	.more-count {
+		display: block;
+		margin-top: 6px;
+		line-height: 1.35;
+	}
+	@media (max-width: 767px) {
+		.more {
+			padding-bottom: 48px;
+		}
+		.more :global(.more-heading) {
+			margin-bottom: 16px;
+		}
+		.more :global(.more-heading .section-heading-title) {
+			font-size: var(--text-12);
+			font-weight: 500;
+			color: var(--soft);
+		}
+		.more-list {
+			display: flex;
+			gap: 12px;
+			margin: 0 calc(-1 * var(--gutter));
+			padding: 0 var(--gutter) 4px;
+			overflow-x: auto;
+			scroll-padding-inline: var(--gutter);
+			scroll-snap-type: x proximity;
+			scrollbar-width: none;
+		}
+		.more-list::-webkit-scrollbar {
+			display: none;
+		}
+		.more-item {
+			flex: 0 0 222px;
+			scroll-snap-align: start;
+		}
+		.more-cover {
+			height: 97px;
+		}
+		.more-body {
+			padding: 12px 14px 14px;
+		}
+		.more-title {
+			font-size: var(--text-18);
+		}
+		.more-count {
+			margin-top: 4px;
+		}
+	}
+</style>
