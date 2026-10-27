@@ -14,7 +14,7 @@ const { collections } = Astro.props;
 
 <section class="more" aria-labelledby="more-collections">
 	<SectionHeading class="more-heading" id="more-collections" title={collectionsCopy.more} />
-	<ul class="more-list">
+	<ul class="more-list" data-scroll-focus>
 		{
 			collections.map((c) => (
 				<li class="more-item">
@@ -93,8 +93,8 @@ const { collections } = Astro.props;
 		.more-list {
 			display: flex;
 			gap: 12px;
-			margin: 0 calc(-1 * var(--gutter));
-			padding: 0 var(--gutter) 4px;
+			margin: -4px calc(-1 * var(--gutter)) 0;
+			padding: 4px var(--gutter);
 			overflow-x: auto;
 			scroll-padding-inline: var(--gutter);
 			scroll-snap-type: x proximity;

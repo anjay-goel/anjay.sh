@@ -13,7 +13,7 @@ interface Props {
 const { tags, current, class: className } = Astro.props;
 ---
 
-<nav class:list={["tag-filter", className]} aria-label={postsCopy.filter.label} data-tag-filter>
+<nav class:list={["tag-filter", className]} aria-label={postsCopy.filter.label} data-tag-filter data-scroll-focus>
 	<a
 		class="tag-filter-link"
 		href={withBase("/posts/")}
@@ -56,11 +56,6 @@ const { tags, current, class: className } = Astro.props;
 			}
 			markScrolled(nav);
 			nav.addEventListener("scroll", () => markScrolled(nav), { passive: true });
-			nav.addEventListener("focusin", (event) => {
-				if (event.target instanceof HTMLElement) {
-					event.target.scrollIntoView({ block: "nearest", inline: "nearest" });
-				}
-			});
 		}
 	}
 	setupTagFilters();

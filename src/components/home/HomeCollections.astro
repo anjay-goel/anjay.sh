@@ -61,7 +61,7 @@ const arrow = { prev: "M15 6l-6 6l6 6", next: "M9 6l6 6l-6 6" };
 		<span class="meta swipe-hint" aria-hidden="true">{copy.swipe}</span>
 	</div>
 
-	<ul class="track track-wide" role="list" data-carousel-track>
+	<ul class="track track-wide" role="list" data-carousel-track data-scroll-focus>
 		{
 			cards.map((card) => (
 				<li class="slide">
@@ -96,7 +96,7 @@ const arrow = { prev: "M15 6l-6 6l6 6", next: "M9 6l6 6l-6 6" };
 		}
 	</ul>
 
-	<ul class="track track-short" role="list">
+	<ul class="track track-short" role="list" data-scroll-focus>
 		{
 			cards.map((card) => (
 				<li class="slide-short">
@@ -165,18 +165,7 @@ const arrow = { prev: "M15 6l-6 6l6 6", next: "M9 6l6 6l-6 6" };
 		update();
 	}
 
-	function initFocusReveal() {
-		const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-		document.querySelectorAll<HTMLElement>(".track").forEach((track) =>
-			track.addEventListener("focusin", (event) => {
-				const slide = (event.target as HTMLElement).closest<HTMLElement>(".slide, .slide-short");
-				slide?.scrollIntoView({ block: "nearest", inline: "nearest", behavior: reduced.matches ? "auto" : "smooth" });
-			}),
-		);
-	}
-
 	initCarousel();
-	initFocusReveal();
 </script>
 
 <style>

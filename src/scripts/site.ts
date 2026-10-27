@@ -48,7 +48,38 @@ function initSearchTriggers() {
 	});
 }
 
+function initScrollFocus() {
+	const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+	document.addEventListener("focusin", (event) => {
+		const target = event.target;
+		if (!(target instanceof HTMLElement)) return;
+		const container = target.closest<HTMLElement>("[data-scroll-focus]");
+		if (!container) return;
+		let item: HTMLElement = target;
+		while (item.parentElement && item.parentElement !== container) item = item.parentElement;
+		const box = container.getBoundingClientRect();
+		const rect = item.getBoundingClientRect();
+		const style = getComputedStyle(container);
+		const inView =
+			rect.left >= box.left + (Number.parseFloat(style.scrollPaddingLeft) || 0) - 1 &&
+			rect.right <= box.right - (Number.parseFloat(style.scrollPaddingRight) || 0) + 1;
+		const snap = getComputedStyle(item).scrollSnapAlign.split(" ").pop();
+		const inline: ScrollLogicalPosition =
+			!inView &&
+			style.scrollSnapType !== "none" &&
+			(snap === "start" || snap === "center" || snap === "end")
+				? snap
+				: "nearest";
+		item.scrollIntoView({
+			block: "nearest",
+			inline,
+			behavior: reduced.matches ? "auto" : "smooth",
+		});
+	});
+}
+
 initThemeToggles();
 initSearchTriggers();
+initScrollFocus();
 initShortcuts();
 initComments();
