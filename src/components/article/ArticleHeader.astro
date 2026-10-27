@@ -1,0 +1,135 @@
+---
+import { metaCopy } from "@/content/copy/meta";
+
+export interface HeaderMetaItem {
+	text: string;
+	href?: string;
+	accent?: boolean;
+	wide?: boolean;
+}
+
+interface Props {
+	title: string;
+	description: string;
+	date: Date;
+	dateText: string;
+	items: HeaderMetaItem[];
+	filterTags: string[];
+	author: string;
+	authorNote?: string;
+}
+
+const { title, description, date, dateText, items, filterTags, author, authorNote } = Astro.props;
+const initials = author
+	.split(/\s+/)
+	.map((w) => w[0])
+	.join("")
+	.slice(0, 2)
+	.toUpperCase();
+---
+
+<header class="article-header">
+	<p class="article-meta"><time datetime={date.toISOString()}>{dateText}</time>{items.map((item) => <span class:list={["article-meta-item", item.wide && "article-meta-wide", item.accent && "article-meta-accent"]}>{metaCopy.separator}{item.href ? <a class="article-meta-link" href={item.href}>{item.text}</a> : item.text}</span>)}</p>
+	{filterTags.map((tag) => <span data-pagefind-filter={`tag:${tag}`} />)}
+	<h1 class="article-title">{title}</h1>
+	<p class="article-dek">{description}</p>
+	<div class="article-author">
+		<span class="article-avatar" aria-hidden="true">{initials}</span>
+		<span class="article-author-name">{author}</span>
+		{authorNote && <span class="article-author-note">{authorNote}</span>}
+	</div>
+</header>
+
+<style>
+	.article-meta {
+		margin: 0 0 18px;
+		font-family: var(--font-mono);
+		font-size: var(--text-12);
+		line-height: normal;
+		color: var(--soft);
+	}
+	.article-meta-accent {
+		color: var(--accent);
+	}
+	.article-meta-link {
+		color: inherit;
+		text-decoration-line: underline;
+		text-decoration-thickness: 1px;
+		text-decoration-color: transparent;
+		text-underline-offset: 3px;
+	}
+	.article-meta-link:hover {
+		color: var(--accent);
+		text-decoration-color: var(--accent);
+	}
+	.article-title {
+		margin: 0;
+		font-size: var(--text-64);
+		font-weight: 600;
+		line-height: 1.06;
+		letter-spacing: -0.025em;
+		text-wrap: balance;
+		overflow-wrap: break-word;
+	}
+	.article-dek {
+		margin: 20px 0 0;
+		font-family: var(--font-serif);
+		font-size: var(--text-26);
+		line-height: 1.5;
+		color: var(--muted);
+	}
+	.article-author {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin-top: 28px;
+		padding: 18px 0;
+		border-top: 1px solid var(--rule);
+		border-bottom: 1px solid var(--rule);
+	}
+	.article-avatar {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex: 0 0 36px;
+		width: 36px;
+		height: 36px;
+		border-radius: 50%;
+		background: var(--accent-soft);
+		font-family: var(--font-mono);
+		font-size: var(--text-12);
+		color: var(--accent);
+	}
+	.article-author-name {
+		line-height: normal;
+		font-size: var(--text-14);
+		color: var(--muted);
+	}
+	.article-author-note {
+		line-height: normal;
+		margin-left: auto;
+		font-family: var(--font-mono);
+		font-size: var(--text-12);
+		color: var(--soft);
+	}
+	@media (max-width: 767px) {
+		.article-meta {
+			margin: 22px 0 12px;
+		}
+		.article-meta-wide {
+			display: none;
+		}
+		.article-title {
+			font-size: var(--text-34);
+			line-height: 1.1;
+			letter-spacing: -0.022em;
+		}
+		.article-dek {
+			margin-top: 14px;
+			font-size: var(--text-18);
+		}
+		.article-author {
+			display: none;
+		}
+	}
+</style>

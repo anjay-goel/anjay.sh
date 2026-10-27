@@ -1,5 +1,7 @@
 import type { SiteConfig } from "@/types";
+import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 import type { AstroExpressiveCodeOptions } from "astro-expressive-code";
+import { siteDarkTheme, siteLightTheme } from "./plugins/expressive-code-themes";
 
 export const siteConfig: SiteConfig = {
 	author: "Anjay Goel",
@@ -43,30 +45,92 @@ export const siteConfig: SiteConfig = {
 };
 
 export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
-	styleOverrides: {
-		borderRadius: "4px",
-		codeBackground: ({ theme }) => (theme.type === "light" ? "#f1eee6" : "#1c1d1c"),
-		codeFontFamily: "var(--font-mono)",
-		codeFontSize: "0.875rem",
-		codeLineHeight: "1.7142857rem",
-		codePaddingInline: "1rem",
-		frames: {
-			editorActiveTabBackground: ({ theme }) => (theme.type === "light" ? "#f1eee6" : "#1c1d1c"),
-			editorTabBarBackground: ({ theme }) => (theme.type === "light" ? "#eae6dc" : "#121312"),
-			frameBoxShadowCssValue: "none",
-			terminalBackground: ({ theme }) => (theme.type === "light" ? "#f1eee6" : "#1c1d1c"),
-			terminalTitlebarBackground: ({ theme }) => (theme.type === "light" ? "#eae6dc" : "#121312"),
-		},
-		uiLineHeight: "inherit",
-	},
-	themeCssSelector(theme, { styleVariants }) {
-		if (styleVariants.length >= 2) {
-			const baseTheme = styleVariants[0]?.theme;
-			const altTheme = styleVariants.find((v) => v.theme.type !== baseTheme?.type)?.theme;
-			if (theme === baseTheme || theme === altTheme) return `[data-theme='${theme.type}']`;
-		}
-		return `[data-theme="${theme.name}"]`;
-	},
-	themes: ["min-dark", "min-light"],
+	plugins: [pluginLineNumbers()],
+	emitExternalStylesheet: false,
+	themes: [siteLightTheme, siteDarkTheme],
+	minSyntaxHighlightingColorContrast: 4.5,
+	themeCssSelector: (theme) => `[data-theme='${theme.type}']`,
 	useThemedScrollbars: false,
+	useThemedSelectionColors: false,
+	defaultProps: {
+		showLineNumbers: true,
+		overridesByLang: {
+			"bash,sh,shell,shellsession,zsh,console,text,txt,plaintext,": { showLineNumbers: false },
+		},
+	},
+	styleOverrides: {
+		borderColor: "var(--rule)",
+		borderRadius: "12px",
+		borderWidth: "1px",
+		codeBackground: "var(--code)",
+		codeForeground: "var(--ink)",
+		codeFontFamily: "var(--font-mono)",
+		codeFontSize: "14px",
+		codeFontWeight: "400",
+		codeLineHeight: "1.75",
+		codePaddingBlock: "14px",
+		codePaddingInline: "20px",
+		codeSelectionBackground: "var(--selection)",
+		focusBorder: "var(--accent)",
+		gutterBorderColor: "transparent",
+		gutterBorderWidth: "0px",
+		gutterForeground: "var(--soft)",
+		gutterHighlightForeground: "var(--soft)",
+		scrollbarThumbColor: "var(--rule-strong)",
+		scrollbarThumbHoverColor: "var(--soft)",
+		uiFontFamily: "var(--font-mono)",
+		uiFontSize: "12px",
+		uiFontWeight: "400",
+		uiLineHeight: "1.5",
+		uiPaddingBlock: "10px",
+		uiPaddingInline: "16px",
+		uiSelectionBackground: "var(--selection)",
+		uiSelectionForeground: "var(--ink)",
+		frames: {
+			editorActiveTabBackground: "var(--code)",
+			editorActiveTabBorderColor: "transparent",
+			editorActiveTabForeground: "var(--soft)",
+			editorActiveTabIndicatorBottomColor: "transparent",
+			editorActiveTabIndicatorHeight: "0px",
+			editorActiveTabIndicatorTopColor: "transparent",
+			editorBackground: "var(--code)",
+			editorTabBarBackground: "var(--code)",
+			editorTabBarBorderBottomColor: "var(--rule)",
+			editorTabBarBorderColor: "transparent",
+			editorTabBorderRadius: "0px",
+			editorTabsMarginBlockStart: "0px",
+			editorTabsMarginInlineStart: "0px",
+			frameBoxShadowCssValue: "none",
+			inlineButtonBackground: "transparent",
+			inlineButtonBackgroundActiveOpacity: "0",
+			inlineButtonBackgroundHoverOrFocusOpacity: "0",
+			inlineButtonBackgroundIdleOpacity: "0",
+			inlineButtonBorder: "var(--rule)",
+			inlineButtonBorderOpacity: "1",
+			inlineButtonForeground: "var(--soft)",
+			shadowColor: "transparent",
+			terminalBackground: "var(--code)",
+			terminalTitlebarBackground: "var(--code)",
+			terminalTitlebarBorderBottomColor: "var(--rule)",
+			terminalTitlebarDotsForeground: "transparent",
+			terminalTitlebarDotsOpacity: "0",
+			terminalTitlebarForeground: "var(--soft)",
+			tooltipSuccessBackground: "var(--accent)",
+			tooltipSuccessForeground: "var(--paper)",
+		},
+		textMarkers: {
+			lineMarkerAccentMargin: "0px",
+			lineMarkerAccentWidth: "2px",
+			markBackground: "color-mix(in srgb, var(--accent) 7%, transparent)",
+			markBorderColor: "var(--accent)",
+			insBackground: "color-mix(in srgb, var(--ok) 7%, transparent)",
+			insBorderColor: "var(--ok)",
+			insDiffIndicatorColor: "var(--ok)",
+			delBackground: "color-mix(in srgb, var(--err) 7%, transparent)",
+			delBorderColor: "var(--err)",
+			delDiffIndicatorColor: "var(--err)",
+			inlineMarkerBorderWidth: "0px",
+			inlineMarkerBorderRadius: "3px",
+		},
+	},
 };

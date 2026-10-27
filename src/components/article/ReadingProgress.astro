@@ -1,0 +1,18 @@
+<div class="read-progress" aria-hidden="true"><div class="read-progress-bar" data-progress-bar></div></div>
+
+<style>
+	.read-progress {
+		position: sticky;
+		top: 0;
+		z-index: 40;
+		height: 3px;
+		background: var(--rule);
+		overflow: hidden;
+	}
+	.read-progress-bar {
+		height: 3px;
+		background: var(--accent);
+		transform: scaleX(0);
+		transform-origin: left;
+	}
+</style>

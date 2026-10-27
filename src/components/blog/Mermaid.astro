@@ -9,25 +9,3 @@
 		diagrams.forEach((diagram) => observer.observe(diagram));
 	}
 </script>
-
-<style is:inline>
-	.post-article pre.mermaid {
-		margin: 2rem 0;
-		padding: 1.25rem;
-		overflow-x: auto;
-		background: transparent;
-		border: 1px solid hsl(var(--theme-text) / 0.15);
-		border-radius: 0.5rem;
-		text-align: center;
-	}
-
-	.post-article pre.mermaid[data-rendered] {
-		white-space: normal;
-	}
-
-	.post-article pre.mermaid svg {
-		display: block;
-		margin-inline: auto;
-		height: auto;
-	}
-</style>

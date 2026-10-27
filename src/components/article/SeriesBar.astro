@@ -1,0 +1,157 @@
+---
+import ArticleIcon from "@/components/article/ArticleIcon.astro";
+import type { SeriesItem } from "@/components/article/SeriesBox.astro";
+import { postCopy } from "@/content/copy/post";
+
+interface Props {
+	title: string;
+	href: string;
+	items: SeriesItem[];
+	index: number;
+}
+
+const { title, href, items, index } = Astro.props;
+const { series } = postCopy;
+---
+
+<section class="series-bar" aria-label={series.label} data-disclosure>
+	<div class="series-bar-head">
+		<div class="series-bar-text">
+			<p class="series-bar-kicker">{series.barLabel(index, items.length)}</p>
+			<p class="series-bar-title"><a href={href}>{title}</a></p>
+		</div>
+		<button
+			type="button"
+			class="series-bar-toggle"
+			aria-expanded="false"
+			aria-controls="series-bar-parts"
+			aria-label={series.showParts}
+			data-disclosure-toggle
+			data-label-open={series.hideParts}
+			data-label-closed={series.showParts}
+		>
+			<ArticleIcon name="chevronDown" size={18} />
+		</button>
+	</div>
+	<div class="series-bar-steps" aria-hidden="true">{items.map((_, i) => <span class:list={[i < index && "is-done"]} />)}</div>
+	<ol class="series-bar-parts" id="series-bar-parts" aria-label={series.partsLabel} hidden data-disclosure-panel>
+		{
+			items.map((item) => (
+				<li>
+					<a class:list={["series-bar-part", item.current && "is-current"]} href={item.href} aria-current={item.current ? "page" : undefined}>
+						<span class="series-bar-roman">{item.roman}</span>
+						<span>{item.title}</span>
+					</a>
+				</li>
+			))
+		}
+	</ol>
+</section>
+
+<style>
+	.series-bar {
+		margin-top: 22px;
+		padding: 14px 16px;
+		border: 1px solid var(--rule);
+		border-radius: var(--radius-xl);
+		background: var(--paper);
+	}
+	.series-bar-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+	}
+	.series-bar-text {
+		min-width: 0;
+	}
+	.series-bar-kicker {
+		line-height: normal;
+		margin: 0;
+		font-size: var(--text-12);
+		color: var(--soft);
+	}
+	.series-bar-title {
+		line-height: normal;
+		margin: 4px 0 0;
+		font-family: var(--font-serif);
+		font-size: var(--text-18);
+		font-weight: 500;
+	}
+	.series-bar-title a:hover {
+		color: var(--accent);
+	}
+	.series-bar-toggle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex: 0 0 44px;
+		width: 44px;
+		height: 44px;
+		padding: 0;
+		border: 1px solid var(--rule);
+		border-radius: var(--radius-lg);
+		background: transparent;
+		color: var(--muted);
+	}
+	.series-bar-toggle:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+	.series-bar-toggle:focus-visible {
+		outline-offset: 2px;
+		border-radius: var(--radius-lg);
+	}
+	.series-bar-toggle :global(svg) {
+		transition: transform var(--dur) var(--ease);
+	}
+	.series-bar-toggle[aria-expanded="true"] :global(svg) {
+		transform: rotate(180deg);
+	}
+	.series-bar-steps {
+		display: flex;
+		gap: 4px;
+		margin-top: 12px;
+	}
+	.series-bar-steps span {
+		flex: 1;
+		height: 4px;
+		border-radius: 2px;
+		background: var(--rule);
+	}
+	.series-bar-steps span.is-done {
+		background: var(--accent);
+	}
+	.series-bar-parts {
+		margin: 12px 0 0;
+		padding: 0;
+		list-style: none;
+	}
+	.series-bar-part {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		min-height: 44px;
+		border-top: 1px dashed var(--rule-strong);
+		font-size: var(--text-16);
+		line-height: 1.35;
+		color: var(--muted);
+	}
+	.series-bar-part:hover,
+	.series-bar-part.is-current {
+		color: var(--accent);
+	}
+	.series-bar-part.is-current {
+		font-weight: 500;
+	}
+	.series-bar-roman {
+		flex: 0 0 26px;
+		font-family: var(--font-mono);
+		font-size: var(--text-12);
+		font-weight: 400;
+		color: var(--soft);
+	}
+	.is-current .series-bar-roman {
+		color: inherit;
+	}
+</style>

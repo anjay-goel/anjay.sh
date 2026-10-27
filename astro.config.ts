@@ -21,6 +21,9 @@ import { rehypeTableScroll } from "./src/plugins/rehype-table-scroll";
 import { getExternalPostIds, getPostLastModified } from "./src/utils/sitemap";
 import { remarkMermaid } from "./src/plugins/remark-mermaid";
 import { remarkHasMath } from "./src/plugins/remark-has-math";
+import { remarkCapabilities } from "./src/plugins/remark-capabilities";
+import { rehypeMarginNotes } from "./src/plugins/rehype-margin-notes";
+import { postCopy } from "./src/content/copy/post";
 
 import rehypeExternalLinks from "rehype-external-links";
 import rehypeKatex from "rehype-katex";
@@ -108,6 +111,7 @@ export default defineConfig({
 			rehypePlugins: [
 				rehypeUnwrapImages,
 				rehypeTableScroll,
+				rehypeMarginNotes,
 				[rehypeBasePath, { base: BASE_PATH }],
 				// rehype-katex must run before rehype-external-links so the latter
 				// doesn't rewrite anchors inside katex's emitted DOM.
@@ -124,6 +128,7 @@ export default defineConfig({
 				remarkMermaid,
 				remarkReadingTime,
 				remarkDirective,
+				[remarkCapabilities, { labels: postCopy.capabilities }],
 				remarkAdmonitions,
 				remarkMath,
 				remarkHasMath,

@@ -1,0 +1,213 @@
+---
+import ArticleIcon from "@/components/article/ArticleIcon.astro";
+import { postCopy } from "@/content/copy/post";
+import type { TocItem } from "@/utils/toc";
+
+interface Props {
+	items: TocItem[];
+}
+
+const { items } = Astro.props;
+const { toc } = postCopy;
+const first = items[0]?.text ?? "";
+---
+
+<div class="toc-bar">
+	<div class="toc-bar-box" data-disclosure>
+		<button type="button" class="toc-bar-toggle" aria-expanded="false" aria-controls="toc-bar-panel" data-disclosure-toggle>
+			<span class="toc-ring" aria-hidden="true" data-progress-ring></span>
+			<span class="toc-bar-text">
+				<span class="toc-bar-label">{toc.label}</span>
+				<span class="toc-bar-current" data-toc-current>{first}</span>
+			</span>
+			<ArticleIcon name="chevronDown" class="toc-bar-chevron" />
+		</button>
+		<nav class="toc-bar-panel" id="toc-bar-panel" aria-label={toc.label} hidden data-disclosure-panel>
+			<ul class="toc-bar-list">
+				{
+					items.map((item) => (
+						<li>
+							<a class:list={["toc-bar-link", item.children.length > 0 && "has-children"]} href={`#${item.slug}`} data-toc-link>{item.text}</a>
+							{item.children.length > 0 && (
+								<ul class="toc-bar-sub">
+									{item.children.map((child) => (
+										<li>
+											<a class="toc-bar-link toc-bar-sub-link" href={`#${child.slug}`} data-toc-link>{child.text}</a>
+										</li>
+									))}
+								</ul>
+							)}
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+	</div>
+	<button type="button" class="toc-bar-copy" aria-label={toc.copyLink} data-copy-link data-label={toc.copyLink} data-label-done={toc.copied}>
+		<ArticleIcon name="link" size={17} class="copy-icon" />
+		<ArticleIcon name="check" size={17} class="copy-done-icon" />
+	</button>
+</div>
+
+<style>
+	.toc-bar {
+		position: sticky;
+		top: 3px;
+		z-index: 20;
+		display: flex;
+		align-items: flex-start;
+		gap: 8px;
+		margin: 14px calc(-1 * var(--gutter)) -8px;
+		padding: 8px var(--gutter);
+		background: var(--bg);
+	}
+	:global(.series-bar) + .toc-bar {
+		margin-top: 4px;
+	}
+	.toc-bar-box {
+		flex: 1;
+		min-width: 0;
+		border: 1px solid var(--rule-strong);
+		border-radius: var(--radius-lg);
+		background: var(--paper);
+		overflow: hidden;
+	}
+	.toc-bar-toggle {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		width: 100%;
+		min-height: 50px;
+		padding: 6px 14px;
+		border: 0;
+		background: transparent;
+		text-align: left;
+		font-family: var(--font-sans);
+		color: inherit;
+	}
+	.toc-bar-toggle:focus-visible {
+		outline-offset: -2px;
+		border-radius: var(--radius-lg);
+	}
+	.toc-bar-toggle[aria-expanded="true"] {
+		border-bottom: 1px solid var(--rule);
+	}
+	.toc-ring {
+		--p: 0;
+		flex: 0 0 20px;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		background: conic-gradient(var(--accent) calc(var(--p) * 1%), var(--rule) 0);
+		-webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+		mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+	}
+	.toc-bar-text {
+		flex: 1;
+		min-width: 0;
+	}
+	.toc-bar-label {
+		line-height: normal;
+		display: block;
+		font-family: var(--font-mono);
+		font-size: var(--text-12);
+		color: var(--soft);
+	}
+	.toc-bar-current {
+		display: block;
+		margin-top: 1px;
+		overflow: hidden;
+		font-size: var(--text-14);
+		font-weight: 500;
+		color: var(--accent);
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.toc-bar-toggle :global(.toc-bar-chevron) {
+		flex: 0 0 16px;
+		color: var(--muted);
+		transition: transform var(--dur) var(--ease);
+	}
+	.toc-bar-toggle[aria-expanded="true"] :global(.toc-bar-chevron) {
+		transform: rotate(180deg);
+	}
+	.toc-bar-panel {
+		max-height: calc(100dvh - 140px);
+		padding: 6px 16px 10px;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+	}
+	.toc-bar-list,
+	.toc-bar-sub {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.toc-bar-link {
+		display: flex;
+		align-items: center;
+		min-height: 44px;
+		font-size: var(--text-16);
+		line-height: 1.35;
+		color: var(--muted);
+	}
+	.toc-bar-link:hover,
+	.toc-bar-link[aria-current="location"] {
+		color: var(--accent);
+	}
+	.toc-bar-link[aria-current="location"] {
+		font-weight: 500;
+	}
+	.toc-bar-link:focus-visible {
+		outline-offset: -2px;
+	}
+	.toc-bar-sub {
+		margin: 0 0 4px 1px;
+		padding-left: 16px;
+		border-left: 1px solid var(--rule-strong);
+	}
+	.toc-bar-sub-link {
+		line-height: 1.4;
+	}
+	.toc-bar-sub-link[aria-current="location"] {
+		margin-left: -17px;
+		padding-left: 15px;
+		border-left: 2px solid var(--accent);
+	}
+	li:has(.toc-bar-sub-link[aria-current="location"]) > .has-children {
+		font-weight: 500;
+		color: var(--ink);
+	}
+	.toc-bar-copy {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex: 0 0 52px;
+		width: 52px;
+		height: 52px;
+		padding: 0;
+		border: 1px solid var(--rule);
+		border-radius: var(--radius-lg);
+		background: var(--bg);
+		color: var(--muted);
+	}
+	.toc-bar-copy:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+	.toc-bar-copy:focus-visible {
+		outline-offset: 2px;
+		border-radius: var(--radius-lg);
+	}
+	.toc-bar-copy :global(.copy-done-icon),
+	.toc-bar-copy[data-copied] :global(.copy-icon) {
+		display: none;
+	}
+	.toc-bar-copy[data-copied] :global(.copy-done-icon) {
+		display: block;
+	}
+	.toc-bar-copy[data-copied] {
+		color: var(--accent);
+	}
+</style>

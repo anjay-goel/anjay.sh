@@ -12,15 +12,17 @@ if (diagrams.length) {
 				const { default: mermaid } = await import("mermaid");
 				await document.fonts.ready;
 				const dark = document.documentElement.dataset.theme === "dark";
-				const palette = dark
-					? { bg: "#151615", paper: "#1c1d1c", border: "#55534d", line: "#c2beb5", text: "#ebe7de" }
-					: {
-							bg: "#f8f6f0",
-							paper: "#fcfbf7",
-							border: "#a9a498",
-							line: "#45433d",
-							text: "#1d1c19",
-						};
+				const styles = getComputedStyle(document.documentElement);
+				const token = (name: string) => styles.getPropertyValue(name).trim();
+				const palette = {
+					bg: token("--paper"),
+					paper: token("--paper"),
+					soft: token("--accent-soft"),
+					border: token("--rule-strong"),
+					line: token("--soft"),
+					text: token("--ink"),
+				};
+				const font = token("--font-sans");
 				mermaid.initialize({
 					startOnLoad: false,
 					layout: "dagre",
@@ -28,7 +30,7 @@ if (diagrams.length) {
 					securityLevel: "strict",
 					suppressErrorRendering: true,
 					theme: "base",
-					fontFamily: "Inter Variable, sans-serif",
+					fontFamily: font,
 					themeVariables: {
 						darkMode: dark,
 						background: palette.bg,
@@ -37,14 +39,17 @@ if (diagrams.length) {
 						primaryBorderColor: palette.border,
 						lineColor: palette.line,
 						secondaryColor: palette.paper,
-						tertiaryColor: palette.bg,
+						tertiaryColor: palette.soft,
+						clusterBkg: palette.soft,
+						clusterBorder: palette.border,
+						fontSize: "14px",
 						edgeLabelBackground: palette.bg,
 						noteBkgColor: palette.paper,
 						noteBorderColor: palette.border,
 						noteTextColor: palette.text,
 					},
 					flowchart: { htmlLabels: false, curve: "linear" },
-					themeCSS: ".edgeLabel .label rect { opacity: 1; }",
+					themeCSS: ".edgeLabel .label rect { opacity: 1; } .node rect, .cluster rect { rx: 8px; ry: 8px; }",
 				});
 				for (const [node, source] of sources) {
 					try {
