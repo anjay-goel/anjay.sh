@@ -47,7 +47,7 @@ const { home } = footerCopy;
 		margin: 0;
 		font-family: var(--font-mono);
 		font-size: var(--text-12);
-		line-height: 1.8;
+		line-height: normal;
 		color: var(--soft);
 	}
 	.footer-legal a:focus-visible {
@@ -100,6 +100,9 @@ const { home } = footerCopy;
 	@media (max-width: 767px) {
 		.site-footer-standard {
 			padding: 20px 0 40px;
+		}
+		.footer-legal {
+			line-height: 1.8;
 		}
 		.footer-rss {
 			display: none;

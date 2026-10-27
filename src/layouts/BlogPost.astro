@@ -149,7 +149,7 @@ const postUrl = absoluteUrl(`/posts/${id}/`, Astro.site);
 			layout === "rails" && (
 				<aside class="article-rail">
 					{collection && part && <SeriesBox title={collection.data.title} href={collectionHref(collection)} items={seriesItems} index={part.index} />}
-					{hasToc && <TocNav items={toc} class:list={["article-toc", part && "article-toc-series"]} />}
+					{hasToc && <TocNav items={toc} copyLink={Boolean(part)} class:list={["article-toc", part && "article-toc-series"]} />}
 				</aside>
 			)
 		}

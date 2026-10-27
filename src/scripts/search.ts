@@ -54,6 +54,13 @@ function highlight(text: string, terms: string[]): string {
 		.join("");
 }
 
+function tightenMarks(excerpt: string): string {
+	return excerpt.replace(
+		/<mark>([^<&\p{L}\p{N}]*)([\p{L}\p{N}]+)([^<]*)<\/mark>/gu,
+		"$1<mark>$2</mark>$3",
+	);
+}
+
 function coversTerms(data: PagefindData, terms: string[]): boolean {
 	if (!data.content) return true;
 	const words = new Set(`${data.meta.title ?? ""} ${data.content}`.toLowerCase().split(NON_WORD));
@@ -101,7 +108,7 @@ function toItem(data: PagefindData, index: SearchPostIndex, terms: string[]): Se
 		title: highlight(title, terms),
 		meta: post?.meta ?? "",
 		crumb: section ? searchCopy.inSection(section.title) : "",
-		excerpt: section?.excerpt ?? data.excerpt,
+		excerpt: tightenMarks(section?.excerpt ?? data.excerpt),
 	};
 }
 

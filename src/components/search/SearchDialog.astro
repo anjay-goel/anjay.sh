@@ -101,7 +101,7 @@ const { hints } = searchCopy;
 	.search {
 		--search-mark-line: rgba(51, 90, 133, 0.3);
 		box-sizing: border-box;
-		width: min(640px, calc(100vw - 2 * var(--gutter)));
+		width: min(642px, calc(100vw - 2 * var(--gutter)));
 		max-width: none;
 		max-height: calc(100dvh - 150px);
 		margin: 110px auto auto;
@@ -139,8 +139,9 @@ const { hints } = searchCopy;
 	}
 	.search-input {
 		flex: 1;
+		align-self: stretch;
 		min-width: 0;
-		height: 23px;
+		margin-block: -16px;
 		padding: 0;
 		border: 0;
 		background: transparent;
@@ -330,6 +331,7 @@ const { hints } = searchCopy;
 			padding: 12px 16px;
 		}
 		.search-input {
+			margin-block: -12px;
 			font-size: var(--text-16);
 		}
 		.search-esc,

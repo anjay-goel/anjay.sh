@@ -135,7 +135,7 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 	}
 	.projects {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: 20px;
 		margin: 0;
 		padding: 0 0 112px;
@@ -184,6 +184,9 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 	@media (max-width: 767px) {
 		.showcase-title {
 			padding: 40px 0 24px;
+		}
+		.projects {
+			grid-template-columns: minmax(0, 1fr);
 		}
 		a.featured {
 			flex-direction: column;

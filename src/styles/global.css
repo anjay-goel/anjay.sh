@@ -241,10 +241,11 @@
 	.hit-target::after {
 		content: "";
 		position: absolute;
-		inset-inline: 0;
 		top: 50%;
+		left: 50%;
+		width: max(100%, 44px);
 		height: max(100%, 44px);
-		transform: translateY(-50%);
+		transform: translate(-50%, -50%);
 	}
 
 	.link-quiet {

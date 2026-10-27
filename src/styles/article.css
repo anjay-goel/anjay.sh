@@ -271,7 +271,7 @@
 	border-collapse: collapse;
 	font-family: var(--font-sans);
 	font-size: var(--text-16);
-	line-height: 1.5;
+	line-height: normal;
 }
 
 .prose th {
@@ -287,7 +287,6 @@
 .prose td {
 	padding: 10px 14px;
 	border-bottom: 1px solid var(--rule);
-	vertical-align: top;
 }
 
 .prose tbody tr:last-child td {
@@ -491,6 +490,17 @@
 	flex: none;
 }
 
+@media (min-width: 768px) and (pointer: coarse) {
+	.prose .expressive-code .copy button {
+		height: 44px;
+		margin-block: -6px;
+	}
+
+	.prose .expressive-code .copy button::before {
+		inset-block: 6px;
+	}
+}
+
 .prose .expressive-code .copy .feedback {
 	font-family: var(--font-mono);
 	font-size: var(--text-12);
@@ -630,7 +640,7 @@
 	color: var(--accent);
 }
 
-.prose .margin-note code {
+.prose .margin-note :not(pre) > code {
 	padding: 0;
 	border: 0;
 	background: none;
@@ -860,12 +870,10 @@
 	}
 
 	.prose h3 {
-		margin-top: 32px;
 		font-size: var(--text-21);
 	}
 
 	.prose h4 {
-		margin-top: 24px;
 		font-size: var(--text-18);
 	}
 
@@ -875,15 +883,6 @@
 
 	.prose :where(h1, h2, h3, h4, h5, h6) {
 		scroll-margin-top: 84px;
-	}
-
-	.prose ul,
-	.prose ol {
-		padding-left: 20px;
-	}
-
-	.prose ol {
-		padding-left: 24px;
 	}
 
 	.prose .expressive-code {
