@@ -1,0 +1,394 @@
+---
+import Kbd from "@/components/ui/Kbd.astro";
+import { metaCopy } from "@/content/copy/meta";
+import { searchCopy } from "@/content/copy/search";
+import { genericTags } from "@/data/primary-tags";
+import { getAllPosts, getUniqueTagsWithCount, tagHref } from "@/data/post";
+import { withBase } from "@/utils/path";
+
+const TAG_LIMIT = 4;
+
+const posts = await getAllPosts();
+const tags = getUniqueTagsWithCount(posts)
+	.map(([tag]) => tag)
+	.filter((tag) => !genericTags.includes(tag))
+	.slice(0, TAG_LIMIT);
+
+const { hints } = searchCopy;
+const searchIcon = '<circle cx="10" cy="10" r="7"></circle><path d="M21 21l-6 -6"></path>';
+---
+
+<dialog
+	class="search"
+	aria-label={searchCopy.dialogLabel}
+	data-search-dialog
+	data-pagefind={withBase("/pagefind/pagefind.js")}
+	data-index={withBase("/search.json")}
+>
+	<div class="search-bar">
+		<svg class="search-icon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={searchIcon} />
+		<input
+			class="search-input"
+			type="search"
+			role="combobox"
+			aria-label={searchCopy.inputLabel}
+			aria-autocomplete="list"
+			aria-controls="search-results"
+			aria-expanded="false"
+			autocomplete="off"
+			autocapitalize="off"
+			spellcheck="false"
+			enterkeyhint="go"
+			placeholder={searchCopy.placeholder}
+			data-search-input
+		/>
+		<button class="search-esc" type="button" aria-label={searchCopy.closeLabel} data-search-close>
+			<Kbd size="sm">{searchCopy.close}</Kbd>
+		</button>
+		<button class="search-cancel" type="button" data-search-close>{searchCopy.cancel}</button>
+	</div>
+	<div class="search-body" data-search-body hidden>
+		<p class="search-status" aria-live="polite" data-search-status></p>
+		<ul class="search-results" id="search-results" role="listbox" aria-label={searchCopy.resultsLabel} data-search-results></ul>
+		<div class="search-empty" data-search-empty hidden>
+			<p class="search-empty-title" data-search-empty-title></p>
+			<p class="search-empty-hint">{searchCopy.empty.hint}</p>
+			{
+				tags.length > 0 && (
+					<ul class="search-tags" aria-label={searchCopy.empty.tagsLabel}>
+						{tags.map((tag) => (
+							<li>
+								<a class="link search-tag" href={tagHref(tag)}>
+									{metaCopy.tag(tag)}
+								</a>
+							</li>
+						))}
+					</ul>
+				)
+			}
+		</div>
+	</div>
+	<div class="search-foot">
+		<span class="search-hint">
+			<Kbd size="sm">{hints.up}</Kbd>
+			<Kbd size="sm">{hints.down}</Kbd>
+			<span>{hints.move}</span>
+		</span>
+		<span class="search-hint">
+			<Kbd size="sm">{hints.enter}</Kbd>
+			<span>{hints.open}</span>
+		</span>
+		<span class="search-hint">
+			<Kbd size="sm">{hints.esc}</Kbd>
+			<span>{hints.close}</span>
+		</span>
+		<span class="search-credit">{searchCopy.credit}</span>
+	</div>
+	<template data-search-item>
+		<li class="search-item" role="option" aria-selected="false">
+			<a class="search-link" tabindex="-1">
+				<span class="search-meta" data-field="meta"></span>
+				<span class="search-title" data-field="title"></span>
+				<span class="search-crumb" data-field="crumb"></span>
+				<span class="search-excerpt" data-field="excerpt"></span>
+			</a>
+		</li>
+	</template>
+</dialog>
+
+<script>
+	import { initSearch } from "@/scripts/search";
+
+	initSearch();
+</script>
+
+<style>
+	.search {
+		--search-mark-line: rgba(51, 90, 133, 0.3);
+		box-sizing: border-box;
+		width: min(640px, calc(100vw - 2 * var(--gutter)));
+		max-width: none;
+		max-height: calc(100dvh - 150px);
+		margin: 110px auto auto;
+		padding: 0;
+		overflow: hidden;
+		border: 1px solid var(--rule);
+		border-radius: 14px;
+		background: var(--paper);
+		color: var(--ink);
+		font-family: var(--font-sans);
+	}
+	:global(:root[data-theme="dark"]) .search {
+		--search-mark-line: rgba(159, 195, 230, 0.32);
+	}
+	.search[open] {
+		display: flex;
+		flex-direction: column;
+	}
+	.search::backdrop {
+		background: rgba(26, 26, 26, 0.3);
+	}
+	:global(:root[data-theme="dark"]) .search::backdrop {
+		background: rgba(0, 0, 0, 0.62);
+	}
+	.search-bar {
+		display: flex;
+		flex: none;
+		align-items: center;
+		gap: 12px;
+		padding: 16px 20px;
+		border-bottom: 1px solid var(--rule);
+	}
+	.search-icon {
+		flex: none;
+		color: var(--soft);
+	}
+	.search-input {
+		flex: 1;
+		min-width: 0;
+		height: 23px;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: var(--ink);
+		font-family: var(--font-sans);
+		font-size: var(--text-18);
+		line-height: 23px;
+		caret-color: var(--accent);
+		appearance: none;
+	}
+	.search-input::placeholder {
+		color: var(--soft);
+		opacity: 1;
+	}
+	.search-input::-webkit-search-cancel-button,
+	.search-input::-webkit-search-decoration {
+		appearance: none;
+	}
+	.search-input:focus-visible {
+		outline: none;
+	}
+	.search-esc {
+		display: inline-flex;
+		flex: none;
+		padding: 0;
+		border: 0;
+		background: transparent;
+	}
+	.search-esc:hover :global(.kbd) {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+	.search-esc:focus-visible {
+		outline-offset: 2px;
+		border-radius: var(--radius-sm);
+	}
+	.search-cancel {
+		display: none;
+	}
+	.search-body {
+		flex: 1 1 auto;
+		min-height: 0;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+	}
+	.search-status {
+		margin: 0;
+		padding: 12px 22px 4px;
+		font-size: var(--text-12);
+		line-height: 1.5;
+		color: var(--soft);
+	}
+	.search-status:empty {
+		display: none;
+	}
+	.search-results {
+		margin: 0;
+		padding: 0 0 8px;
+		list-style: none;
+	}
+	.search-results:empty {
+		display: none;
+	}
+	.search-results :global(.search-link) {
+		display: block;
+		margin: 0 8px;
+		padding: 12px 14px;
+		border-radius: var(--radius-lg);
+		color: inherit;
+		text-decoration: none;
+		cursor: pointer;
+	}
+	.search-results :global([aria-selected="true"] .search-link) {
+		background: var(--mark-bg);
+	}
+	.search-results :global(.search-meta) {
+		display: block;
+		font-family: var(--font-mono);
+		font-size: var(--text-12);
+		line-height: 1.3;
+		color: var(--soft);
+	}
+	.search-results :global(.search-title) {
+		display: block;
+		margin-top: 4px;
+		font-size: var(--text-16);
+		font-weight: 600;
+		line-height: 1.35;
+		color: var(--ink);
+		transition: color var(--dur) var(--ease);
+	}
+	.search-results :global([aria-selected="true"] .search-title) {
+		color: var(--accent);
+	}
+	.search-results :global(.search-crumb) {
+		display: block;
+		margin-top: 2px;
+		font-size: var(--text-14);
+		line-height: 1.3;
+		color: var(--soft);
+	}
+	.search-results :global(.search-crumb:empty) {
+		display: none;
+	}
+	.search-results :global(.search-excerpt) {
+		display: block;
+		margin-top: 6px;
+		font-size: var(--text-14);
+		line-height: 1.55;
+		color: var(--muted);
+	}
+	.search-results :global(.search-excerpt:empty) {
+		display: none;
+	}
+	.search-results :global(mark) {
+		padding: 0 2px;
+		border-radius: 3px;
+		background: var(--mark-bg);
+		box-shadow: inset 0 -1px 0 var(--search-mark-line);
+		color: inherit;
+	}
+	.search-empty {
+		padding: 40px 28px 36px;
+	}
+	.search-empty-title {
+		margin: 0;
+		font-size: var(--text-16);
+		font-weight: 600;
+		line-height: 1.3;
+		color: var(--ink);
+	}
+	.search-empty-hint {
+		margin: 8px 0 0;
+		font-size: var(--text-16);
+		line-height: 1.55;
+		color: var(--muted);
+	}
+	.search-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px 18px;
+		margin: 16px 0 0;
+		padding: 0;
+		list-style: none;
+	}
+	.search-tag {
+		font-family: var(--font-mono);
+		font-size: var(--text-14);
+		line-height: 1.3;
+	}
+	.search-foot {
+		display: flex;
+		flex: none;
+		align-items: center;
+		gap: 26px;
+		padding: 12px 20px;
+		border-top: 1px solid var(--rule);
+		font-size: var(--text-12);
+		line-height: 1.5;
+		color: var(--soft);
+	}
+	.search-hint {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		white-space: nowrap;
+	}
+	.search-credit {
+		margin-left: auto;
+		white-space: nowrap;
+	}
+
+	@media (max-width: 767px) {
+		.search {
+			width: 100%;
+			height: 100dvh;
+			max-height: none;
+			margin: 0;
+			border: 0;
+			border-radius: 0;
+		}
+		.search-bar {
+			padding: 12px 16px;
+		}
+		.search-input {
+			font-size: var(--text-16);
+		}
+		.search-esc,
+		.search-foot {
+			display: none;
+		}
+		.search-cancel {
+			display: inline-flex;
+			flex: none;
+			align-items: center;
+			height: 44px;
+			margin: -2px 0;
+			padding: 0 4px;
+			border: 0;
+			background: transparent;
+			color: var(--accent);
+			font-family: var(--font-sans);
+			font-size: var(--text-16);
+		}
+		.search-cancel:focus-visible {
+			outline-offset: 0;
+			border-radius: var(--radius-sm);
+		}
+		.search-status {
+			padding: 12px 20px 4px;
+		}
+		.search-results {
+			padding: 0 20px 20px;
+		}
+		.search-results :global(.search-link) {
+			margin: 0;
+			padding: 12px 0;
+			border-radius: 0;
+		}
+		.search-results :global([aria-selected="true"] .search-link) {
+			background: transparent;
+		}
+		.search-results :global([aria-selected="true"] .search-title) {
+			color: var(--ink);
+		}
+		.search-results :global(.search-link:active .search-title) {
+			color: var(--accent);
+		}
+		.search-empty {
+			padding: 28px 20px;
+		}
+		.search-tags {
+			gap: 0 18px;
+			margin-top: 6px;
+		}
+		.search-tag {
+			display: inline-flex;
+			align-items: center;
+			min-height: 44px;
+		}
+		:global(html:has(.search[open])) {
+			overflow: hidden;
+		}
+	}
+</style>

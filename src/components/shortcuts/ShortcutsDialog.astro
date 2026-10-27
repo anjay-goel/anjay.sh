@@ -1,0 +1,136 @@
+---
+import ShortcutKeys from "@/components/shortcuts/ShortcutKeys.astro";
+import Kbd from "@/components/ui/Kbd.astro";
+import { shortcutsCopy } from "@/content/copy/shortcuts";
+import { withBase } from "@/utils/path";
+---
+
+<dialog
+	class="shortcuts"
+	aria-labelledby="shortcuts-title"
+	tabindex="-1"
+	data-shortcuts-dialog
+	data-home={withBase("/")}
+	data-posts={withBase("/posts/")}
+>
+	<div class="shortcuts-head">
+		<h2 class="shortcuts-title" id="shortcuts-title">{shortcutsCopy.title}</h2>
+		<button class="shortcuts-close" type="button" aria-label={shortcutsCopy.closeLabel} data-shortcuts-close>
+			<Kbd>{shortcutsCopy.close}</Kbd>
+		</button>
+	</div>
+	<dl class="shortcuts-list">
+		{
+			shortcutsCopy.items.map((shortcut) => (
+				<div class="shortcuts-row">
+					<dt class="shortcuts-keys">
+						<ShortcutKeys shortcut={shortcut} />
+					</dt>
+					<dd class="shortcuts-action">{shortcut.action}</dd>
+				</div>
+			))
+		}
+	</dl>
+	<p class="shortcuts-note">{shortcutsCopy.note}</p>
+</dialog>
+
+<script>
+	import { initShortcuts } from "@/scripts/shortcuts";
+
+	initShortcuts();
+</script>
+
+<style>
+	.shortcuts {
+		box-sizing: border-box;
+		width: min(540px, calc(100vw - 2 * var(--gutter)));
+		max-width: none;
+		max-height: calc(100dvh - 180px);
+		margin: 150px auto auto;
+		padding: 22px 26px 18px;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		border: 1px solid var(--rule);
+		border-radius: 14px;
+		background: var(--paper);
+		color: var(--ink);
+		font-family: var(--font-sans);
+	}
+	.shortcuts:focus-visible {
+		outline: none;
+	}
+	.shortcuts::backdrop {
+		background: rgba(26, 26, 26, 0.3);
+	}
+	:global(:root[data-theme="dark"]) .shortcuts::backdrop {
+		background: rgba(0, 0, 0, 0.62);
+	}
+	.shortcuts-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+		margin-bottom: 14px;
+	}
+	.shortcuts-title {
+		margin: 0;
+		font-size: var(--text-18);
+		font-weight: 600;
+		line-height: 1.3;
+	}
+	.shortcuts-close {
+		display: inline-flex;
+		flex: none;
+		padding: 0;
+		border: 0;
+		background: transparent;
+	}
+	.shortcuts-close:hover :global(.kbd) {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+	.shortcuts-close:focus-visible {
+		outline-offset: 2px;
+		border-radius: var(--radius-md);
+	}
+	.shortcuts-list {
+		margin: 0;
+	}
+	.shortcuts-row {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		padding: 10px 0;
+		border-top: 1px solid var(--rule);
+	}
+	.shortcuts-keys {
+		display: flex;
+		flex: 0 0 150px;
+		align-items: center;
+	}
+	.shortcuts-action {
+		margin: 0;
+		font-size: var(--text-16);
+		line-height: 1.5;
+		color: var(--muted);
+	}
+	.shortcuts-note {
+		margin: 14px 0 0;
+		padding-top: 12px;
+		border-top: 1px solid var(--rule);
+		font-size: var(--text-14);
+		line-height: 1.3;
+		color: var(--soft);
+	}
+
+	@media (max-width: 767px) {
+		.shortcuts {
+			max-height: calc(100dvh - 2 * var(--gutter));
+			margin: auto;
+			padding: 18px 20px 16px;
+		}
+		.shortcuts-keys {
+			flex-basis: 112px;
+		}
+	}
+</style>
