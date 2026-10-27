@@ -3,16 +3,15 @@ import { type CoverKey, coverArt } from "./cover-art";
 
 interface Props {
 	name: CoverKey;
-	detail?: boolean | "desktop";
-	class?: string;
+	detail?: boolean;
 }
 
-const { name, detail = true, class: className } = Astro.props;
+const { name, detail = true } = Astro.props;
 const art = coverArt[name];
 ---
 
 <svg
-	class:list={["cover-art", detail === false && "cover-art-plain", detail === "desktop" && "cover-art-responsive", className]}
+	class:list={["cover-art", !detail && "cover-art-plain"]}
 	viewBox={art.viewBox}
 	preserveAspectRatio="xMidYMid meet"
 	fill="none"
@@ -31,10 +30,5 @@ const art = coverArt[name];
 	}
 	.cover-art-plain :global(.art-detail) {
 		display: none;
-	}
-	@media (max-width: 767px) {
-		.cover-art-responsive :global(.art-detail) {
-			display: none;
-		}
 	}
 </style>

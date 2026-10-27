@@ -35,7 +35,7 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		}}
 	/>
 	<h1 class="page-title showcase-title">{copy.title}</h1>
-	<Card href={featuredProject.href} padding="none" class="featured" target="_blank" rel="noreferrer">
+	<Card href={featuredProject.href} class="featured" target="_blank" rel="noreferrer">
 		<div class="featured-text">
 			<span class="featured-status">{copy.featuredStatus}</span>
 			<span class="card-title featured-name">{featuredProject.name}</span>
@@ -50,7 +50,7 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		{
 			showcase.map((item) => (
 				<li class="project-item">
-					<Card href={item.href} padding="none" class="project" target="_blank" rel="noreferrer">
+					<Card href={item.href} class="project" target="_blank" rel="noreferrer">
 						<span class="card-title project-name">{item.name}</span>
 						<span class="meta project-meta">
 							<span>{item.stack}</span>

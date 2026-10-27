@@ -42,7 +42,7 @@ export function sortMDByDate(posts: CollectionEntry<"post">[]): CollectionEntry<
 }
 
 /** Every tag across the given posts, including duplicates. */
-export function getAllTags(posts: CollectionEntry<"post">[]): string[] {
+function getAllTags(posts: CollectionEntry<"post">[]): string[] {
 	return posts.flatMap((post) => post.data.tags);
 }
 
@@ -67,9 +67,9 @@ export function getPostsByTag(
 
 export type PostEntry = CollectionEntry<"post">;
 
-export type PostLabelKind = "collection" | "series" | "tag";
+type PostLabelKind = "collection" | "series" | "tag";
 
-export interface PostLabel {
+interface PostLabel {
 	text: string;
 	kind: PostLabelKind;
 	accent: boolean;
@@ -93,12 +93,12 @@ export interface PostSummary {
 	part: SeriesPart | undefined;
 }
 
-export interface YearGroup<T> {
+interface YearGroup<T> {
 	year: number;
 	items: T[];
 }
 
-export function isExternalPost(post: PostEntry): boolean {
+function isExternalPost(post: PostEntry): boolean {
 	return Boolean(post.data.externalUrl);
 }
 
@@ -123,7 +123,7 @@ export async function getReadingMinutes(post: PostEntry): Promise<number | undef
 	return typeof minutes === "number" ? minutes : undefined;
 }
 
-export function getPostLabel(
+function getPostLabel(
 	post: PostEntry,
 	collection: CollectionDoc | undefined,
 	part: SeriesPart | undefined,
@@ -195,15 +195,13 @@ export type MetaPart = string | { text: string; accent?: boolean };
 
 export function postMetaParts(
 	summary: PostSummary,
-	options: { label?: boolean; minutes?: boolean } = {},
+	options: { label?: boolean } = {},
 ): MetaPart[] {
-	const { label = true, minutes = true } = options;
+	const { label = true } = options;
 	const parts: MetaPart[] = [];
 	if (label && summary.label)
 		parts.push({ text: summary.label.text, accent: summary.label.accent });
-	if (minutes) {
-		if (summary.external) parts.push(metaCopy.external);
-		else if (summary.minutes !== undefined) parts.push(metaCopy.minutes(summary.minutes));
-	}
+	if (summary.external) parts.push(metaCopy.external);
+	else if (summary.minutes !== undefined) parts.push(metaCopy.minutes(summary.minutes));
 	return parts;
 }

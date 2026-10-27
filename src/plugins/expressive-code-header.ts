@@ -2,7 +2,7 @@ import type { ExpressiveCodePlugin } from "astro-expressive-code";
 import type { Element, ElementContent } from "hast";
 import { h, s } from "hastscript";
 
-export interface CodeHeaderLabels {
+interface CodeHeaderLabels {
 	title: (language: string) => string;
 	copy: string;
 	copyCode: string;

@@ -7,13 +7,12 @@ import { withBase } from "@/utils/path";
 interface Props {
 	tags: string[];
 	current?: string;
-	class?: string;
 }
 
-const { tags, current, class: className } = Astro.props;
+const { tags, current } = Astro.props;
 ---
 
-<nav class:list={["tag-filter", className]} aria-label={postsCopy.filter.label} data-tag-filter data-scroll-focus>
+<nav class="tag-filter" aria-label={postsCopy.filter.label} data-tag-filter data-scroll-focus>
 	<a
 		class="tag-filter-link"
 		href={withBase("/posts/")}

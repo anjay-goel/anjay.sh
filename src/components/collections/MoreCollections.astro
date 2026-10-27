@@ -18,7 +18,7 @@ const { collections } = Astro.props;
 		{
 			collections.map((c) => (
 				<li class="more-item">
-					<Card class="more-card" href={collectionHref(c)} padding="none" data-astro-prefetch>
+					<Card class="more-card" href={collectionHref(c)} data-astro-prefetch>
 						<span class="more-cover" aria-hidden="true">
 							<CollectionCover name={c.data.cover} />
 						</span>

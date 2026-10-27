@@ -1,13 +1,12 @@
 ---
 interface Props {
 	size?: "sm" | "md";
-	class?: string;
 }
 
-const { size = "md", class: className } = Astro.props;
+const { size = "md" } = Astro.props;
 ---
 
-<kbd class:list={["kbd", `kbd-${size}`, className]}><slot /></kbd>
+<kbd class:list={["kbd", `kbd-${size}`]}><slot /></kbd>
 
 <style>
 	.kbd {

@@ -1,15 +1,10 @@
 ---
 import { frameoArt, frameoViewBox } from "./frameo-art";
 
-interface Props {
-	class?: string;
-}
-
-const { class: className } = Astro.props;
 ---
 
 <svg
-	class:list={["frameo-art", className]}
+	class="frameo-art"
 	viewBox={frameoViewBox}
 	preserveAspectRatio="xMidYMid meet"
 	fill="none"

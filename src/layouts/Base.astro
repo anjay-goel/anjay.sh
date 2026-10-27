@@ -16,7 +16,6 @@ interface Props {
 	footer?: "standard" | "home" | "none";
 	navCurrent?: string | null;
 	headerDense?: boolean;
-	mainClass?: string;
 }
 
 const {
@@ -25,7 +24,6 @@ const {
 	footer = "standard",
 	navCurrent,
 	headerDense = false,
-	mainClass,
 } = Astro.props;
 ---
 
@@ -47,7 +45,7 @@ const {
 		<slot name="before" />
 		<Container class="page" width={width}>
 			<Header current={navCurrent} dense={headerDense} />
-			<main id="main" class:list={["page-main", mainClass]} tabindex="-1">
+			<main id="main" class="page-main" tabindex="-1">
 				<slot />
 			</main>
 			{footer !== "none" && <Footer variant={footer} />}

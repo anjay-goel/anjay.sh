@@ -2,16 +2,11 @@
 import Icon from "@/components/ui/Icon.astro";
 import { headerCopy } from "@/content/copy/header";
 
-interface Props {
-	class?: string;
-}
-
-const { class: className } = Astro.props;
 const { theme } = headerCopy;
 ---
 
 <button
-	class:list={["icon-btn", "theme-toggle", className]}
+	class="icon-btn theme-toggle"
 	type="button"
 	aria-label={theme.label}
 	data-theme-toggle

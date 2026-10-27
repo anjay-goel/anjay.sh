@@ -4,7 +4,7 @@ import { toString as mdastToString } from "mdast-util-to-string";
 import type { Plugin } from "unified";
 import { visit } from "unist-util-visit";
 
-export interface CapabilitiesLabels {
+interface CapabilitiesLabels {
 	reset: string;
 	ok: string;
 	fail: string;

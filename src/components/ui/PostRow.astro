@@ -9,30 +9,22 @@ interface Props {
 	post: PostSummary;
 	dateFormat?: "dayMonth" | "full";
 	showLabel?: boolean;
-	showMinutes?: boolean;
-	showDescription?: boolean;
-	showThumbnail?: boolean;
 	headingLevel?: "h2" | "h3" | "h4";
-	class?: string;
 }
 
 const {
 	post,
 	dateFormat = "dayMonth",
 	showLabel = true,
-	showMinutes = true,
-	showDescription = true,
-	showThumbnail = true,
 	headingLevel: Heading = "h3",
-	class: className,
 } = Astro.props;
 
-const parts = postMetaParts(post, { label: showLabel, minutes: showMinutes });
-const thumb = showThumbnail ? post.thumbnail : undefined;
+const parts = postMetaParts(post, { label: showLabel });
+const thumb = post.thumbnail;
 ---
 
 <a
-	class:list={["post-row", className]}
+	class="post-row"
 	href={post.href}
 	data-post-row
 	data-astro-prefetch={post.external ? undefined : true}
@@ -51,7 +43,7 @@ const thumb = showThumbnail ? post.thumbnail : undefined;
 				)
 			}
 		</Heading>
-		{showDescription && <p class="post-row-desc">{post.description}</p>}
+		<p class="post-row-desc">{post.description}</p>
 	</div>
 	{
 		thumb && (
@@ -92,7 +84,6 @@ const thumb = showThumbnail ? post.thumbnail : undefined;
 		transition: color var(--dur) var(--ease);
 	}
 	.post-row:hover .post-row-title {
-		max-width: 720px;
 		color: var(--accent);
 	}
 	.post-row-title :global(.post-row-ext) {
@@ -101,6 +92,7 @@ const thumb = showThumbnail ? post.thumbnail : undefined;
 	}
 	.post-row-desc {
 		display: block;
+		max-width: 720px;
 		margin: 8px 0 0;
 		font-size: var(--text-16);
 		line-height: 1.6;

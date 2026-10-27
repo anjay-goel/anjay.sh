@@ -18,7 +18,6 @@ export const postCopy = {
 	toc: {
 		label: "On this page",
 		progress: (percent: number) => `${percent}%`,
-		progressLabel: "Reading progress",
 		backToTop: "↑ Back to top",
 		copyLink: "Copy link",
 		copied: "Copied",
@@ -45,9 +44,6 @@ export const postCopy = {
 					string
 				>
 			)[language] ?? language,
-	},
-	notes: {
-		label: (n: number) => `Note ${n}`,
 	},
 	comments: {
 		label: "Comments",

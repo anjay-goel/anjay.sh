@@ -1,4 +1,4 @@
-export interface ProfileConfig {
+interface ProfileConfig {
 	/** Author display name; used in bylines, schema, OG images. */
 	name: string;
 	/** Contact email shown in About-page socials. Omit to hide. */
@@ -25,7 +25,7 @@ export interface ProfileConfig {
 }
 
 /** Optional Giscus comment-widget config (https://giscus.app). */
-export interface CommentsConfig {
+interface CommentsConfig {
 	/** GitHub repository hosting the discussions, e.g. "user/repo". */
 	repo: string;
 	/** GitHub repo node id (data-repo-id from the giscus wizard). */
@@ -37,7 +37,7 @@ export interface CommentsConfig {
 }
 
 /** Optional analytics config — each provider is opt-in. */
-export interface AnalyticsConfig {
+interface AnalyticsConfig {
 	/** Google Analytics measurement id (e.g. "G-XXXXXXX"). */
 	googleAnalyticsId?: string;
 	/** Goatcounter endpoint URL (e.g. "https://example.goatcounter.com/count"). */

@@ -2,19 +2,12 @@
 import { headerCopy } from "@/content/copy/header";
 import { withBase } from "@/utils/path";
 
-interface Props {
-	href?: string | null;
-	class?: string;
-}
-
-const { href = "/", class: className } = Astro.props;
 const { logo } = headerCopy;
-const Tag = href === null ? "span" : "a";
 ---
 
-<Tag class:list={["logo", href !== null && "hit-target", className]} href={href === null ? undefined : withBase(href)} aria-label={href === null ? undefined : logo.label}>
+<a class="logo hit-target" href={withBase("/")} aria-label={logo.label}>
 	<span class="logo-prefix">{logo.prefix}</span>{logo.name}<span class="logo-suffix">{logo.suffix}</span><span class="logo-cursor" aria-hidden="true"></span>
-</Tag>
+</a>
 
 <style>
 	.logo {

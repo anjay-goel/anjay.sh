@@ -99,7 +99,7 @@ const cards = collections.map((c) => {
 		{
 			cards.map((card) => (
 				<li class="slide-short">
-					<Card href={collectionHref(card.collection)} padding="none" class="collection-card-short" data-astro-prefetch>
+					<Card href={collectionHref(card.collection)} class="collection-card-short" data-astro-prefetch>
 						<div class="short-cover" aria-hidden="true">
 							<CollectionCover name={card.collection.data.cover} detail={false} />
 						</div>

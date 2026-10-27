@@ -1,4 +1,4 @@
-export interface SearchPost {
+interface SearchPost {
 	title: string;
 	meta: string;
 	href: string;
@@ -7,7 +7,7 @@ export interface SearchPost {
 
 export type SearchPostIndex = Record<string, SearchPost>;
 
-export interface PagefindWeightedLocation {
+interface PagefindWeightedLocation {
 	weight: number;
 	balanced_score: number;
 	location: number;
@@ -29,12 +29,12 @@ export interface PagefindData {
 	sub_results?: PagefindSubResult[];
 }
 
-export interface PagefindResult {
+interface PagefindResult {
 	id: string;
 	data: () => Promise<PagefindData>;
 }
 
-export interface PagefindSearch {
+interface PagefindSearch {
 	results: PagefindResult[];
 }
 

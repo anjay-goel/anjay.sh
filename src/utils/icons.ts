@@ -18,7 +18,7 @@ export function faviconSvg(): string {
 	return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><style>${style}</style><path class="p" d="${PROMPT}" stroke="${light.ink}" ${STROKE}/><path class="c" d="${CURSOR}" stroke="${light.accent}" ${STROKE}/></svg>`;
 }
 
-export function appIconSvg({ size, rounded }: AppIconOptions): string {
+function appIconSvg({ size, rounded }: AppIconOptions): string {
 	const { bg, ink, accent } = palette.light;
 	const radius = rounded ? APP_RADIUS : 0;
 	return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="-6 -6 ${APP_BOX} ${APP_BOX}"><rect x="-6" y="-6" width="${APP_BOX}" height="${APP_BOX}" rx="${radius}" fill="${bg}"/><path d="${PROMPT}" stroke="${ink}" ${STROKE}/><path d="${CURSOR}" stroke="${accent}" ${STROKE}/></svg>`;

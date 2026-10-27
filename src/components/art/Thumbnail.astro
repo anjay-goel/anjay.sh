@@ -4,16 +4,15 @@ import { type ThumbnailKey, thumbnailArt, thumbnailViewBox } from "./thumbnail-a
 interface Props {
 	name: ThumbnailKey;
 	part?: string;
-	class?: string;
 }
 
-const { name, part = "", class: className } = Astro.props;
+const { name, part = "" } = Astro.props;
 const escapeXml = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const body = thumbnailArt[name].replaceAll("__PART__", escapeXml(part));
 ---
 
 <svg
-	class:list={["thumbnail-art", className]}
+	class="thumbnail-art"
 	viewBox={thumbnailViewBox}
 	preserveAspectRatio="xMidYMid meet"
 	fill="none"

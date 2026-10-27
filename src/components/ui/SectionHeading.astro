@@ -2,24 +2,21 @@
 interface Props {
 	title: string;
 	id?: string;
-	as?: "h2" | "h3";
 	href?: string;
 	linkText?: string;
 	class?: string;
 }
 
-const { title, id, as: Heading = "h2", href, linkText, class: className } = Astro.props;
-const hasAction = Astro.slots.has("action") || (href && linkText);
+const { title, id, href, linkText, class: className } = Astro.props;
+const hasAction = Boolean(href && linkText);
 ---
 
 <div class:list={["section-heading", className]}>
-	<Heading class="section-heading-title" id={id}>{title}</Heading>
+	<h2 class="section-heading-title" id={id}>{title}</h2>
 	{
 		hasAction && (
 			<div class="section-heading-action">
-				<slot name="action">
-					<a class="link link-solid section-heading-link hit-target" href={href}>{linkText}</a>
-				</slot>
+				<a class="link link-solid section-heading-link hit-target" href={href}>{linkText}</a>
 			</div>
 		)
 	}

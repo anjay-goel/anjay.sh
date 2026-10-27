@@ -7,16 +7,14 @@ interface Props {
 	date?: Date;
 	dateFormat?: "dayMonth" | "full";
 	parts?: MetaPart[];
-	as?: "p" | "span" | "div";
-	class?: string;
 }
 
-const { date, dateFormat = "full", parts = [], as: Tag = "span", class: className } = Astro.props;
+const { date, dateFormat = "full", parts = [] } = Astro.props;
 const items = parts.map((p) => (typeof p === "string" ? { text: p, accent: false } : { text: p.text, accent: Boolean(p.accent) }));
 const dateText = date ? (dateFormat === "dayMonth" ? formatDayMonth(date) : formatDayMonthYear(date)) : undefined;
 ---
 
-<Tag class:list={["meta", "post-meta", className]}>{dateText && <time datetime={date?.toISOString()}>{dateText}</time>}{items.map((item, i) => <>{(i > 0 || dateText) && metaCopy.separator}<span class:list={[item.accent && "post-meta-accent"]}>{item.text}</span></>)}</Tag>
+<span class="meta post-meta">{dateText && <time datetime={date?.toISOString()}>{dateText}</time>}{items.map((item, i) => <>{(i > 0 || dateText) && metaCopy.separator}<span class:list={[item.accent && "post-meta-accent"]}>{item.text}</span></>)}</span>
 
 <style>
 	.post-meta {

@@ -1,4 +1,4 @@
-export const thumbnailKeys = [
+const thumbnailKeys = [
 	"dub",
 	"hello",
 	"surge",
