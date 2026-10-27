@@ -1,6 +1,10 @@
 ---
+import { Picture } from "astro:assets";
 import { getEntry, render } from "astro:content";
+import avatar from "@/assets/avatar.png";
 import Socials from "@/components/ui/Socials.astro";
+import { aboutCopy as copy } from "@/content/copy/about";
+import { getAllPosts, getPostYears } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
 import { siteConfig } from "@/site-config";
 import { absoluteUrl } from "@/utils/path";
@@ -14,18 +18,24 @@ const profile = siteConfig.profile;
 const authorName = profile?.name ?? siteConfig.author;
 
 const meta = {
-	description: entry.data.description ?? `${authorName} — about me.`,
+	description: entry.data.description ?? siteConfig.description,
 	title: entry.data.title,
 };
 
-const personSameAs = [
-	profile?.linkedin,
-	profile?.github,
-	profile?.twitter,
-	profile?.mastodon,
-].filter((s): s is string => Boolean(s));
+const personSameAs = [profile?.linkedin, profile?.github, profile?.twitter, profile?.mastodon].filter(
+	(s): s is string => Boolean(s),
+);
 
-const avatarUrl = profile?.avatar ? absoluteUrl(profile.avatar, Astro.site) : undefined;
+const avatarUrl = absoluteUrl(avatar.src, Astro.site);
+
+const posts = await getAllPosts();
+const firstYear = getPostYears(posts).at(-1);
+const facts = [
+	...copy.facts,
+	...(firstYear ? [{ term: copy.writing.term, parts: [copy.writing.text(posts.length, firstYear)] }] : []),
+];
+const partsOf = (parts: (typeof facts)[number]["parts"]) =>
+	parts.map((p) => (typeof p === "string" ? { text: p, accent: false } : { text: p.text, accent: Boolean(p.accent) }));
 ---
 
 <PageLayout meta={meta}>
@@ -37,7 +47,7 @@ const avatarUrl = profile?.avatar ? absoluteUrl(profile.avatar, Astro.site) : un
 			mainEntity: {
 				"@type": "Person",
 				name: authorName,
-				...(avatarUrl ? { image: avatarUrl } : {}),
+				image: avatarUrl,
 				...(profile?.jobTitle ? { jobTitle: profile.jobTitle } : {}),
 				...(profile?.employer
 					? {
@@ -60,85 +70,182 @@ const avatarUrl = profile?.avatar ? absoluteUrl(profile.avatar, Astro.site) : un
 			},
 		}}
 	/>
-	<section class="about" aria-labelledby="about-label">
-		<div class="section-label" id="about-label">About</div>
-		<div class="bio">
-			<Content />
+	<section class="about">
+		<Picture
+			src={avatar}
+			alt={copy.photoAlt}
+			formats={["avif", "webp"]}
+			widths={[132, 264, 260, 520]}
+			sizes="(max-width: 767px) 132px, 260px"
+			width={260}
+			height={260}
+			loading="eager"
+			fetchpriority="high"
+			class="about-photo"
+			pictureAttributes={{ class: "about-picture" }}
+		/>
+		<div class="about-text">
+			<h1 class="about-heading">{copy.heading}</h1>
+			<div class="about-body">
+				<Content />
+			</div>
+			<dl class="about-facts" aria-label={copy.factsLabel}>
+				{
+					facts.map((fact) => (
+						<div class="about-fact">
+							<dt>{fact.term}</dt>
+							<dd>
+								{partsOf(fact.parts).map((p) => (p.accent ? <span class="about-fact-accent">{p.text}</span> : p.text))}
+							</dd>
+						</div>
+					))
+				}
+			</dl>
+			<Socials class="about-socials about-socials-inline" />
+			<Socials class="about-socials about-socials-boxed" variant="boxed" label={false} />
 		</div>
-		<Socials />
 	</section>
 </PageLayout>
 
 <style>
 	.about {
-		margin-bottom: 64px;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-start;
+		gap: 56px;
+		padding: 80px 0 120px;
 	}
-	.about :global(.socials) {
-		margin-top: 22px;
+	.about :global(.about-picture) {
+		display: block;
+		flex: 0 0 260px;
 	}
-	.bio,
-	.about :global(.socials) {
+	.about :global(.about-photo) {
+		display: block;
+		width: 260px;
+		height: 260px;
+		box-sizing: border-box;
+		border: 1px solid var(--rule);
+		border-radius: 20px;
+		object-fit: cover;
+		background: var(--panel);
+	}
+	.about-text {
+		flex: 1 1 520px;
+		max-width: 640px;
+		min-width: 0;
+	}
+	.about-heading {
+		margin: 0;
+		font-size: var(--text-64);
+		font-weight: 600;
+		line-height: 1.02;
+		letter-spacing: -0.028em;
+	}
+	.about-body {
+		margin-top: 28px;
 		font-family: var(--font-serif);
-		font-size: 17.5px;
+		font-size: var(--text-21);
+		line-height: 1.7;
+		color: var(--ink);
 	}
-	.bio {
-		line-height: 1.75;
-		color: hsl(var(--theme-text));
-		max-width: var(--reading-width);
+	.about-body :global(p),
+	.about-body :global(ul),
+	.about-body :global(ol) {
+		margin: 20px 0 0;
+		text-wrap: pretty;
 	}
-	.bio :global(ul) {
-		list-style: disc;
-		list-style-position: inside;
-		margin: 0 0 28px;
+	.about-body :global(ul),
+	.about-body :global(ol) {
 		padding: 0;
+		list-style: none;
 	}
-	.bio :global(ul li) {
-		margin-bottom: 6px;
-		text-wrap: pretty;
-		word-wrap: break-word;
-		overflow-wrap: anywhere;
+	.about-body :global(li + li) {
+		margin-top: 20px;
 	}
-	.bio :global(ul li:last-child) {
-		margin-bottom: 0;
+	.about-body > :global(:first-child) {
+		margin-top: 0;
 	}
-	.bio :global(p) {
-		margin: 0 0 22px;
-		text-wrap: pretty;
-	}
-	.bio :global(p:last-child) {
-		margin-bottom: 0;
-	}
-	.bio :global(a) {
-		color: hsl(var(--theme-text));
-		text-decoration: underline;
-		text-decoration-color: hsl(var(--theme-text) / 0.35);
+	.about-body :global(a) {
+		color: var(--accent);
+		text-decoration-line: underline;
 		text-decoration-thickness: 1px;
+		text-decoration-color: var(--link-line);
 		text-underline-offset: 3px;
-		transition: color 0.2s ease, text-decoration-color 0.2s ease;
 	}
-	.bio :global(a:hover) {
-		color: hsl(var(--theme-accent));
-		text-decoration-color: hsl(var(--theme-accent));
+	.about-body :global(a:hover) {
+		text-decoration-thickness: 2px;
+		text-decoration-color: var(--accent);
 	}
-	.bio :global(a:focus-visible) {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
-		border-radius: 3px;
+	.about-facts {
+		display: grid;
+		grid-template-columns: 120px minmax(0, 1fr);
+		gap: 10px 16px;
+		margin: 36px 0 0;
+		padding: 18px 0 0;
+		border-top: 1px solid var(--rule-strong);
+		font-family: var(--font-mono);
+		font-size: var(--text-14);
+		line-height: 1.55;
+	}
+	.about-fact {
+		display: contents;
+	}
+	.about-facts dt {
+		color: var(--ink);
+	}
+	.about-facts dd {
+		margin: 0;
+		color: var(--muted);
+	}
+	.about-fact-accent {
+		color: var(--accent);
+	}
+	.about-text :global(.about-socials-inline) {
+		margin-top: 32px;
+		font-family: var(--font-serif);
+	}
+	.about-text :global(.about-socials-inline .socials-label) {
+		margin-right: 12px;
+	}
+	.about-text :global(.about-socials-boxed) {
+		display: none;
 	}
 
-	@media (max-width: 720px) {
-		.bio,
-		.about :global(.socials) {
-			font-size: 17px;
+	@media (max-width: 767px) {
+		.about {
+			display: block;
+			padding: 40px 0 56px;
 		}
-		.bio {
-			line-height: 1.7;
+		.about :global(.about-photo) {
+			width: 132px;
+			height: 132px;
+			margin-bottom: 24px;
+			border-radius: var(--radius-xl);
 		}
-	}
-	@media (max-width: 420px) {
-		.bio,
-		.about :global(.socials) {
-			font-size: 16.5px;
+		.about-heading {
+			font-size: var(--text-44);
+		}
+		.about-body {
+			margin-top: 20px;
+			font-size: var(--text-18);
+		}
+		.about-body :global(p),
+		.about-body :global(ul),
+		.about-body :global(ol),
+		.about-body :global(li + li) {
+			margin-top: 16px;
+		}
+		.about-facts {
+			grid-template-columns: 96px minmax(0, 1fr);
+			margin-top: 28px;
+			font-size: var(--text-12);
+		}
+		.about-text :global(.about-socials-inline) {
+			display: none;
+		}
+		.about-text :global(.about-socials-boxed) {
+			display: flex;
+			margin-top: 24px;
 		}
 	}
 </style>
