@@ -33,7 +33,9 @@ export const colophonCopy = {
 	rows: [
 		{
 			term: "Built with",
-			parts: ["Astro and Tailwind CSS. Code blocks by Expressive Code, maths by KaTeX, diagrams by Mermaid."],
+			parts: [
+				"Astro and Tailwind CSS. Code blocks by Expressive Code, maths by KaTeX, diagrams by Mermaid.",
+			],
 		},
 		{
 			term: "Search",
@@ -73,13 +75,21 @@ export const colophonCopy = {
 		{
 			term: "Source",
 			parts: [
-				{ kind: "link", text: "github.com/anjay-goel/anjay.sh", href: "https://github.com/anjay-goel/anjay.sh" },
+				{
+					kind: "link",
+					text: "github.com/anjay-goel/anjay.sh",
+					href: "https://github.com/anjay-goel/anjay.sh",
+				},
 			],
 		},
 	] satisfies ColophonRow[],
 	keyboard: {
 		heading: "Keyboard",
-		intro: ["Press ", { kind: "kbd", text: "?" }, " on any page to bring these up."] satisfies ColophonPart[],
+		intro: [
+			"Press ",
+			{ kind: "kbd", text: "?" },
+			" on any page to bring these up.",
+		] satisfies ColophonPart[],
 		shortcuts: [
 			{ keys: ["/"], label: "Search posts" },
 			{ keys: ["j", "k"], joiner: "/", label: "Next / previous post" },

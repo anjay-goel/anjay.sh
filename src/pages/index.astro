@@ -4,13 +4,13 @@ import HomeCollections from "@/components/home/HomeCollections.astro";
 import HomeHero from "@/components/home/HomeHero.astro";
 import HomeLatest from "@/components/home/HomeLatest.astro";
 import HomeShipped from "@/components/home/HomeShipped.astro";
+import JsonLd from "@/components/JsonLd.astro";
 import { homeCopy } from "@/content/copy/home";
 import { getCollections } from "@/data/collections";
 import { getAllPosts, getPostSummaries, getPostYears } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
 import { siteConfig } from "@/site-config";
 import { absoluteUrl } from "@/utils/path";
-import JsonLd from "@/components/JsonLd.astro";
 
 const RECENT_COUNT = 3;
 

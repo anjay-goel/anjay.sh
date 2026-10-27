@@ -7,6 +7,9 @@ export function remarkReadingTime() {
 		const textOnPage = mdastToString(tree);
 		const readingTime = getReadingTime(textOnPage);
 		data.astro.frontmatter.minutesRead = readingTime.text;
-		data.astro.frontmatter.readingMinutes = Math.max(1, Math.ceil(Number(readingTime.minutes.toFixed(2))));
+		data.astro.frontmatter.readingMinutes = Math.max(
+			1,
+			Math.ceil(Number(readingTime.minutes.toFixed(2))),
+		);
 	};
 }

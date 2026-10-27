@@ -1,11 +1,11 @@
+import { Resvg } from "@resvg/resvg-js";
+import satori, { type SatoriOptions } from "satori";
 import PlexMono400 from "@/assets/fonts/og/ibm-plex-mono-400.ttf";
 import PlexMono500 from "@/assets/fonts/og/ibm-plex-mono-500.ttf";
 import PlexSans600 from "@/assets/fonts/og/ibm-plex-sans-600.ttf";
 import SourceSerif400 from "@/assets/fonts/og/source-serif-4-400.ttf";
 import { headerCopy } from "@/content/copy/header";
 import { palette } from "@/data/palette";
-import { Resvg } from "@resvg/resvg-js";
-import satori, { type SatoriOptions } from "satori";
 
 export interface OgCard {
 	meta: string;
@@ -51,22 +51,42 @@ function card({ meta, title, description }: OgCard): Node {
 	const c = palette.light;
 	const { prefix, name, suffix } = headerCopy.logo;
 	const size = titleSize(title);
-	const logo = h("div", { display: "flex", alignItems: "center", fontFamily: MONO, fontSize: 26, fontWeight: 500 }, [
-		h("span", { color: c.soft }, prefix),
-		h("span", {}, name),
-		h("span", { color: c.accent }, suffix),
-		h("span", { width: 13, height: 28, marginLeft: 8, background: c.accent }),
-	]);
+	const logo = h(
+		"div",
+		{ display: "flex", alignItems: "center", fontFamily: MONO, fontSize: 26, fontWeight: 500 },
+		[
+			h("span", { color: c.soft }, prefix),
+			h("span", {}, name),
+			h("span", { color: c.accent }, suffix),
+			h("span", { width: 13, height: 28, marginLeft: 8, background: c.accent }),
+		],
+	);
 	const text = h("div", { display: "flex", flexDirection: "column", maxWidth: 940 }, [
 		h("p", { margin: 0, fontFamily: MONO, fontSize: 21, fontWeight: 400, color: c.soft }, meta),
 		h(
 			"h1",
-			{ margin: "18px 0 0", fontFamily: SANS, fontSize: size, fontWeight: 600, lineHeight: 1.04, letterSpacing: size * -0.025 },
+			{
+				margin: "18px 0 0",
+				fontFamily: SANS,
+				fontSize: size,
+				fontWeight: 600,
+				lineHeight: 1.04,
+				letterSpacing: size * -0.025,
+			},
 			title,
 		),
 		h(
 			"p",
-			{ display: "block", margin: "20px 0 0", fontFamily: SERIF, fontSize: 26, fontWeight: 400, lineHeight: 1.45, color: c.muted, lineClamp: 2 },
+			{
+				display: "block",
+				margin: "20px 0 0",
+				fontFamily: SERIF,
+				fontSize: 26,
+				fontWeight: 400,
+				lineHeight: 1.45,
+				color: c.muted,
+				lineClamp: 2,
+			},
 			description,
 		),
 	]);

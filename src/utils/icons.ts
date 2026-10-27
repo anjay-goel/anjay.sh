@@ -1,5 +1,5 @@
-import { palette } from "@/data/palette";
 import { Resvg } from "@resvg/resvg-js";
+import { palette } from "@/data/palette";
 
 const PROMPT = "M6 9l7 7l-7 7";
 const CURSOR = "M16 24h10";
@@ -25,12 +25,17 @@ export function appIconSvg({ size, rounded }: AppIconOptions): string {
 }
 
 export function appIconPng(options: AppIconOptions): Uint8Array {
-	const png = new Resvg(appIconSvg(options), { fitTo: { mode: "width", value: options.size } }).render().asPng();
+	const png = new Resvg(appIconSvg(options), { fitTo: { mode: "width", value: options.size } })
+		.render()
+		.asPng();
 	return new Uint8Array(png);
 }
 
 export function pngResponse(body: Uint8Array): Response {
 	return new Response(body as BodyInit, {
-		headers: { "Cache-Control": "public, max-age=31536000, immutable", "Content-Type": "image/png" },
+		headers: {
+			"Cache-Control": "public, max-age=31536000, immutable",
+			"Content-Type": "image/png",
+		},
 	});
 }

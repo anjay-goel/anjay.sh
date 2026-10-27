@@ -11,7 +11,8 @@ const partsFormatter = new Intl.DateTimeFormat("en-US", {
 
 function dateParts(date: Date): { day: string; month: string; year: string } {
 	const parts = partsFormatter.formatToParts(date);
-	const get = (type: Intl.DateTimeFormatPartTypes) => parts.find((p) => p.type === type)?.value ?? "";
+	const get = (type: Intl.DateTimeFormatPartTypes) =>
+		parts.find((p) => p.type === type)?.value ?? "";
 	return { day: get("day"), month: get("month"), year: get("year") };
 }
 

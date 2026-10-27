@@ -1,12 +1,12 @@
 ---
 import FrameoPipeline from "@/components/art/FrameoPipeline.astro";
+import JsonLd from "@/components/JsonLd.astro";
 import ArrowUpRight from "@/components/ui/ArrowUpRight.astro";
 import Card from "@/components/ui/Card.astro";
 import { showcaseCopy as copy } from "@/content/copy/showcase";
 import { featuredProject, showcase, showcaseBadge } from "@/data/showcase";
 import PageLayout from "@/layouts/Base.astro";
 import { absoluteUrl } from "@/utils/path";
-import JsonLd from "@/components/JsonLd.astro";
 
 const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 ---

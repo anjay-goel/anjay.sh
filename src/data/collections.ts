@@ -58,7 +58,10 @@ export function seriesPartFor(collection: CollectionDoc, postId: string): Series
 	};
 }
 
-export function orderCollectionPosts<T extends { id: string }>(collection: CollectionDoc, posts: T[]): T[] {
+export function orderCollectionPosts<T extends { id: string }>(
+	collection: CollectionDoc,
+	posts: T[],
+): T[] {
 	const byId = new Map(posts.map((p) => [p.id, p]));
 	return collectionPostIds(collection)
 		.map((id) => byId.get(id))

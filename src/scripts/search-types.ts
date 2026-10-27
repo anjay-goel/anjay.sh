@@ -41,5 +41,9 @@ export interface PagefindSearch {
 export interface Pagefind {
 	options: (options: Record<string, unknown>) => Promise<void>;
 	init: () => Promise<void>;
-	debouncedSearch: (query: string, options?: Record<string, unknown>, ms?: number) => Promise<PagefindSearch | null>;
+	debouncedSearch: (
+		query: string,
+		options?: Record<string, unknown>,
+		ms?: number,
+	) => Promise<PagefindSearch | null>;
 }

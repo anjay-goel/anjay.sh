@@ -1,6 +1,6 @@
-import type { SiteConfig } from "@/types";
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 import type { AstroExpressiveCodeOptions } from "astro-expressive-code";
+import type { SiteConfig } from "@/types";
 import { siteDarkTheme, siteLightTheme } from "./plugins/expressive-code-themes";
 
 export const siteConfig: SiteConfig = {

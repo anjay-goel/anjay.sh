@@ -1,4 +1,5 @@
 ---
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
 import ArchiveHero from "@/components/posts/ArchiveHero.astro";
 import TagFilter from "@/components/posts/TagFilter.astro";
 import YearArchive from "@/components/posts/YearArchive.astro";
@@ -6,7 +7,6 @@ import { postsCopy } from "@/content/copy/posts";
 import { getAllPosts, getPostSummaries, getPostsByTag, getUniqueTagsWithCount } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
 import { withBase } from "@/utils/path";
-import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
 
 export const getStaticPaths = (async () => {
 	const posts = await getAllPosts();

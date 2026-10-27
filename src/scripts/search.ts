@@ -1,5 +1,10 @@
 import { searchCopy } from "@/content/copy/search";
-import type { Pagefind, PagefindData, PagefindSubResult, SearchPostIndex } from "@/scripts/search-types";
+import type {
+	Pagefind,
+	PagefindData,
+	PagefindSubResult,
+	SearchPostIndex,
+} from "@/scripts/search-types";
 
 const RESULT_LIMIT = 16;
 const DEBOUNCE_MS = 120;
@@ -22,7 +27,13 @@ interface Loaded {
 
 const WORD = /([\p{L}\p{N}]+)/u;
 const NON_WORD = /[^\p{L}\p{N}]+/u;
-const ENTITIES: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+const ENTITIES: Record<string, string> = {
+	"&": "&amp;",
+	"<": "&lt;",
+	">": "&gt;",
+	'"': "&quot;",
+	"'": "&#39;",
+};
 
 function escapeHtml(text: string): string {
 	return text.replace(/[&<>"']/g, (c) => ENTITIES[c] ?? c);
@@ -56,7 +67,8 @@ function coversTerms(data: PagefindData, terms: string[]): boolean {
 }
 
 function sectionScore(sub: PagefindSubResult): number {
-	if (sub.weighted_locations) return sub.weighted_locations.reduce((sum, l) => sum + l.balanced_score, 0);
+	if (sub.weighted_locations)
+		return sub.weighted_locations.reduce((sum, l) => sum + l.balanced_score, 0);
 	return sub.locations?.length ?? 0;
 }
 
@@ -109,7 +121,8 @@ export function initSearch(): SearchController | null {
 	const empty = dialog.querySelector<HTMLElement>("[data-search-empty]");
 	const emptyTitle = dialog.querySelector<HTMLElement>("[data-search-empty-title]");
 	const template = dialog.querySelector<HTMLTemplateElement>("[data-search-item]");
-	if (!input || !body || !status || !live || !results || !empty || !emptyTitle || !template) return null;
+	if (!input || !body || !status || !live || !results || !empty || !emptyTitle || !template)
+		return null;
 
 	const pagefindUrl = dialog.dataset.pagefind ?? "";
 	const indexUrl = dialog.dataset.index ?? "";
@@ -198,7 +211,10 @@ export function initSearch(): SearchController | null {
 		empty.hidden = found;
 		const emptyText = found ? "" : searchCopy.empty.title(query);
 		emptyTitle.textContent = emptyText;
-		showStatus(found ? searchCopy.count(nodes.length) : "", found ? searchCopy.count(nodes.length) : emptyText);
+		showStatus(
+			found ? searchCopy.count(nodes.length) : "",
+			found ? searchCopy.count(nodes.length) : emptyText,
+		);
 		input.setAttribute("aria-expanded", String(found));
 		setActive(found ? 0 : -1);
 	};

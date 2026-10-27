@@ -31,7 +31,8 @@ function initSearchTriggers() {
 		void load().then((c) => c?.warm());
 	};
 	const open = (trigger: HTMLElement | null) => {
-		const returnTo = trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
+		const returnTo =
+			trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
 		if (!dialog.open) dialog.showModal();
 		input.focus();
 		input.select();

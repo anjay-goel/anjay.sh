@@ -6,11 +6,16 @@ const ROW_SELECTOR = "[data-post-row]";
 
 function isTyping(target: EventTarget | null): boolean {
 	if (!(target instanceof HTMLElement)) return false;
-	return target.isContentEditable || target.closest("input, textarea, select, [contenteditable]") !== null;
+	return (
+		target.isContentEditable ||
+		target.closest("input, textarea, select, [contenteditable]") !== null
+	);
 }
 
 function visibleRows(): HTMLElement[] {
-	return [...document.querySelectorAll<HTMLElement>(ROW_SELECTOR)].filter((row) => row.getClientRects().length > 0);
+	return [...document.querySelectorAll<HTMLElement>(ROW_SELECTOR)].filter(
+		(row) => row.getClientRects().length > 0,
+	);
 }
 
 function startIndex(rows: HTMLElement[], step: number): number {
@@ -18,7 +23,9 @@ function startIndex(rows: HTMLElement[], step: number): number {
 		const below = rows.findIndex((row) => row.getBoundingClientRect().top >= 0);
 		return below === -1 ? rows.length - 1 : below;
 	}
-	const above = rows.filter((row) => row.getBoundingClientRect().bottom <= window.innerHeight).length;
+	const above = rows.filter(
+		(row) => row.getBoundingClientRect().bottom <= window.innerHeight,
+	).length;
 	return Math.max(0, above - 1);
 }
 
@@ -26,7 +33,10 @@ function moveSelection(step: number): boolean {
 	const rows = visibleRows();
 	if (rows.length === 0) return false;
 	const current = rows.indexOf(document.activeElement as HTMLElement);
-	const next = current === -1 ? startIndex(rows, step) : Math.min(rows.length - 1, Math.max(0, current + step));
+	const next =
+		current === -1
+			? startIndex(rows, step)
+			: Math.min(rows.length - 1, Math.max(0, current + step));
 	const row = rows[next];
 	if (!row) return false;
 	row.focus({ preventScroll: true });
@@ -44,7 +54,8 @@ export function initShortcuts(): void {
 
 	const openDialog = (trigger?: HTMLElement | null) => {
 		if (!dialog || dialog.open) return;
-		returnFocus = trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
+		returnFocus =
+			trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
 		dialog.showModal();
 		dialog.focus();
 	};
@@ -69,7 +80,14 @@ export function initShortcuts(): void {
 	}
 
 	document.addEventListener("keydown", (event) => {
-		if (event.defaultPrevented || event.isComposing || event.ctrlKey || event.metaKey || event.altKey) return;
+		if (
+			event.defaultPrevented ||
+			event.isComposing ||
+			event.ctrlKey ||
+			event.metaKey ||
+			event.altKey
+		)
+			return;
 		if (isTyping(event.target) || document.querySelector("dialog[open]")) return;
 		const { key } = event;
 		const sequence = pendingG > 0 && Date.now() - pendingG < SEQUENCE_MS;
@@ -99,7 +117,10 @@ export function initShortcuts(): void {
 				if (moveSelection(key === "j" ? 1 : -1)) event.preventDefault();
 				break;
 			case "Escape":
-				if (document.activeElement instanceof HTMLElement && document.activeElement.matches(ROW_SELECTOR)) {
+				if (
+					document.activeElement instanceof HTMLElement &&
+					document.activeElement.matches(ROW_SELECTOR)
+				) {
 					document.activeElement.blur();
 				}
 				break;

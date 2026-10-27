@@ -4,7 +4,8 @@
 @theme static {
 	--font-sans: "IBM Plex Sans", "IBM Plex Sans Fallback", -apple-system, system-ui, sans-serif;
 	--font-serif: "Source Serif 4", "Source Serif 4 Fallback", Georgia, serif;
-	--font-mono: "IBM Plex Mono", "IBM Plex Mono Fallback", ui-monospace, SFMono-Regular, Menlo, monospace;
+	--font-mono:
+		"IBM Plex Mono", "IBM Plex Mono Fallback", ui-monospace, SFMono-Regular, Menlo, monospace;
 
 	--text-12: 12px;
 	--text-14: 14px;
@@ -191,7 +192,9 @@
 	select,
 	textarea,
 	[tabindex] {
-		transition-property: color, background-color, border-color, text-decoration-color, text-decoration-thickness, box-shadow;
+		transition-property:
+			color, background-color, border-color, text-decoration-color, text-decoration-thickness,
+			box-shadow;
 		transition-duration: var(--dur);
 		transition-timing-function: var(--ease);
 	}

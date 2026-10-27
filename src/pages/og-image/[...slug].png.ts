@@ -16,7 +16,10 @@ export async function getStaticPaths() {
 	return Promise.all(
 		posts.map(async (post) => {
 			const minutes = await getReadingMinutes(post);
-			const meta = [formatDayMonthYear(getPostSortDate(post)), minutes === undefined ? undefined : ogCopy.minutesRead(minutes)]
+			const meta = [
+				formatDayMonthYear(getPostSortDate(post)),
+				minutes === undefined ? undefined : ogCopy.minutesRead(minutes),
+			]
 				.filter(Boolean)
 				.join(ogCopy.separator);
 			const props: OgCard = { meta, title: post.data.title, description: post.data.description };

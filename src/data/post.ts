@@ -116,7 +116,8 @@ export function tagHref(tag: string): string {
 
 export async function getReadingMinutes(post: PostEntry): Promise<number | undefined> {
 	if (isExternalPost(post)) return undefined;
-	const cached = (post.rendered?.metadata?.frontmatter as { readingMinutes?: unknown } | undefined)?.readingMinutes;
+	const cached = (post.rendered?.metadata?.frontmatter as { readingMinutes?: unknown } | undefined)
+		?.readingMinutes;
 	if (typeof cached === "number") return cached;
 	const { remarkPluginFrontmatter } = await render(post);
 	const minutes = (remarkPluginFrontmatter as { readingMinutes?: number }).readingMinutes;
@@ -132,10 +133,17 @@ export function getPostLabel(
 		return { text: part.label, kind: "series", accent: true, href: collectionHref(collection) };
 	}
 	if (collection) {
-		return { text: collection.data.label, kind: "collection", accent: true, href: collectionHref(collection) };
+		return {
+			text: collection.data.label,
+			kind: "collection",
+			accent: true,
+			href: collectionHref(collection),
+		};
 	}
 	const tag = getPrimaryTag(post);
-	return tag ? { text: metaCopy.tag(tag), kind: "tag", accent: false, href: tagHref(tag) } : undefined;
+	return tag
+		? { text: metaCopy.tag(tag), kind: "tag", accent: false, href: tagHref(tag) }
+		: undefined;
 }
 
 export async function toPostSummary(
@@ -192,7 +200,8 @@ export function postMetaParts(
 ): MetaPart[] {
 	const { label = true, minutes = true } = options;
 	const parts: MetaPart[] = [];
-	if (label && summary.label) parts.push({ text: summary.label.text, accent: summary.label.accent });
+	if (label && summary.label)
+		parts.push({ text: summary.label.text, accent: summary.label.accent });
 	if (minutes) {
 		if (summary.external) parts.push(metaCopy.external);
 		else if (summary.minutes !== undefined) parts.push(metaCopy.minutes(summary.minutes));

@@ -1,7 +1,6 @@
 ---
 import "@/styles/article.css";
 import type { MarkdownHeading } from "astro";
-import JsonLd from "@/components/JsonLd.astro";
 import katexStylesheet from "katex/dist/katex.min.css?url";
 import ArticleHeader, { type HeaderMetaItem } from "@/components/article/ArticleHeader.astro";
 import ArticleIcon from "@/components/article/ArticleIcon.astro";
@@ -15,11 +14,12 @@ import TocBar from "@/components/article/TocBar.astro";
 import TocNav from "@/components/article/TocNav.astro";
 import Mermaid from "@/components/blog/Mermaid.astro";
 import WebMentions from "@/components/blog/webmentions/index.astro";
+import JsonLd from "@/components/JsonLd.astro";
 import { metaCopy } from "@/content/copy/meta";
 import { postCopy } from "@/content/copy/post";
 import { collectionHref, collectionPostIds } from "@/data/collections";
-import { genericTags } from "@/data/primary-tags";
 import { getAllPosts, getPostHref, type PostEntry, sortMDByDate, tagHref, toPostSummary } from "@/data/post";
+import { genericTags } from "@/data/primary-tags";
 import { siteConfig } from "@/site-config";
 import { formatDayMonthYear } from "@/utils/date";
 import { absoluteUrl, withBase } from "@/utils/path";

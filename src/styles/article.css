@@ -16,7 +16,20 @@
 	margin-top: 32px;
 }
 
-.prose :where(p, ul, ol, blockquote, figure, details, .table-scroll, .katex-display, video, img, pre.mermaid) {
+.prose
+	:where(
+		p,
+		ul,
+		ol,
+		blockquote,
+		figure,
+		details,
+		.table-scroll,
+		.katex-display,
+		video,
+		img,
+		pre.mermaid
+	) {
 	margin-top: var(--prose-gap);
 	margin-bottom: 0;
 }

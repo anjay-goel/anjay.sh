@@ -49,7 +49,8 @@ if (diagrams.length) {
 						noteTextColor: palette.text,
 					},
 					flowchart: { htmlLabels: false, curve: "linear" },
-					themeCSS: ".edgeLabel .label rect { opacity: 1; } .node rect, .cluster rect { rx: 8px; ry: 8px; }",
+					themeCSS:
+						".edgeLabel .label rect { opacity: 1; } .node rect, .cluster rect { rx: 8px; ry: 8px; }",
 				});
 				for (const [node, source] of sources) {
 					try {

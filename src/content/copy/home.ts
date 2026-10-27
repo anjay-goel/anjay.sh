@@ -33,8 +33,11 @@ export const homeCopy = {
 			command: "ls ~/shipped",
 			rows: showcase
 				.slice(0, 3)
-				.map((item): TerminalRow =>
-					item.reach ? { key: item.name, accent: item.reach, value: installsSuffix } : { key: item.name, value: item.badge ?? "" },
+				.map(
+					(item): TerminalRow =>
+						item.reach
+							? { key: item.name, accent: item.reach, value: installsSuffix }
+							: { key: item.name, value: item.badge ?? "" },
 				),
 		},
 		posts: {

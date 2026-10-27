@@ -1,33 +1,31 @@
 import fs from "node:fs";
+import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "astro/config";
 import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
 import robotsTxt from "astro-robots-txt";
 import webmanifest from "astro-webmanifest";
-import { unified } from "@astrojs/markdown-remark";
-import { defineConfig } from "astro/config";
-import { expressiveCodeOptions } from "./src/site.config";
-import { siteConfig } from "./src/site.config";
-import { palette } from "./src/data/palette";
-
-import remarkDirective from "remark-directive";
-import remarkMath from "remark-math";
-import { rehypeBasePath } from "./src/plugins/rehype-base-path";
-import { remarkAdmonitions } from "./src/plugins/remark-admonitions";
-import { remarkReadingTime } from "./src/plugins/remark-reading-time";
-import { rehypeTableScroll } from "./src/plugins/rehype-table-scroll";
-import { getExternalPostIds, getPostLastModified } from "./src/utils/sitemap";
-import { remarkMermaid } from "./src/plugins/remark-mermaid";
-import { remarkHasMath } from "./src/plugins/remark-has-math";
-import { remarkCapabilities } from "./src/plugins/remark-capabilities";
-import { rehypeMarginNotes } from "./src/plugins/rehype-margin-notes";
-import { postCopy } from "./src/content/copy/post";
-
 import rehypeExternalLinks from "rehype-external-links";
 import rehypeKatex from "rehype-katex";
 import rehypeUnwrapImages from "rehype-unwrap-images";
+
+import remarkDirective from "remark-directive";
+import remarkMath from "remark-math";
+import { postCopy } from "./src/content/copy/post";
+import { palette } from "./src/data/palette";
+import { rehypeBasePath } from "./src/plugins/rehype-base-path";
+import { rehypeMarginNotes } from "./src/plugins/rehype-margin-notes";
+import { rehypeTableScroll } from "./src/plugins/rehype-table-scroll";
+import { remarkAdmonitions } from "./src/plugins/remark-admonitions";
+import { remarkCapabilities } from "./src/plugins/remark-capabilities";
+import { remarkHasMath } from "./src/plugins/remark-has-math";
+import { remarkMermaid } from "./src/plugins/remark-mermaid";
+import { remarkReadingTime } from "./src/plugins/remark-reading-time";
+import { expressiveCodeOptions, siteConfig } from "./src/site.config";
+import { getExternalPostIds, getPostLastModified } from "./src/utils/sitemap";
 
 // Defaults to root; the deploy workflow sets BASE_PATH for subpath hosts
 // (GitHub Pages project sites). See "Base path" in the README.

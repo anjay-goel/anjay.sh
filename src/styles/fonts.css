@@ -4,7 +4,8 @@
 	font-weight: 400;
 	font-display: swap;
 	src: url("../assets/fonts/ibm-plex-sans-400.woff2") format("woff2");
-	unicode-range: U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
+	unicode-range:
+		U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
 }
 
 @font-face {
@@ -13,7 +14,8 @@
 	font-weight: 500;
 	font-display: swap;
 	src: url("../assets/fonts/ibm-plex-sans-500.woff2") format("woff2");
-	unicode-range: U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
+	unicode-range:
+		U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
 }
 
 @font-face {
@@ -22,7 +24,8 @@
 	font-weight: 600;
 	font-display: swap;
 	src: url("../assets/fonts/ibm-plex-sans-600.woff2") format("woff2");
-	unicode-range: U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
+	unicode-range:
+		U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
 }
 
 @font-face {
@@ -31,7 +34,8 @@
 	font-weight: 400;
 	font-display: swap;
 	src: url("../assets/fonts/ibm-plex-mono-400.woff2") format("woff2");
-	unicode-range: U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
+	unicode-range:
+		U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
 }
 
 @font-face {
@@ -40,7 +44,8 @@
 	font-weight: 500;
 	font-display: swap;
 	src: url("../assets/fonts/ibm-plex-mono-500.woff2") format("woff2");
-	unicode-range: U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
+	unicode-range:
+		U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
 }
 
 @font-face {
@@ -49,7 +54,8 @@
 	font-weight: 400;
 	font-display: swap;
 	src: url("../assets/fonts/source-serif-4-400.woff2") format("woff2");
-	unicode-range: U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
+	unicode-range:
+		U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
 }
 
 @font-face {
@@ -58,7 +64,8 @@
 	font-weight: 400;
 	font-display: swap;
 	src: url("../assets/fonts/source-serif-4-400-italic.woff2") format("woff2");
-	unicode-range: U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
+	unicode-range:
+		U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
 }
 
 @font-face {
@@ -67,7 +74,8 @@
 	font-weight: 600;
 	font-display: swap;
 	src: url("../assets/fonts/source-serif-4-600.woff2") format("woff2");
-	unicode-range: U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
+	unicode-range:
+		U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
 }
 
 @font-face {
@@ -85,7 +93,8 @@
 	font-family: "IBM Plex Sans Fallback";
 	font-style: normal;
 	font-weight: 600 700;
-	src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Neue Bold"), local("Roboto Bold");
+	src:
+		local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Neue Bold"), local("Roboto Bold");
 	size-adjust: 97.93%;
 	ascent-override: 104.67%;
 	descent-override: 28.08%;
