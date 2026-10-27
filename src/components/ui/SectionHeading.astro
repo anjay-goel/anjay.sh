@@ -18,7 +18,7 @@ const hasAction = Astro.slots.has("action") || (href && linkText);
 		hasAction && (
 			<div class="section-heading-action">
 				<slot name="action">
-					<a class="link link-solid section-heading-link" href={href}>{linkText}</a>
+					<a class="link link-solid section-heading-link hit-target" href={href}>{linkText}</a>
 				</slot>
 			</div>
 		)

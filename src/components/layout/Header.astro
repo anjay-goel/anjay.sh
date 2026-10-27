@@ -100,9 +100,18 @@ const searchIcon =
 		font-weight: 500;
 	}
 	.site-nav-link {
+		position: relative;
 		display: inline-flex;
 		flex-direction: column;
 		align-items: center;
+	}
+	.site-nav-link::before {
+		content: "";
+		position: absolute;
+		inset-inline: 0;
+		top: 50%;
+		height: max(100%, 44px);
+		transform: translateY(-50%);
 	}
 	.site-nav-link::after {
 		content: attr(data-label);
