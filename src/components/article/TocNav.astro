@@ -39,7 +39,7 @@ const flat = items.every((item) => item.children.length === 0);
 	</div>
 	<div class="toc-actions">
 		<a class="toc-action" href="#top" data-back-to-top>{toc.backToTop}</a>
-		<button type="button" class="toc-action" data-copy-link data-label={toc.copyLink} data-label-done={toc.copied}>
+		<button type="button" class="toc-action" data-copy-link data-label={toc.copyLink} data-label-done={toc.copied} data-label-failed={toc.copyFailed}>
 			<ArticleIcon name="link" size={14} />
 			<span data-copy-label>{toc.copyLink}</span>
 		</button>
@@ -75,7 +75,7 @@ const flat = items.every((item) => item.children.length === 0);
 		color: var(--accent);
 	}
 	.toc-link:focus-visible {
-		outline-offset: 1px;
+		outline-offset: 2px;
 	}
 	.toc-link[aria-current="location"] {
 		font-weight: 500;
@@ -152,6 +152,6 @@ const flat = items.every((item) => item.children.length === 0);
 		color: var(--accent);
 	}
 	.toc-action:focus-visible {
-		outline-offset: 0;
+		outline-offset: 2px;
 	}
 </style>

@@ -13,7 +13,6 @@ import SeriesBox, { type SeriesItem } from "@/components/article/SeriesBox.astro
 import TocBar from "@/components/article/TocBar.astro";
 import TocNav from "@/components/article/TocNav.astro";
 import Mermaid from "@/components/blog/Mermaid.astro";
-import WebMentions from "@/components/blog/webmentions/index.astro";
 import JsonLd from "@/components/JsonLd.astro";
 import { metaCopy } from "@/content/copy/meta";
 import { postCopy } from "@/content/copy/post";
@@ -121,14 +120,6 @@ const postUrl = absoluteUrl(`/posts/${id}/`, Astro.site);
 	<a class="article-back" href={withBase("/posts/")}><ArticleIcon name="chevronLeft" />{postCopy.allPosts}</a>
 
 	<div class="article-layout" data-layout={layout}>
-		{
-			layout === "rails" && (
-				<aside class="article-rail">
-					{collection && part && <SeriesBox title={collection.data.title} href={collectionHref(collection)} items={seriesItems} index={part.index} />}
-					{hasToc && <TocNav items={toc} class:list={["article-toc", part && "article-toc-series"]} />}
-				</aside>
-			)
-		}
 		<article class="article" data-pagefind-body>
 			<ArticleHeader
 				title={title}
@@ -151,13 +142,21 @@ const postUrl = absoluteUrl(`/posts/${id}/`, Astro.site);
 			<div class:list={["prose", part && "prose-series"]} data-article-body>
 				<slot />
 			</div>
-			<WebMentions />
 			<PostPager previous={previous} next={next} />
 			<Comments />
 		</article>
+		{
+			layout === "rails" && (
+				<aside class="article-rail">
+					{collection && part && <SeriesBox title={collection.data.title} href={collectionHref(collection)} items={seriesItems} index={part.index} />}
+					{hasToc && <TocNav items={toc} class:list={["article-toc", part && "article-toc-series"]} />}
+				</aside>
+			)
+		}
 		{layout === "rails" && <div class="article-spacer" aria-hidden="true" />}
 	</div>
 	{hasCapabilities && <Capabilities />}
+	<p class="sr-only" role="status" data-copy-status data-done={postCopy.toc.copiedStatus} data-failed={postCopy.toc.copyFailedStatus}></p>
 </BaseLayout>
 
 <style>
@@ -171,6 +170,7 @@ const postUrl = absoluteUrl(`/posts/${id}/`, Astro.site);
 		padding: 56px 0 120px;
 	}
 	.article-rail {
+		order: -1;
 		flex: 1 1 200px;
 		max-width: var(--rail);
 		min-width: 0;
@@ -189,6 +189,8 @@ const postUrl = absoluteUrl(`/posts/${id}/`, Astro.site);
 		position: sticky;
 		top: 24px;
 		max-height: calc(100dvh - 48px);
+		margin-inline: -6px;
+		padding: 0 6px 6px;
 		overflow-y: auto;
 		scrollbar-width: thin;
 	}

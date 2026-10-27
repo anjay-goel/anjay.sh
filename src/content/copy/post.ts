@@ -23,6 +23,9 @@ export const postCopy = {
 		backToTop: "↑ Back to top",
 		copyLink: "Copy link",
 		copied: "Copied",
+		copyFailed: "Copy failed",
+		copiedStatus: "Link copied",
+		copyFailedStatus: "Could not copy the link",
 		toggle: "Show sections",
 	},
 	pager: {
@@ -34,7 +37,15 @@ export const postCopy = {
 	},
 	code: {
 		copy: "Copy",
+		copyCode: "Copy code",
 		copied: "Copied",
+		title: (language: string) =>
+			(
+				({ "": "text", plaintext: "text", txt: "text", sh: "shell", zsh: "shell" }) as Record<
+					string,
+					string
+				>
+			)[language] ?? language,
 	},
 	notes: {
 		label: (n: number) => `Note ${n}`,

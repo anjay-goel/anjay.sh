@@ -43,7 +43,7 @@ const first = items[0]?.text ?? "";
 			</ul>
 		</nav>
 	</div>
-	<button type="button" class="toc-bar-copy" aria-label={toc.copyLink} data-copy-link data-label={toc.copyLink} data-label-done={toc.copied}>
+	<button type="button" class="toc-bar-copy" aria-label={toc.copyLink} data-copy-link data-label={toc.copyLink} data-label-done={toc.copied} data-label-failed={toc.copyFailed}>
 		<ArticleIcon name="link" size={17} class="copy-icon" />
 		<ArticleIcon name="check" size={17} class="copy-done-icon" />
 	</button>
@@ -144,9 +144,11 @@ const first = items[0]?.text ?? "";
 		list-style: none;
 	}
 	.toc-bar-link {
+		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		min-height: 44px;
+		padding-block: 10px;
 		font-size: var(--text-16);
 		line-height: 1.35;
 		color: var(--muted);

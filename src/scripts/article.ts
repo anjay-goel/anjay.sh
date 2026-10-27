@@ -26,26 +26,30 @@ function initDisclosures() {
 }
 
 function initCopyLinks() {
+	const status = document.querySelector<HTMLElement>("[data-copy-status]");
 	for (const button of document.querySelectorAll<HTMLButtonElement>("[data-copy-link]")) {
 		const label = button.querySelector<HTMLElement>("[data-copy-label]");
 		let timer: number | undefined;
+		const setLabel = (text: string) => {
+			if (label) label.textContent = text;
+			if (button.hasAttribute("aria-label")) button.setAttribute("aria-label", text);
+		};
 		button.addEventListener("click", async () => {
 			const url = `${location.origin}${location.pathname}`;
+			let copied = true;
 			try {
 				await navigator.clipboard.writeText(url);
 			} catch {
-				return;
+				copied = false;
 			}
-			button.dataset.copied = "";
-			const done = button.dataset.labelDone ?? "";
-			if (label) label.textContent = done;
-			if (button.hasAttribute("aria-label")) button.setAttribute("aria-label", done);
+			if (copied) button.dataset.copied = "";
+			setLabel((copied ? button.dataset.labelDone : button.dataset.labelFailed) ?? "");
+			if (status) status.textContent = (copied ? status.dataset.done : status.dataset.failed) ?? "";
 			window.clearTimeout(timer);
 			timer = window.setTimeout(() => {
 				delete button.dataset.copied;
-				const idle = button.dataset.label ?? "";
-				if (label) label.textContent = idle;
-				if (button.hasAttribute("aria-label")) button.setAttribute("aria-label", idle);
+				setLabel(button.dataset.label ?? "");
+				if (status) status.textContent = "";
 			}, COPIED_MS);
 		});
 	}

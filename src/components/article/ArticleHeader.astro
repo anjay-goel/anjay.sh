@@ -29,7 +29,7 @@ const initials = author
 ---
 
 <header class="article-header">
-	<p class="article-meta" data-pagefind-ignore><time datetime={date.toISOString()}>{dateText}</time>{items.map((item) => <span class:list={["article-meta-item", item.wide && "article-meta-wide", item.accent && "article-meta-accent"]}>{metaCopy.separator}{item.href ? <a class="article-meta-link hit-target" href={item.href}>{item.text}</a> : item.text}</span>)}</p>
+	<p class="article-meta" data-pagefind-ignore><time datetime={date.toISOString()}>{dateText}</time>{items.map((item) => <span class:list={["article-meta-item", item.wide && "article-meta-wide", item.accent && "article-meta-accent"]}>{metaCopy.separator}{item.href ? <a class="article-meta-link article-meta-label hit-target" href={item.href}>{item.text}</a> : <span class="article-meta-label">{item.text}</span>}</span>)}</p>
 	{filterTags.map((tag) => <span data-pagefind-filter={`tag:${tag}`} />)}
 	<h1 class="article-title" data-pagefind-ignore data-pagefind-meta="title">{title}</h1>
 	<p class="article-dek">{description}</p>
@@ -47,6 +47,10 @@ const initials = author
 		font-size: var(--text-12);
 		line-height: normal;
 		color: var(--soft);
+	}
+	.article-meta time,
+	.article-meta-label {
+		white-space: nowrap;
 	}
 	.article-meta-accent {
 		color: var(--accent);

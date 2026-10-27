@@ -5,7 +5,6 @@ import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import expressiveCode from "astro-expressive-code";
-import icon from "astro-icon";
 import robotsTxt from "astro-robots-txt";
 import webmanifest from "astro-webmanifest";
 import rehypeExternalLinks from "rehype-external-links";
@@ -36,9 +35,6 @@ const externalPostIds = getExternalPostIds();
 
 export default defineConfig({
 	site: "https://anjay.sh",
-	image: {
-		domains: ["webmention.io"],
-	},
 	output: "static",
 	compressHTML: true,
 	build: {
@@ -46,7 +42,6 @@ export default defineConfig({
 	},
 	integrations: [
 		expressiveCode(expressiveCodeOptions),
-		icon(),
 		sitemap({
 			changefreq: "weekly",
 			priority: 0.7,

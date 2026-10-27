@@ -43,3 +43,30 @@ test("The capabilities directive renders switches and command results from their
 	assert.match(code, /<span class="caps-title">Try it<\/span>/);
 	assert.match(code, /<figcaption>Switch one off\.<\/figcaption>/);
 });
+
+test("Code blocks without a title get a language title and a labelled copy button", async () => {
+	const { ExpressiveCode } = await import("astro-expressive-code");
+	const { pluginCodeHeader } = await import("../src/plugins/expressive-code-header.ts");
+	const labels = {
+		title: (lang) => lang || "text",
+		copy: "Copy",
+		copyCode: "Copy code",
+		copied: "Copied",
+	};
+	const ec = new ExpressiveCode({ plugins: [pluginCodeHeader(labels)] });
+	const find = (node, test) =>
+		test(node) ? node : node.children?.map((c) => find(c, test)).find(Boolean);
+	const text = (node) =>
+		node.type === "text" ? node.value : (node.children ?? []).map(text).join("");
+	const render = async (code, language, meta) =>
+		(await ec.render({ code, language, meta })).renderedGroupAst;
+	const titleOf = (ast) => text(find(ast, (n) => n.properties?.className?.includes("title")));
+	const sql = await render("SELECT 1;", "sql");
+	assert.equal(titleOf(sql), "sql");
+	assert.equal(titleOf(await render("x", "go", 'title="main.go"')), "main.go");
+	const button = find(sql, (n) => n.tagName === "button");
+	assert.equal(button.properties.title, "Copy code");
+	assert.equal(button.properties.dataCopied, "Copied");
+	assert.equal(text(button), "Copy");
+	assert.ok(find(button, (n) => n.tagName === "svg"));
+});

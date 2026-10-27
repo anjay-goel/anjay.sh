@@ -69,17 +69,6 @@ const goatcounter = analytics?.goatcounterUrl;
 
 <link href={withBase("/rss.xml")} rel="alternate" title={siteConfig.title} type="application/rss+xml"/>
 
-{
-    siteConfig.webmentions && (
-    <>
-        <link href={siteConfig.webmentions.link} rel="webmention"/>
-        {siteConfig.webmentions.pingback && (
-                <link href={siteConfig.webmentions.pingback} rel="pingback"/>
-        )}
-    </>
-        )
-    }
-
 <meta content={Astro.generator} name="generator"/>
 
 {gaId && (

@@ -1,6 +1,8 @@
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 import type { AstroExpressiveCodeOptions } from "astro-expressive-code";
 import type { SiteConfig } from "@/types";
+import { postCopy } from "./content/copy/post";
+import { pluginCodeHeader } from "./plugins/expressive-code-header";
 import { siteDarkTheme, siteLightTheme } from "./plugins/expressive-code-themes";
 
 export const siteConfig: SiteConfig = {
@@ -44,7 +46,7 @@ export const siteConfig: SiteConfig = {
 };
 
 export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
-	plugins: [pluginLineNumbers()],
+	plugins: [pluginLineNumbers(), pluginCodeHeader(postCopy.code)],
 	emitExternalStylesheet: false,
 	themes: [siteLightTheme, siteDarkTheme],
 	minSyntaxHighlightingColorContrast: 4.5,
