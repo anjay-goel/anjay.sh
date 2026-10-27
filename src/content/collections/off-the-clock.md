@@ -12,6 +12,11 @@ posts:
   - How-To-Count-Votes
   - cryptocurrencies
   - covid-19-india-analysing-death-registration-trends
+cardTags:
+  myth-of-market-timing: finance
+  How-To-Count-Votes: society
+  cryptocurrencies: finance
+  covid-19-india-analysing-death-registration-trends: data
 ---
 
 Economics, finance and society: the things I think about away from the code.

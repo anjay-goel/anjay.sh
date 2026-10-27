@@ -1,5 +1,9 @@
 ---
 import { homeCopy, type TerminalRow } from "@/content/copy/home";
+import { metaCopy } from "@/content/copy/meta";
+import { showcase } from "@/data/showcase";
+
+const SHIPPED_ROWS = 3;
 
 interface Props {
 	postCount: number;
@@ -7,9 +11,14 @@ interface Props {
 
 const { postCount } = Astro.props;
 const copy = homeCopy.terminal;
+const shipped = showcase
+	.slice(0, SHIPPED_ROWS)
+	.map((item): TerminalRow =>
+		item.reach ? { key: item.name, accent: item.reach, value: metaCopy.installs } : { key: item.name, value: item.badge ?? "" },
+	);
 const groups: { command: string; rows: TerminalRow[]; lead?: string; result?: string }[] = [
 	{ command: copy.whoami.command, lead: copy.whoami.name, rows: copy.whoami.rows },
-	{ command: copy.shipped.command, rows: copy.shipped.rows },
+	{ command: copy.shipped.command, rows: shipped },
 	{ command: copy.posts.command, rows: [], result: String(postCount) },
 ];
 ---

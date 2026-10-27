@@ -1,4 +1,5 @@
 import type { APIContext, InferGetStaticPropsType } from "astro";
+import { metaCopy } from "@/content/copy/meta";
 import { ogCopy } from "@/content/copy/og";
 import { getAllPosts, getPostSortDate, getReadingMinutes } from "@/data/post";
 import { formatDayMonthYear } from "@/utils/date";
@@ -21,7 +22,7 @@ export async function getStaticPaths() {
 				minutes === undefined ? undefined : ogCopy.minutesRead(minutes),
 			]
 				.filter(Boolean)
-				.join(ogCopy.separator);
+				.join(metaCopy.separator);
 			const props: OgCard = { meta, title: post.data.title, description: post.data.description };
 			return { params: { slug: post.id }, props };
 		}),

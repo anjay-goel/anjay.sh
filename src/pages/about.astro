@@ -4,8 +4,10 @@ import { getEntry, render } from "astro:content";
 import avatar from "@/assets/avatar.png";
 import JsonLd from "@/components/JsonLd.astro";
 import Socials from "@/components/ui/Socials.astro";
-import { aboutCopy as copy } from "@/content/copy/about";
-import { getAllPosts, getPostYears } from "@/data/post";
+import { aboutCopy, education } from "@/content/copy/about";
+import { metaCopy } from "@/content/copy/meta";
+import { getAllPosts, getPostYears, type MetaPart } from "@/data/post";
+import { showcase } from "@/data/showcase";
 import PageLayout from "@/layouts/Base.astro";
 import { siteConfig } from "@/site-config";
 import { absoluteUrl } from "@/utils/path";
@@ -30,12 +32,30 @@ const avatarUrl = absoluteUrl(avatar.src, Astro.site);
 
 const posts = await getAllPosts();
 const firstYear = getPostYears(posts).at(-1);
-const facts = [
-	...copy.facts,
-	...(firstYear ? [{ term: copy.writing.term, parts: [copy.writing.text(posts.length, firstYear)] }] : []),
-];
-const partsOf = (parts: (typeof facts)[number]["parts"]) =>
-	parts.map((p) => (typeof p === "string" ? { text: p, accent: false } : { text: p.text, accent: Boolean(p.accent) }));
+const { heading, photoAlt, factsLabel } = entry.data;
+
+const shipped = showcase
+	.filter((item) => item.reach)
+	.flatMap((item, i): MetaPart[] => [
+		`${i > 0 ? metaCopy.separator : ""}${item.name} `,
+		{ text: item.reach ?? "", accent: true },
+	]);
+
+const factParts = (fact: (typeof entry.data.facts)[number]): MetaPart[] => {
+	if ("text" in fact) return [fact.text];
+	if (fact.source === "shipped") return shipped;
+	if (fact.source === "education") return [education];
+	return firstYear ? [aboutCopy.writing(posts.length, firstYear)] : [];
+};
+
+const facts = entry.data.facts
+	.map((fact) => ({
+		term: fact.term,
+		parts: factParts(fact).map((p) =>
+			typeof p === "string" ? { text: p, accent: false } : { text: p.text, accent: Boolean(p.accent) },
+		),
+	}))
+	.filter((fact) => fact.parts.length > 0);
 ---
 
 <PageLayout meta={meta}>
@@ -73,7 +93,7 @@ const partsOf = (parts: (typeof facts)[number]["parts"]) =>
 	<section class="about">
 		<Picture
 			src={avatar}
-			alt={copy.photoAlt}
+			alt={photoAlt ?? authorName}
 			formats={["avif", "webp"]}
 			widths={[132, 264, 260, 520]}
 			sizes="(max-width: 767px) 132px, 260px"
@@ -85,17 +105,17 @@ const partsOf = (parts: (typeof facts)[number]["parts"]) =>
 			pictureAttributes={{ class: "about-picture" }}
 		/>
 		<div class="about-text">
-			<h1 class="about-heading">{copy.heading}</h1>
+			<h1 class="about-heading">{heading ?? entry.data.title}</h1>
 			<div class="about-body">
 				<Content />
 			</div>
-			<dl class="about-facts" aria-label={copy.factsLabel}>
+			<dl class="about-facts" aria-label={factsLabel}>
 				{
 					facts.map((fact) => (
 						<div class="about-fact">
 							<dt>{fact.term}</dt>
 							<dd>
-								{partsOf(fact.parts).map((p) => (p.accent ? <span class="about-fact-accent">{p.text}</span> : p.text))}
+								{fact.parts.map((p) => (p.accent ? <span class="about-fact-accent">{p.text}</span> : p.text))}
 							</dd>
 						</div>
 					))

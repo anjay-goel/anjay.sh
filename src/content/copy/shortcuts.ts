@@ -1,27 +1,22 @@
-export type ShortcutJoin = "or" | "sequence";
+import type { ShortcutId, ShortcutJoin } from "@/data/shortcuts";
+import { metaCopy } from "./meta";
 
-export interface Shortcut {
-	keys: string[];
-	join?: ShortcutJoin;
-	action: string;
-}
-
-const items: Shortcut[] = [
-	{ keys: ["/"], action: "Search posts" },
-	{ keys: ["j", "k"], join: "or", action: "Next / previous post" },
-	{ keys: ["Enter"], action: "Open the selected post" },
-	{ keys: ["t"], action: "Switch light / dark" },
-	{ keys: ["g", "h"], join: "sequence", action: "Go home" },
-	{ keys: ["g", "p"], join: "sequence", action: "Go to all posts" },
-	{ keys: ["?"], action: "Show this list" },
-	{ keys: ["Esc"], action: "Close" },
-];
+const keyLabels: Record<string, string> = metaCopy.keys;
 
 export const shortcutsCopy = {
 	title: "Keyboard shortcuts",
-	close: "Esc",
 	closeLabel: "Close keyboard shortcuts",
 	joins: { or: "/", sequence: "then" } satisfies Record<ShortcutJoin, string>,
-	items,
+	keyLabel: (key: string) => keyLabels[key] ?? key,
+	actions: {
+		search: metaCopy.searchPosts,
+		move: "Next / previous post",
+		open: "Open the selected post",
+		theme: "Switch light / dark",
+		home: "Go home",
+		posts: "Go to all posts",
+		help: "Show this list",
+		close: "Close",
+	} satisfies Record<ShortcutId, string>,
 	note: "Off while you’re typing in a field.",
 };

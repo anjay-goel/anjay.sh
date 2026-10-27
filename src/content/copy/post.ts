@@ -1,14 +1,13 @@
+import { metaCopy } from "./meta";
+
 export const postCopy = {
-	allPosts: "All posts",
+	allPosts: metaCopy.allPosts,
 	readTime: (minutes: number) => `${minutes} min read`,
 	updated: (date: string) => `updated ${date}`,
 	draft: "draft",
-	authorNotes: {
-		"anatomy-of-containers-iii": "Go · hands-on",
-	} as Record<string, string>,
 	series: {
-		label: "Series",
-		boxLabel: "Series",
+		label: metaCopy.series,
+		boxLabel: metaCopy.series,
 		partOf: (index: number, total: number) => `Part ${index} of ${total}`,
 		barLabel: (index: number, total: number) => `Series · part ${index} of ${total}`,
 		showParts: "Show all parts",
@@ -57,6 +56,6 @@ export const postCopy = {
 		reset: "Reset",
 		ok: "✓",
 		fail: "✗",
-		prompt: "$",
+		prompt: metaCopy.prompt,
 	},
 };

@@ -18,7 +18,7 @@ import { metaCopy } from "@/content/copy/meta";
 import { postCopy } from "@/content/copy/post";
 import { collectionHref, collectionPostIds } from "@/data/collections";
 import { getAllPosts, getPostHref, type PostEntry, sortMDByDate, tagHref, toPostSummary } from "@/data/post";
-import { genericTags } from "@/data/primary-tags";
+import { genericTags, getPostExtras } from "@/data/post-extras";
 import { siteConfig } from "@/site-config";
 import { formatDayMonthYear } from "@/utils/date";
 import { absoluteUrl, withBase } from "@/utils/path";
@@ -129,7 +129,7 @@ const postUrl = absoluteUrl(`/posts/${id}/`, Astro.site);
 				items={metaItems}
 				filterTags={tags}
 				author={authorName}
-				authorNote={postCopy.authorNotes[id]}
+				authorNote={getPostExtras(id).authorNote}
 			/>
 			{
 				layout === "rails" && (

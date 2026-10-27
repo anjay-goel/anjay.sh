@@ -1,6 +1,8 @@
-export type ShowcaseSource = "play" | "github" | "web";
+import { metaCopy } from "@/content/copy/meta";
 
-export interface ShowcaseItem {
+type ShowcaseSource = "play" | "github" | "web";
+
+interface ShowcaseItem {
 	name: string;
 	href: string;
 	stack: string;
@@ -12,9 +14,7 @@ export interface ShowcaseItem {
 	source: ShowcaseSource;
 }
 
-export const installsSuffix = " installs";
-
-export interface ShowcaseFeatured {
+interface ShowcaseFeatured {
 	name: string;
 	href: string;
 	desc: string;
@@ -70,5 +70,5 @@ export const showcase: ShowcaseItem[] = [
 ];
 
 export function showcaseBadge(item: ShowcaseItem): string | undefined {
-	return item.reach ? `${item.reach}${installsSuffix}` : item.badge;
+	return item.reach ? `${item.reach}${metaCopy.installs}` : item.badge;
 }

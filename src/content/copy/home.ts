@@ -1,5 +1,5 @@
 import { education } from "@/content/copy/about";
-import { installsSuffix, showcase } from "@/data/showcase";
+import { metaCopy } from "./meta";
 
 export interface TerminalRow {
 	key: string;
@@ -9,18 +9,16 @@ export interface TerminalRow {
 
 export const homeCopy = {
 	meta: {
-		title: "Home",
+		title: metaCopy.pages.home,
 	},
 	hero: {
 		title: "Hi! I’m Anjay.",
-		intro:
-			"I love to write about software development, technology and occasionally other stuff like economics & finance. I hope you find something interesting here.",
 	},
 	terminal: {
 		label: "whoami",
 		title: "anjay@web: ~",
 		shell: "zsh",
-		prompt: "$",
+		prompt: metaCopy.prompt,
 		whoami: {
 			command: "whoami",
 			name: "anjay goel",
@@ -31,14 +29,6 @@ export const homeCopy = {
 		},
 		shipped: {
 			command: "ls ~/shipped",
-			rows: showcase
-				.slice(0, 3)
-				.map(
-					(item): TerminalRow =>
-						item.reach
-							? { key: item.name, accent: item.reach, value: installsSuffix }
-							: { key: item.name, value: item.badge ?? "" },
-				),
 		},
 		posts: {
 			command: "ls ~/posts | wc -l",
@@ -47,33 +37,13 @@ export const homeCopy = {
 	latest: {
 		title: "Latest",
 		allPosts: (n: number) => `All ${n} posts`,
-		collectionLabels: {
-			postmortems: "Postmortem",
-		} as Record<string, string>,
-		postLabels: {
-			"building-an-ai-dubbing-pipeline-for-micro-dramas": "AI & pipelines",
-			"claude-code-long-running-agent": "AI & tooling",
-		} as Record<string, string>,
-		externalSources: {
-			"insiders.dashverse.ai": "on the Dashverse blog",
-		} as Record<string, string>,
 	},
 	collections: {
 		title: "Series & collections",
-		shortTitle: "Series",
+		shortTitle: metaCopy.series,
 		swipe: "swipe",
 		previous: "Previous collections",
 		next: "Next collections",
-		itemTags: {
-			"non-blocking-io": "linux",
-			"developer-guide-to-domains-and-dns": "dns",
-			"ios-keychain": "ios",
-			"TIL-Partial-Index-And-Soft-Delete": "sql",
-			"myth-of-market-timing": "finance",
-			"How-To-Count-Votes": "society",
-			cryptocurrencies: "finance",
-			"covid-19-india-analysing-death-registration-trends": "data",
-		} as Record<string, string>,
 	},
 	archive: {
 		title: "Browse the archive",

@@ -3,6 +3,7 @@ import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
 import ArchiveHero from "@/components/posts/ArchiveHero.astro";
 import TagFilter from "@/components/posts/TagFilter.astro";
 import YearArchive from "@/components/posts/YearArchive.astro";
+import { metaCopy } from "@/content/copy/meta";
 import { postsCopy } from "@/content/copy/posts";
 import { getAllPosts, getPostSummaries, getPostsByTag, getUniqueTagsWithCount } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
@@ -30,7 +31,7 @@ const meta = {
 
 <PageLayout meta={meta}>
 	<ArchiveHero title={postsCopy.tag.heading(tag)}>
-		{postsCopy.tag.summary(summaries.length, tag)}{postsCopy.separator}<a
+		{postsCopy.tag.summary(summaries.length, tag)}{metaCopy.separator}<a
 			class="link link-solid"
 			href={withBase("/posts/")}
 			data-astro-prefetch>{postsCopy.tag.allPosts}</a

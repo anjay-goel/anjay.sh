@@ -1,3 +1,4 @@
+import { shortcutKeys } from "@/data/shortcuts";
 import { SEARCH_OPEN_EVENT } from "@/scripts/events";
 import { toggleTheme } from "@/scripts/theme";
 
@@ -92,31 +93,31 @@ export function initShortcuts(): void {
 		const { key } = event;
 		const sequence = pendingG > 0 && Date.now() - pendingG < SEQUENCE_MS;
 		pendingG = 0;
-		if (sequence && (key === "h" || key === "p")) {
+		if (sequence && (key === shortcutKeys.home || key === shortcutKeys.posts)) {
 			event.preventDefault();
-			window.location.assign(key === "h" ? home : posts);
+			window.location.assign(key === shortcutKeys.home ? home : posts);
 			return;
 		}
 		switch (key) {
-			case "/":
+			case shortcutKeys.search:
 				event.preventDefault();
 				document.dispatchEvent(new CustomEvent(SEARCH_OPEN_EVENT, { detail: { trigger: null } }));
 				break;
-			case "?":
+			case shortcutKeys.help:
 				event.preventDefault();
 				openDialog();
 				break;
-			case "t":
+			case shortcutKeys.theme:
 				toggleTheme();
 				break;
-			case "g":
+			case shortcutKeys.go:
 				pendingG = Date.now();
 				break;
-			case "j":
-			case "k":
-				if (moveSelection(key === "j" ? 1 : -1)) event.preventDefault();
+			case shortcutKeys.next:
+			case shortcutKeys.previous:
+				if (moveSelection(key === shortcutKeys.next ? 1 : -1)) event.preventDefault();
 				break;
-			case "Escape":
+			case shortcutKeys.close:
 				if (
 					document.activeElement instanceof HTMLElement &&
 					document.activeElement.matches(ROW_SELECTOR)

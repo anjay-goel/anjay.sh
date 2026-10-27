@@ -1,0 +1,15 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"a">;
+
+const props = Astro.props;
+---
+
+<a {...props} class="link link-solid colophon-link hit-target"><slot /></a>
+
+<style>
+	.colophon-link {
+		text-underline-offset: 3px;
+	}
+</style>

@@ -1,43 +1,37 @@
 ---
-import ColophonParts from "@/components/colophon/ColophonParts.astro";
+import { getEntry, render } from "astro:content";
+import ColophonKeyboard from "@/components/colophon/ColophonKeyboard.astro";
+import ColophonLink from "@/components/colophon/ColophonLink.astro";
+import ColophonRows from "@/components/colophon/ColophonRows.astro";
+import DesktopOnly from "@/components/colophon/DesktopOnly.astro";
+import Specimen from "@/components/colophon/Specimen.astro";
+import Swatch from "@/components/colophon/Swatch.astro";
+import Swatches from "@/components/colophon/Swatches.astro";
 import ShortcutKeys from "@/components/shortcuts/ShortcutKeys.astro";
-import { colophonCopy as copy } from "@/content/copy/colophon";
-import { shortcutsCopy } from "@/content/copy/shortcuts";
 import PageLayout from "@/layouts/Base.astro";
+
+const entry = await getEntry("page", "colophon");
+if (!entry) throw new Error("Missing src/content/page/colophon.mdx");
+const { Content } = await render(entry);
+const { title, description, dek } = entry.data;
+
+const components = {
+	a: ColophonLink,
+	DesktopOnly,
+	Keyboard: ColophonKeyboard,
+	Rows: ColophonRows,
+	Shortcut: ShortcutKeys,
+	Specimen,
+	Swatch,
+	Swatches,
+};
 ---
 
-<PageLayout meta={{ title: copy.title, description: copy.description }}>
+<PageLayout meta={{ title, description }}>
 	<section class="colophon">
-		<h1 class="page-title colophon-title">{copy.title}</h1>
-		<p class="colophon-dek">{copy.dek}</p>
-		<dl class="colophon-rows">
-			{
-				copy.rows.map((row) => (
-					<div class="colophon-row">
-						<dt>{row.term}</dt>
-						<dd>
-							<ColophonParts parts={row.parts} />
-						</dd>
-					</div>
-				))
-			}
-		</dl>
-		<section class="keyboard" aria-labelledby="keyboard-h">
-			<h2 id="keyboard-h" class="keyboard-heading">{copy.keyboard.heading}</h2>
-			<p class="keyboard-intro"><ColophonParts parts={copy.keyboard.intro} /></p>
-			<ul class="shortcuts">
-				{
-					shortcutsCopy.items.map((s) => (
-						<li class="shortcut">
-							<span class="shortcut-cell">
-								<ShortcutKeys shortcut={s} />
-							</span>
-							<span class="shortcut-label">{s.action}</span>
-						</li>
-					))
-				}
-			</ul>
-		</section>
+		<h1 class="page-title colophon-title">{title}</h1>
+		{dek && <p class="colophon-dek">{dek}</p>}
+		<Content components={components} />
 	</section>
 </PageLayout>
 
@@ -57,63 +51,6 @@ import PageLayout from "@/layouts/Base.astro";
 		line-height: 1.6;
 		color: var(--muted);
 	}
-	.colophon-rows {
-		display: grid;
-		grid-template-columns: 180px minmax(0, 1fr);
-		margin: 48px 0 0;
-		border-top: 1px solid var(--rule-strong);
-	}
-	.colophon-row {
-		display: contents;
-	}
-	.colophon-rows dt {
-		padding: 20px 0;
-		border-bottom: 1px solid var(--rule);
-		font-size: var(--text-16);
-		font-weight: 600;
-		line-height: 1.3;
-		color: var(--ink);
-	}
-	.colophon-rows dd {
-		margin: 0;
-		padding: 20px 0 20px 24px;
-		border-bottom: 1px solid var(--rule);
-		font-size: var(--text-16);
-		line-height: 1.6;
-		color: var(--muted);
-	}
-	.keyboard-heading {
-		margin: 64px 0 0;
-		font-size: var(--text-21);
-		line-height: normal;
-	}
-	.keyboard-intro {
-		margin: 8px 0 20px;
-		font-size: var(--text-16);
-		line-height: normal;
-		color: var(--muted);
-	}
-	.shortcuts {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-	.shortcut {
-		display: flex;
-		align-items: center;
-		gap: 16px;
-		padding: 12px 0;
-		border-top: 1px solid var(--rule);
-	}
-	.shortcut-cell {
-		display: flex;
-		flex: 0 0 150px;
-	}
-	.shortcut-label {
-		font-size: var(--text-16);
-		line-height: normal;
-		color: var(--muted);
-	}
 
 	@media (max-width: 767px) {
 		.colophon {
@@ -126,29 +63,6 @@ import PageLayout from "@/layouts/Base.astro";
 			margin-top: 12px;
 			font-size: var(--text-18);
 			line-height: 1.55;
-		}
-		.colophon-rows {
-			display: block;
-			margin-top: 28px;
-		}
-		.colophon-row {
-			display: block;
-			padding: 16px 0;
-			border-bottom: 1px solid var(--rule);
-		}
-		.colophon-rows dt,
-		.colophon-rows dd {
-			padding: 0;
-			border-bottom: 0;
-		}
-		.colophon-rows dt {
-			font-size: var(--text-14);
-		}
-		.colophon-rows dd {
-			margin-top: 6px;
-		}
-		.keyboard {
-			display: none;
 		}
 	}
 </style>

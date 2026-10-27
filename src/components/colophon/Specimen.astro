@@ -1,0 +1,25 @@
+---
+interface Props {
+	font: "sans" | "serif" | "mono";
+}
+
+const { font } = Astro.props;
+---
+
+<span class:list={["specimen", `specimen-${font}`]}><slot /></span>
+
+<style>
+	.specimen {
+		color: var(--ink);
+	}
+	.specimen-sans {
+		font-family: var(--font-sans);
+	}
+	.specimen-serif {
+		font-family: var(--font-serif);
+	}
+	.specimen-mono {
+		font-family: var(--font-mono);
+		font-size: var(--text-16);
+	}
+</style>

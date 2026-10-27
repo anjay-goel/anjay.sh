@@ -1,10 +1,9 @@
 import { metaCopy } from "./meta";
 
 export const postsCopy = {
-	separator: metaCopy.separator,
 	index: {
-		title: "Posts",
-		metaTitle: "Posts",
+		title: metaCopy.pages.posts,
+		metaTitle: metaCopy.pages.posts,
 		description: "Read my collection of posts and the things that interest me",
 	},
 	filter: {
@@ -16,15 +15,15 @@ export const postsCopy = {
 		metaTitle: (tag: string) => `Posts tagged #${tag}`,
 		description: (tag: string) => `Every post tagged “${tag}”.`,
 		summary: (count: number, tag: string) => `${metaCopy.postCount(count)} tagged ${tag}`,
-		allPosts: "All posts",
+		allPosts: metaCopy.allPosts,
 	},
 	tags: {
-		title: "Tags",
-		metaTitle: "Tags",
+		title: metaCopy.pages.tags,
+		metaTitle: metaCopy.pages.tags,
 		description: "Browse every topic written about on this site.",
 		summary: (tags: number, posts: number) =>
 			`${tags === 1 ? "1 tag" : `${tags} tags`} across ${metaCopy.postCount(posts)}`,
-		allPosts: "All posts",
+		allPosts: metaCopy.allPosts,
 		listLabel: "All tags",
 		count: (n: number) => String(n),
 		countSr: (n: number) => metaCopy.postCount(n),

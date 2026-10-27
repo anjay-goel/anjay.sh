@@ -11,6 +11,7 @@ export interface OgCard {
 	meta: string;
 	title: string;
 	description: string;
+	descriptionLines?: number;
 }
 
 type Style = Record<string, string | number>;
@@ -47,7 +48,7 @@ function titleSize(title: string): number {
 	return 56;
 }
 
-function card({ meta, title, description }: OgCard): Node {
+function card({ meta, title, description, descriptionLines = 2 }: OgCard): Node {
 	const c = palette.light;
 	const { prefix, name, suffix } = headerCopy.logo;
 	const size = titleSize(title);
@@ -85,7 +86,7 @@ function card({ meta, title, description }: OgCard): Node {
 				fontWeight: 400,
 				lineHeight: 1.45,
 				color: c.muted,
-				lineClamp: 2,
+				lineClamp: descriptionLines,
 			},
 			description,
 		),

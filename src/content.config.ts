@@ -1,5 +1,6 @@
-import { defineCollection, reference, z } from "astro:content";
+import { defineCollection, reference } from "astro:content";
 import { glob } from "astro/loaders";
+import { z } from "astro/zod";
 
 function removeDupsAndLowerCase(array: string[]) {
 	if (!array.length) return array;
@@ -36,11 +37,21 @@ const post = defineCollection({
 		}),
 });
 
+const pageFact = z.union([
+	z.object({ term: z.string(), text: z.string() }),
+	z.object({ term: z.string(), source: z.enum(["shipped", "education", "writing"]) }),
+]);
+
 const page = defineCollection({
-	loader: glob({ pattern: "**/*.md", base: "./src/content/page" }),
+	loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/page" }),
 	schema: z.object({
 		title: z.string().max(120),
 		description: z.string().max(160).optional(),
+		heading: z.string().optional(),
+		dek: z.string().optional(),
+		photoAlt: z.string().optional(),
+		factsLabel: z.string().optional(),
+		facts: z.array(pageFact).default([]),
 	}),
 });
 
@@ -53,9 +64,11 @@ const collection = defineCollection({
 		description: z.string(),
 		shortDescription: z.string().optional(),
 		cta: z.string().optional(),
+		homeLabel: z.string().optional(),
 		order: z.number(),
 		cover: z.enum(["surge", "stack", "sip", "container"]),
 		posts: z.array(reference("post")).min(1),
+		cardTags: z.record(z.string(), z.string()).default({}),
 	}),
 });
 

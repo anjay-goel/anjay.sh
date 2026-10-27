@@ -1,6 +1,7 @@
 ---
 import Socials from "@/components/ui/Socials.astro";
 import { footerCopy } from "@/content/copy/footer";
+import { metaCopy } from "@/content/copy/meta";
 import { siteConfig } from "@/site-config";
 import { withBase } from "@/utils/path";
 
@@ -29,11 +30,11 @@ const { home } = footerCopy;
 					<Socials variant="boxed" label={false} />
 				</div>
 			</div>
-			<p class="footer-legal footer-legal-home">{copyright}{footerCopy.separator}<a class="link-quiet hit-target" href={colophonHref}>{footerCopy.colophon}</a></p>
+			<p class="footer-legal footer-legal-home">{copyright}{metaCopy.separator}<a class="link-quiet hit-target" href={colophonHref}>{footerCopy.colophon}</a></p>
 		</footer>
 	) : (
 		<footer class="site-footer site-footer-standard">
-			<p class="footer-legal">{copyright}<span class="footer-rss">{footerCopy.separator}<a class="link-quiet hit-target" href={rssHref}>{footerCopy.rss}</a></span>{footerCopy.separator}<a class="link-quiet hit-target" href={colophonHref}>{footerCopy.colophon}</a></p>
+			<p class="footer-legal">{copyright}<span class="footer-rss">{metaCopy.separator}<a class="link-quiet hit-target" href={rssHref}>{footerCopy.rss}</a></span>{metaCopy.separator}<a class="link-quiet hit-target" href={colophonHref}>{footerCopy.colophon}</a></p>
 		</footer>
 	)
 }

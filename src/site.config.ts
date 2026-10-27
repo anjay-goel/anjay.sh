@@ -5,6 +5,9 @@ import { postCopy } from "./content/copy/post";
 import { pluginCodeHeader } from "./plugins/expressive-code-header";
 import { siteDarkTheme, siteLightTheme } from "./plugins/expressive-code-themes";
 
+const siteIntro =
+	"I love to write about software development, technology and occasionally other stuff like economics & finance. I hope you find something interesting here.";
+
 export const siteConfig: SiteConfig = {
 	author: "Anjay Goel",
 	date: {
@@ -16,8 +19,8 @@ export const siteConfig: SiteConfig = {
 			timeZone: "Asia/Kolkata",
 		},
 	},
-	description:
-		"Hi!\nI am Anjay. I love to write about software development, technology and occasionally other stuff like economics & finance. I hope you find something interesting here.",
+	intro: siteIntro,
+	description: `Hi!\nI am Anjay. ${siteIntro}`,
 	lang: "en-US",
 	ogLocale: "en_US",
 	sortPostsByUpdatedDate: false,
@@ -31,6 +34,7 @@ export const siteConfig: SiteConfig = {
 		employer: "Dashverse",
 		employerUrl: "https://dashverse.ai/",
 		alumni: "IIT Kharagpur",
+		graduationYear: 2023,
 		avatar: "/avatar.png",
 	},
 	comments: {

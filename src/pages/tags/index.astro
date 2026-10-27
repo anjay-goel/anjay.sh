@@ -1,6 +1,7 @@
 ---
 import ArchiveHero from "@/components/posts/ArchiveHero.astro";
 import TagIndex from "@/components/posts/TagIndex.astro";
+import { metaCopy } from "@/content/copy/meta";
 import { postsCopy } from "@/content/copy/posts";
 import { getAllPosts, getUniqueTagsWithCount } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
@@ -17,7 +18,7 @@ const meta = {
 
 <PageLayout meta={meta}>
 	<ArchiveHero title={postsCopy.tags.title}>
-		{postsCopy.tags.summary(tags.length, posts.length)}{postsCopy.separator}<a
+		{postsCopy.tags.summary(tags.length, posts.length)}{metaCopy.separator}<a
 			class="link link-solid"
 			href={withBase("/posts/")}
 			data-astro-prefetch>{postsCopy.tags.allPosts}</a

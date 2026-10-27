@@ -3,6 +3,7 @@ import FrameoPipeline from "@/components/art/FrameoPipeline.astro";
 import JsonLd from "@/components/JsonLd.astro";
 import Icon from "@/components/ui/Icon.astro";
 import Card from "@/components/ui/Card.astro";
+import { metaCopy } from "@/content/copy/meta";
 import { showcaseCopy as copy } from "@/content/copy/showcase";
 import { featuredProject, showcase, showcaseBadge } from "@/data/showcase";
 import PageLayout from "@/layouts/Base.astro";
@@ -39,7 +40,7 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 			<span class="featured-status">{copy.featuredStatus}</span>
 			<span class="card-title featured-name">{featuredProject.name}</span>
 			<span class="featured-desc">{featuredProject.desc}</span>
-			<span class="featured-link">{featuredProject.linkText}<Icon name="arrowUpRight" size={13} strokeWidth={2} /><span class="sr-only">{copy.externalSr}</span></span>
+			<span class="featured-link">{featuredProject.linkText}<Icon name="arrowUpRight" size={13} strokeWidth={2} /><span class="sr-only">{metaCopy.newTabSr}</span></span>
 		</div>
 		<div class="featured-art">
 			<FrameoPipeline />
@@ -59,7 +60,7 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 						<span class="project-link">
 							{copy.sources[item.source]}
 							<Icon name="arrowUpRight" size={12} strokeWidth={2} />
-							<span class="sr-only">{copy.externalSr}</span>
+							<span class="sr-only">{metaCopy.newTabSr}</span>
 						</span>
 					</Card>
 				</li>

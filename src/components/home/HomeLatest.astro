@@ -5,6 +5,7 @@ import SectionHeading from "@/components/ui/SectionHeading.astro";
 import { homeCopy } from "@/content/copy/home";
 import { metaCopy } from "@/content/copy/meta";
 import type { PostSummary } from "@/data/post";
+import { externalSourceFor, getPostExtras } from "@/data/post-extras";
 import { formatDayMonthYear } from "@/utils/date";
 import { withBase } from "@/utils/path";
 
@@ -20,16 +21,9 @@ const allHref = withBase("/posts/");
 const allText = copy.allPosts(total);
 
 const labelFor = (post: PostSummary) =>
-	copy.postLabels[post.id] ?? (post.collection && copy.collectionLabels[post.collection.id]) ?? post.label?.text;
+	getPostExtras(post.id).homeLabel ?? post.collection?.data.homeLabel ?? post.label?.text;
 
-const sourceFor = (post: PostSummary) => {
-	if (!post.external) return undefined;
-	try {
-		return copy.externalSources[new URL(post.href).hostname];
-	} catch {
-		return undefined;
-	}
-};
+const sourceFor = (post: PostSummary) => (post.external ? externalSourceFor(post.href) : undefined);
 
 const featuredLabel = labelFor(featured);
 const featuredSource = sourceFor(featured);

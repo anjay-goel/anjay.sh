@@ -1,27 +1,19 @@
 ---
 import Kbd from "@/components/ui/Kbd.astro";
-import { type Shortcut, shortcutsCopy } from "@/content/copy/shortcuts";
+import { shortcutsCopy } from "@/content/copy/shortcuts";
+import { type ShortcutId, shortcuts } from "@/data/shortcuts";
 
 interface Props {
-	shortcut: Shortcut;
-	size?: "sm" | "md";
-	class?: string;
+	id: ShortcutId;
 }
 
-const { shortcut, size = "md", class: className } = Astro.props;
+const { id } = Astro.props;
+const shortcut = shortcuts.find((s) => s.id === id);
+if (!shortcut) throw new Error(`Unknown shortcut: ${id}`);
 const joiner = shortcut.join ? shortcutsCopy.joins[shortcut.join] : undefined;
 ---
 
-<span class:list={["shortcut-keys", className]}>
-	{
-		shortcut.keys.map((key, i) => (
-			<>
-				{i > 0 && joiner && <span class="shortcut-join">{joiner}</span>}
-				<Kbd size={size}>{key}</Kbd>
-			</>
-		))
-	}
-</span>
+<span class="shortcut-keys">{shortcut.keys.map((key, i) => <>{i > 0 && joiner && <span class="shortcut-join">{joiner}</span>}<Kbd>{shortcutsCopy.keyLabel(key)}</Kbd></>)}</span>
 
 <style>
 	.shortcut-keys {

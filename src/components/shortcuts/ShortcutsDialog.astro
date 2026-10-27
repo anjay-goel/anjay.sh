@@ -2,6 +2,7 @@
 import ShortcutKeys from "@/components/shortcuts/ShortcutKeys.astro";
 import Kbd from "@/components/ui/Kbd.astro";
 import { shortcutsCopy } from "@/content/copy/shortcuts";
+import { shortcutKeys, shortcuts } from "@/data/shortcuts";
 import { withBase } from "@/utils/path";
 ---
 
@@ -16,17 +17,17 @@ import { withBase } from "@/utils/path";
 	<div class="shortcuts-head">
 		<h2 class="shortcuts-title" id="shortcuts-title">{shortcutsCopy.title}</h2>
 		<button class="shortcuts-close" type="button" aria-label={shortcutsCopy.closeLabel} data-shortcuts-close>
-			<Kbd>{shortcutsCopy.close}</Kbd>
+			<Kbd>{shortcutsCopy.keyLabel(shortcutKeys.close)}</Kbd>
 		</button>
 	</div>
 	<dl class="shortcuts-list">
 		{
-			shortcutsCopy.items.map((shortcut) => (
+			shortcuts.map((shortcut) => (
 				<div class="shortcuts-row">
 					<dt class="shortcuts-keys">
-						<ShortcutKeys shortcut={shortcut} />
+						<ShortcutKeys id={shortcut.id} />
 					</dt>
-					<dd class="shortcuts-action">{shortcut.action}</dd>
+					<dd class="shortcuts-action">{shortcutsCopy.actions[shortcut.id]}</dd>
 				</div>
 			))
 		}

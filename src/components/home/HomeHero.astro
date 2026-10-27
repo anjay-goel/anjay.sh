@@ -1,6 +1,7 @@
 ---
 import Socials from "@/components/ui/Socials.astro";
 import { homeCopy } from "@/content/copy/home";
+import { siteConfig } from "@/site-config";
 import HomeTerminal from "./HomeTerminal.astro";
 
 interface Props {
@@ -14,7 +15,7 @@ const copy = homeCopy.hero;
 <section class="hero">
 	<div class="hero-text">
 		<h1 class="page-title">{copy.title}</h1>
-		<p class="hero-intro reading">{copy.intro}</p>
+		<p class="hero-intro reading">{siteConfig.intro}</p>
 		<Socials class="hero-socials" iconSize={23} />
 	</div>
 	<HomeTerminal postCount={postCount} />

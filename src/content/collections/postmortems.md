@@ -1,6 +1,7 @@
 ---
 title: Postmortems
 label: postmortem
+homeLabel: Postmortem
 kind: collection
 description: Root-cause analyses of bugs that made it to production, and what they taught me.
 shortDescription: Bugs that made it to production, and what they taught me.

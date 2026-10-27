@@ -1,0 +1,62 @@
+---
+import ShortcutKeys from "@/components/shortcuts/ShortcutKeys.astro";
+import { shortcutsCopy } from "@/content/copy/shortcuts";
+import { shortcuts } from "@/data/shortcuts";
+---
+
+<section class="keyboard">
+	<slot />
+	<ul class="shortcuts">
+		{
+			shortcuts.map((s) => (
+				<li class="shortcut">
+					<span class="shortcut-cell">
+						<ShortcutKeys id={s.id} />
+					</span>
+					<span class="shortcut-label">{shortcutsCopy.actions[s.id]}</span>
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<style>
+	.keyboard > :global(h2) {
+		margin: 64px 0 0;
+		font-size: var(--text-21);
+		line-height: normal;
+	}
+	.keyboard > :global(p) {
+		margin: 8px 0 20px;
+		font-size: var(--text-16);
+		line-height: normal;
+		color: var(--muted);
+	}
+	.shortcuts {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.shortcut {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		padding: 12px 0;
+		border-top: 1px solid var(--rule);
+	}
+	.shortcut-cell {
+		display: flex;
+		flex: 0 0 150px;
+	}
+	.shortcut-label {
+		font-size: var(--text-16);
+		line-height: normal;
+		color: var(--muted);
+	}
+
+	@media (max-width: 767px) {
+		.keyboard {
+			display: none;
+		}
+	}
+</style>

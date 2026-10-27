@@ -1,8 +1,9 @@
-import { postCopy } from "@/content/copy/post";
+import { metaCopy } from "./meta";
+import { postCopy } from "./post";
 
 export const collectionsCopy = {
 	back: {
-		text: "All posts",
+		text: metaCopy.allPosts,
 		href: "/posts/",
 	},
 	start: (part: string) => `Start with ${part}`,

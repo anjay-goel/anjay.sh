@@ -32,7 +32,7 @@ const cards = collections.map((c) => {
 		post: p,
 		title: series ? partTitle(p.title, c) : p.title,
 		marker: series ? seriesPartFor(c, p.id)?.roman : undefined,
-		tag: series ? undefined : copy.itemTags[p.id],
+		tag: series ? undefined : c.data.cardTags[p.id],
 	}));
 	return {
 		collection: c,

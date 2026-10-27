@@ -19,6 +19,7 @@ export interface ProfileConfig {
 	employerUrl?: string;
 	/** Schema.org Person.alumniOf.name. */
 	alumni?: string;
+	graduationYear?: number;
 	/** Absolute avatar/photo URL used in schema markup. */
 	avatar?: string;
 }
@@ -51,6 +52,7 @@ export interface SiteConfig {
 		options: Intl.DateTimeFormatOptions;
 	};
 	description: string;
+	intro: string;
 	lang: string;
 	ogLocale: string;
 	sortPostsByUpdatedDate: boolean;

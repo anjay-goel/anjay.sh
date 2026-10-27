@@ -9,8 +9,7 @@ import {
 	type SeriesPart,
 	seriesPartFor,
 } from "@/data/collections";
-import { genericTags, primaryTagOverrides } from "@/data/primary-tags";
-import { getThumbnailKey } from "@/data/thumbnails";
+import { genericTags, getPostExtras } from "@/data/post-extras";
 import { siteConfig } from "@/site-config";
 import { getYear } from "@/utils/date";
 import { withBase } from "@/utils/path";
@@ -103,8 +102,8 @@ export function isExternalPost(post: PostEntry): boolean {
 	return Boolean(post.data.externalUrl);
 }
 
-export function getPrimaryTag(post: PostEntry): string | undefined {
-	const override = primaryTagOverrides[post.id];
+function getPrimaryTag(post: PostEntry): string | undefined {
+	const override = getPostExtras(post.id).primaryTag;
 	if (override) return override;
 	const tags = post.data.tags;
 	return tags.find((t) => !genericTags.includes(t)) ?? tags[0];
@@ -166,7 +165,7 @@ export async function toPostSummary(
 		primaryTag: getPrimaryTag(post),
 		label: getPostLabel(post, collection, part),
 		minutes: await getReadingMinutes(post),
-		thumbnail: getThumbnailKey(post.id),
+		thumbnail: getPostExtras(post.id).thumbnail,
 		collection,
 		part,
 	};

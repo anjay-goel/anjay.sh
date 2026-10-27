@@ -1,10 +1,10 @@
-import { metaCopy } from "@/content/copy/meta";
+import { metaCopy } from "./meta";
 
 export const searchCopy = {
-	dialogLabel: "Search posts",
-	inputLabel: "Search posts",
-	placeholder: "Search posts",
-	close: "Esc",
+	dialogLabel: metaCopy.searchPosts,
+	inputLabel: metaCopy.searchPosts,
+	placeholder: metaCopy.searchPosts,
+	close: metaCopy.keys.Escape,
 	closeLabel: "Close search",
 	cancel: "Cancel",
 	resultsLabel: "Results",
@@ -15,15 +15,15 @@ export const searchCopy = {
 	empty: {
 		title: (query: string) => `No posts match “${query}”.`,
 		hint: "Try a single word, or browse a related tag.",
-		tagsLabel: "Tags",
+		tagsLabel: metaCopy.pages.tags,
 	},
 	hints: {
 		up: "↑",
 		down: "↓",
 		move: "to move",
-		enter: "Enter",
+		enter: metaCopy.keys.Enter,
 		open: "to open",
-		esc: "Esc",
+		esc: metaCopy.keys.Escape,
 		close: "to close",
 	},
 	credit: "Search by Pagefind",
