@@ -1,0 +1,39 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"section"> {
+	as?: "section" | "div" | "header";
+	class?: string;
+}
+
+const { as: Tag = "div", class: className, ...attrs } = Astro.props;
+---
+
+<Tag class:list={["archive-row", className]} {...attrs}>
+	<div class="archive-aside">
+		<slot name="aside" />
+	</div>
+	<div class="archive-main">
+		<slot />
+	</div>
+</Tag>
+
+<style>
+	.archive-row {
+		display: grid;
+		grid-template-columns: 200px minmax(0, 720px);
+	}
+	.archive-main {
+		min-width: 0;
+	}
+	@media (max-width: 1023px) {
+		.archive-row {
+			grid-template-columns: 160px minmax(0, 1fr);
+		}
+	}
+	@media (max-width: 767px) {
+		.archive-row {
+			display: block;
+		}
+	}
+</style>

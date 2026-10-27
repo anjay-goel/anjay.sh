@@ -1,0 +1,24 @@
+---
+import ArchiveHero from "@/components/posts/ArchiveHero.astro";
+import TagFilter from "@/components/posts/TagFilter.astro";
+import YearArchive from "@/components/posts/YearArchive.astro";
+import { postsCopy } from "@/content/copy/posts";
+import { getAllPosts, getPostSummaries, getUniqueTagsWithCount } from "@/data/post";
+import PageLayout from "@/layouts/Base.astro";
+
+const posts = await getAllPosts();
+const summaries = await getPostSummaries(posts);
+const tags = getUniqueTagsWithCount(posts).map(([tag]) => tag);
+
+const meta = {
+	title: postsCopy.index.metaTitle,
+	description: postsCopy.index.description,
+};
+---
+
+<PageLayout meta={meta}>
+	<ArchiveHero title={postsCopy.index.title}>
+		<TagFilter slot="filter" tags={tags} />
+	</ArchiveHero>
+	<YearArchive posts={summaries} />
+</PageLayout>
