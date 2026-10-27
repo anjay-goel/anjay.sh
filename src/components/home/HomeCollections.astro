@@ -165,7 +165,18 @@ const arrow = { prev: "M15 6l-6 6l6 6", next: "M9 6l6 6l-6 6" };
 		update();
 	}
 
+	function initFocusReveal() {
+		const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+		document.querySelectorAll<HTMLElement>(".track").forEach((track) =>
+			track.addEventListener("focusin", (event) => {
+				const slide = (event.target as HTMLElement).closest<HTMLElement>(".slide, .slide-short");
+				slide?.scrollIntoView({ block: "nearest", inline: "nearest", behavior: reduced.matches ? "auto" : "smooth" });
+			}),
+		);
+	}
+
 	initCarousel();
+	initFocusReveal();
 </script>
 
 <style>
@@ -231,8 +242,9 @@ const arrow = { prev: "M15 6l-6 6l6 6", next: "M9 6l6 6l-6 6" };
 	.track-wide {
 		display: flex;
 		gap: 24px;
+		margin-top: -4px;
 		margin-right: calc((100cqw - 100%) / -2);
-		padding: 0 40px 8px 0;
+		padding: 4px 40px 8px 0;
 		overflow-x: auto;
 		scroll-snap-type: x mandatory;
 		scrollbar-width: none;
@@ -352,8 +364,8 @@ const arrow = { prev: "M15 6l-6 6l6 6", next: "M9 6l6 6l-6 6" };
 		.track-short {
 			display: flex;
 			gap: 12px;
-			margin: 0 calc(-1 * var(--gutter));
-			padding: 0 var(--gutter) 4px;
+			margin: -4px calc(-1 * var(--gutter)) 0;
+			padding: 4px var(--gutter);
 			overflow-x: auto;
 			scroll-snap-type: x mandatory;
 			scroll-padding-inline: var(--gutter);
