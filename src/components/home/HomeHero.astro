@@ -22,18 +22,11 @@ const copy = homeCopy.hero;
 
 <style>
 	.hero {
-		display: flex;
-		flex-wrap: wrap;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 342px;
 		align-items: center;
-		gap: 64px;
+		column-gap: clamp(40px, 6vw, 64px);
 		padding: 96px 0 104px;
-	}
-	.hero-text {
-		flex: 999 1 560px;
-		min-width: 0;
-	}
-	.hero > :global(.terminal) {
-		flex: 1 1 342px;
 	}
 	.hero-intro {
 		max-width: 34em;
@@ -44,6 +37,15 @@ const copy = homeCopy.hero;
 	}
 	.hero :global(.hero-socials) {
 		margin-top: 30px;
+	}
+	@media (max-width: 899px) {
+		.hero .page-title {
+			font-size: var(--text-44);
+		}
+		.hero-intro {
+			margin-top: 20px;
+			font-size: var(--text-18);
+		}
 	}
 	@media (max-width: 767px) {
 		.hero {

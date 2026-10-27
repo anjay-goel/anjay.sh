@@ -29,27 +29,16 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		slot="head"
 		item={{
 			"@context": "https://schema.org",
-			"@type": "BreadcrumbList",
-			itemListElement: [
-				{
-					"@type": "ListItem",
-					position: 1,
-					name: "Home",
-					item: siteUrl("/"),
-				},
-				{
-					"@type": "ListItem",
-					position: 2,
-					name: "About",
-					item: siteUrl("/about"),
-				},
-				{
-					"@type": "ListItem",
-					position: 3,
-					name: "Posts",
-					item: siteUrl("/posts"),
-				},
-			],
+			"@type": "WebSite",
+			name: siteConfig.title,
+			url: siteUrl("/"),
+			description: siteConfig.description,
+			inLanguage: siteConfig.lang,
+			author: {
+				"@type": "Person",
+				name: siteConfig.author,
+				url: siteUrl("/about/"),
+			},
 		}}
 	/>
 	<HomeHero postCount={summaries.length} />
