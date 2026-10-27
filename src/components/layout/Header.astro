@@ -1,5 +1,6 @@
 ---
 import ThemeToggle from "@/components/ThemeToggle.astro";
+import Icon from "@/components/ui/Icon.astro";
 import Logo from "@/components/ui/Logo.astro";
 import { headerCopy } from "@/content/copy/header";
 import { withBase } from "@/utils/path";
@@ -22,9 +23,6 @@ const isCurrent = (item: (typeof nav.items)[number]) => {
 };
 
 const items = nav.items.map((item) => ({ ...item, href: withBase(item.path), current: isCurrent(item) }));
-
-const searchIcon =
-	'<circle cx="10" cy="10" r="7"></circle><path d="M21 21l-6 -6"></path>';
 ---
 
 <header class:list={["site-header", dense && "site-header-dense"]}>
@@ -42,11 +40,11 @@ const searchIcon =
 			</nav>
 			<div class="site-header-actions">
 				<button class="search-btn" type="button" data-search-open>
-					<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={searchIcon} />
+					<Icon name="search" />
 					<span>{search.button}</span>
 				</button>
 				<button class="search-icon-btn" type="button" aria-label={search.label} data-search-open>
-					<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={searchIcon} />
+					<Icon name="search" size={20} strokeWidth={1.6} />
 				</button>
 				<ThemeToggle />
 			</div>

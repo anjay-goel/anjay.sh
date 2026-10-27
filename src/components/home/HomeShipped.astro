@@ -1,5 +1,6 @@
 ---
 import FrameoPipeline from "@/components/art/FrameoPipeline.astro";
+import Icon from "@/components/ui/Icon.astro";
 import { homeCopy } from "@/content/copy/home";
 import { metaCopy } from "@/content/copy/meta";
 import { featuredProject as featured, showcase, showcaseBadge } from "@/data/showcase";
@@ -14,8 +15,6 @@ const rows = showcase.map((item) => ({
 	reach: showcaseBadge(item),
 	reachAccent: item.highlight === true,
 }));
-
-const arrowPaths = '<path d="M17 7l-10 10"></path><path d="M8 7h9v9"></path>';
 ---
 
 <section class="shipped" aria-labelledby="shipped-h">
@@ -29,7 +28,7 @@ const arrowPaths = '<path d="M17 7l-10 10"></path><path d="M8 7h9v9"></path>';
 			<span class="spread-desc">{featured.desc}</span>
 			<span class="spread-link">
 				{featured.linkText}
-				<svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={arrowPaths} />
+				<Icon name="arrowUpRight" size={13} strokeWidth={2} />
 				<span class="sr-only">{metaCopy.externalSr}</span>
 			</span>
 		</div>
@@ -47,7 +46,7 @@ const arrowPaths = '<path d="M17 7l-10 10"></path><path d="M8 7h9v9"></path>';
 						<span class="project-kind">{row.kind}</span>
 						<span class:list={["project-reach", row.reachAccent && "project-reach-accent"]}>{row.reach}</span>
 						<span class="project-arrow">
-							<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={arrowPaths} />
+							<Icon name="arrowUpRight" size={14} strokeWidth={2} />
 							<span class="sr-only">{metaCopy.externalSr}</span>
 						</span>
 					</a>

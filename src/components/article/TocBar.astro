@@ -1,5 +1,5 @@
 ---
-import ArticleIcon from "@/components/article/ArticleIcon.astro";
+import Icon from "@/components/ui/Icon.astro";
 import { postCopy } from "@/content/copy/post";
 import type { TocItem } from "@/utils/toc";
 
@@ -20,7 +20,7 @@ const first = items[0]?.text ?? "";
 				<span class="toc-bar-label">{toc.label}</span>
 				<span class="toc-bar-current" data-toc-current>{first}</span>
 			</span>
-			<ArticleIcon name="chevronDown" class="toc-bar-chevron" />
+			<Icon name="chevronDown" class="toc-bar-chevron" />
 		</button>
 		<nav class="toc-bar-panel" id="toc-bar-panel" aria-label={toc.label} hidden data-disclosure-panel>
 			<ul class="toc-bar-list">
@@ -44,8 +44,8 @@ const first = items[0]?.text ?? "";
 		</nav>
 	</div>
 	<button type="button" class="toc-bar-copy" aria-label={toc.copyLink} data-copy-link data-label={toc.copyLink} data-label-done={toc.copied} data-label-failed={toc.copyFailed}>
-		<ArticleIcon name="link" size={17} class="copy-icon" />
-		<ArticleIcon name="check" size={17} class="copy-done-icon" />
+		<Icon name="link" size={17} class="copy-icon" />
+		<Icon name="check" size={17} class="copy-done-icon" />
 	</button>
 </div>
 

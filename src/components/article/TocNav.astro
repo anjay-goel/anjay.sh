@@ -1,5 +1,5 @@
 ---
-import ArticleIcon from "@/components/article/ArticleIcon.astro";
+import Icon from "@/components/ui/Icon.astro";
 import { postCopy } from "@/content/copy/post";
 import type { TocItem } from "@/utils/toc";
 
@@ -40,7 +40,7 @@ const flat = items.every((item) => item.children.length === 0);
 	<div class="toc-actions">
 		<a class="toc-action" href="#top" data-back-to-top>{toc.backToTop}</a>
 		<button type="button" class="toc-action" data-copy-link data-label={toc.copyLink} data-label-done={toc.copied} data-label-failed={toc.copyFailed}>
-			<ArticleIcon name="link" size={14} />
+			<Icon name="link" size={14} />
 			<span data-copy-label>{toc.copyLink}</span>
 		</button>
 	</div>

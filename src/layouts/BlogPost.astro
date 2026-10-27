@@ -3,7 +3,7 @@ import "@/styles/article.css";
 import type { MarkdownHeading } from "astro";
 import katexStylesheet from "katex/dist/katex.min.css?url";
 import ArticleHeader, { type HeaderMetaItem } from "@/components/article/ArticleHeader.astro";
-import ArticleIcon from "@/components/article/ArticleIcon.astro";
+import Icon from "@/components/ui/Icon.astro";
 import Capabilities from "@/components/article/Capabilities.astro";
 import Comments from "@/components/article/Comments.astro";
 import PostPager, { type PagerLink } from "@/components/article/PostPager.astro";
@@ -117,7 +117,7 @@ const postUrl = absoluteUrl(`/posts/${id}/`, Astro.site);
 	/>
 	<ReadingProgress slot="before" />
 
-	<a class="article-back" href={withBase("/posts/")}><ArticleIcon name="chevronLeft" />{postCopy.allPosts}</a>
+	<a class="article-back" href={withBase("/posts/")}><Icon name="chevronLeft" />{postCopy.allPosts}</a>
 
 	<div class="article-layout" data-layout={layout}>
 		<article class="article" data-pagefind-body>

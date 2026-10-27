@@ -3,6 +3,7 @@ import { render } from "astro:content";
 import type { GetStaticPaths } from "astro";
 import CollectionHero from "@/components/collections/CollectionHero.astro";
 import MoreCollections from "@/components/collections/MoreCollections.astro";
+import Icon from "@/components/ui/Icon.astro";
 import PostRow from "@/components/ui/PostRow.astro";
 import { collectionsCopy } from "@/content/copy/collections";
 import { metaCopy } from "@/content/copy/meta";
@@ -43,7 +44,7 @@ const meta = {
 
 <Base meta={meta}>
 	<a class="back" href={withBase(collectionsCopy.back.href)} data-astro-prefetch>
-		<svg class="back-icon" aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H4" /><path d="M10 6l-6 6l6 6" /></svg>{collectionsCopy.back.text}
+		<Icon name="arrowLeft" size={12} strokeWidth={2} />{collectionsCopy.back.text}
 	</a>
 	<CollectionHero collection={collection} />
 	<div class="intro">

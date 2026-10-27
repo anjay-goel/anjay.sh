@@ -1,5 +1,5 @@
 ---
-import ArticleIcon from "@/components/article/ArticleIcon.astro";
+import Icon from "@/components/ui/Icon.astro";
 import type { SeriesItem } from "@/components/article/SeriesBox.astro";
 import { postCopy } from "@/content/copy/post";
 
@@ -30,7 +30,7 @@ const { series } = postCopy;
 			data-label-open={series.hideParts}
 			data-label-closed={series.showParts}
 		>
-			<ArticleIcon name="chevronDown" size={18} />
+			<Icon name="chevronDown" size={18} />
 		</button>
 	</div>
 	<div class="series-bar-steps" aria-hidden="true">{items.map((_, i) => <span class:list={[i < index && "is-done"]} />)}</div>
