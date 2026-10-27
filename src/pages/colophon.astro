@@ -1,7 +1,8 @@
 ---
 import ColophonParts from "@/components/colophon/ColophonParts.astro";
-import Kbd from "@/components/ui/Kbd.astro";
+import ShortcutKeys from "@/components/shortcuts/ShortcutKeys.astro";
 import { colophonCopy as copy } from "@/content/copy/colophon";
+import { shortcutsCopy } from "@/content/copy/shortcuts";
 import PageLayout from "@/layouts/Base.astro";
 ---
 
@@ -26,17 +27,12 @@ import PageLayout from "@/layouts/Base.astro";
 			<p class="keyboard-intro"><ColophonParts parts={copy.keyboard.intro} /></p>
 			<ul class="shortcuts">
 				{
-					copy.keyboard.shortcuts.map((s) => (
+					shortcutsCopy.items.map((s) => (
 						<li class="shortcut">
-							<span class="shortcut-keys">
-								{s.keys.map((k, i) => (
-									<>
-										{i > 0 && s.joiner && <span class="shortcut-joiner">{s.joiner}</span>}
-										<Kbd>{k}</Kbd>
-									</>
-								))}
+							<span class="shortcut-cell">
+								<ShortcutKeys shortcut={s} />
 							</span>
-							<span class="shortcut-label">{s.label}</span>
+							<span class="shortcut-label">{s.action}</span>
 						</li>
 					))
 				}
@@ -109,15 +105,9 @@ import PageLayout from "@/layouts/Base.astro";
 		padding: 12px 0;
 		border-top: 1px solid var(--rule);
 	}
-	.shortcut-keys {
+	.shortcut-cell {
 		display: flex;
 		flex: 0 0 150px;
-		align-items: center;
-		gap: 6px;
-	}
-	.shortcut-joiner {
-		font-size: var(--text-12);
-		color: var(--soft);
 	}
 	.shortcut-label {
 		font-size: var(--text-16);

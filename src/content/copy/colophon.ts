@@ -20,12 +20,6 @@ export interface ColophonRow {
 	parts: ColophonPart[];
 }
 
-export interface ColophonShortcut {
-	keys: string[];
-	joiner?: string;
-	label: string;
-}
-
 export const colophonCopy = {
 	title: "Colophon",
 	description: "How anjay.sh is put together: the stack, type, colours and keyboard shortcuts.",
@@ -90,15 +84,5 @@ export const colophonCopy = {
 			{ kind: "kbd", text: "?" },
 			" on any page to bring these up.",
 		] satisfies ColophonPart[],
-		shortcuts: [
-			{ keys: ["/"], label: "Search posts" },
-			{ keys: ["j", "k"], joiner: "/", label: "Next / previous post" },
-			{ keys: ["Enter"], label: "Open the selected post" },
-			{ keys: ["t"], label: "Switch light / dark" },
-			{ keys: ["g", "h"], joiner: "then", label: "Go home" },
-			{ keys: ["g", "p"], joiner: "then", label: "Go to all posts" },
-			{ keys: ["?"], label: "Show this list" },
-			{ keys: ["Esc"], label: "Close" },
-		] satisfies ColophonShortcut[],
 	},
 };
