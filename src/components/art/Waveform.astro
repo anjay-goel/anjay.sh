@@ -1,0 +1,82 @@
+---
+interface Variant {
+	count: number;
+	scale: number;
+	accentFrom: number;
+	accentTo: number;
+}
+
+interface Props {
+	variant?: "desktop" | "phone" | "responsive";
+	class?: string;
+}
+
+const variants: Record<"desktop" | "phone", Variant> = {
+	desktop: { count: 72, scale: 120, accentFrom: 22, accentTo: 44 },
+	phone: { count: 44, scale: 84, accentFrom: 14, accentTo: 28 },
+};
+
+const { variant = "responsive", class: className } = Astro.props;
+
+const bars = (v: Variant) =>
+	Array.from({ length: v.count }, (_, i) => {
+		const value = Math.abs(Math.sin(i * 0.55) * Math.cos(i * 0.17)) * 0.8 + ((i * 7) % 5) * 0.04 + 0.08;
+		return { height: Math.round(value * v.scale), accent: i >= v.accentFrom && i < v.accentTo };
+	});
+
+const sets = (variant === "responsive" ? (["desktop", "phone"] as const) : ([variant] as const)).map((name) => ({
+	name,
+	bars: bars(variants[name]),
+}));
+---
+
+<div class:list={["waveform", variant === "responsive" && "waveform-responsive", className]} aria-hidden="true">
+	{
+		sets.map((set) => (
+			<div class:list={["waveform-bars", `waveform-${set.name}`]}>
+				{set.bars.map((b) => (
+					<span class:list={["waveform-bar", b.accent && "waveform-bar-accent"]} style={`height:${b.height}px`} />
+				))}
+			</div>
+		))
+	}
+</div>
+
+<style>
+	.waveform {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+	}
+	.waveform-bars {
+		display: flex;
+		flex: 1;
+		align-items: center;
+		gap: 4px;
+		height: 100%;
+	}
+	.waveform-phone {
+		gap: 3px;
+	}
+	.waveform-bar {
+		flex: 1;
+		min-width: 0;
+		border-radius: 2px;
+		background: var(--bar);
+	}
+	.waveform-bar-accent {
+		background: var(--accent);
+	}
+	.waveform-responsive .waveform-phone {
+		display: none;
+	}
+	@media (max-width: 767px) {
+		.waveform-responsive .waveform-desktop {
+			display: none;
+		}
+		.waveform-responsive .waveform-phone {
+			display: flex;
+		}
+	}
+</style>

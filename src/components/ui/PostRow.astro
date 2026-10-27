@@ -1,0 +1,134 @@
+---
+import Thumbnail from "@/components/art/Thumbnail.astro";
+import { metaCopy } from "@/content/copy/meta";
+import { type PostSummary, postMetaParts } from "@/data/post";
+import PostMeta from "./PostMeta.astro";
+
+interface Props {
+	post: PostSummary;
+	dateFormat?: "dayMonth" | "full";
+	showLabel?: boolean;
+	showMinutes?: boolean;
+	showDescription?: boolean;
+	showThumbnail?: boolean;
+	headingLevel?: "h2" | "h3" | "h4";
+	class?: string;
+}
+
+const {
+	post,
+	dateFormat = "dayMonth",
+	showLabel = true,
+	showMinutes = true,
+	showDescription = true,
+	showThumbnail = true,
+	headingLevel: Heading = "h3",
+	class: className,
+} = Astro.props;
+
+const parts = postMetaParts(post, { label: showLabel, minutes: showMinutes });
+const thumb = showThumbnail ? post.thumbnail : undefined;
+---
+
+<a
+	class:list={["post-row", className]}
+	href={post.href}
+	data-post-row
+	data-astro-prefetch={post.external ? undefined : true}
+	rel={post.external ? "noopener" : undefined}
+>
+	<div class="post-row-text">
+		<PostMeta date={post.date} dateFormat={dateFormat} parts={parts} />
+		<Heading class="post-row-title">
+			{post.title}
+			{
+				post.external && (
+					<>
+						<svg class="post-row-ext" aria-hidden="true" width="0.85em" height="0.85em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7l-10 10" /><path d="M8 7h9v9" /></svg>
+						<span class="sr-only">{metaCopy.externalSr}</span>
+					</>
+				)
+			}
+		</Heading>
+		{showDescription && <p class="post-row-desc">{post.description}</p>}
+	</div>
+	{
+		thumb && (
+			<div class="post-row-thumb" aria-hidden="true">
+				<Thumbnail name={thumb} part={post.part?.roman} />
+			</div>
+		)
+	}
+</a>
+
+<style>
+	.post-row {
+		display: flex;
+		align-items: center;
+		gap: 36px;
+		color: inherit;
+		text-decoration: none;
+		scroll-margin-block: 96px;
+	}
+	.post-row:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 8px;
+		border-radius: var(--radius-md);
+	}
+	.post-row-text {
+		flex: 1;
+		min-width: 0;
+	}
+	.post-row-title {
+		display: block;
+		margin: 8px 0 0;
+		font-family: var(--font-sans);
+		font-size: var(--text-26);
+		font-weight: 600;
+		line-height: 1.22;
+		letter-spacing: -0.012em;
+		color: var(--ink);
+		text-wrap: pretty;
+		transition: color var(--dur) var(--ease);
+	}
+	.post-row:hover .post-row-title {
+		color: var(--accent);
+	}
+	.post-row-ext {
+		display: inline-block;
+		vertical-align: -0.05em;
+	}
+	.post-row-desc {
+		display: block;
+		margin: 8px 0 0;
+		font-size: var(--text-16);
+		line-height: 1.6;
+		color: var(--muted);
+	}
+	.post-row-thumb {
+		flex: 0 0 176px;
+		height: 114px;
+		overflow: hidden;
+	}
+	@media (max-width: 767px) {
+		.post-row {
+			align-items: flex-start;
+			gap: 16px;
+		}
+		.post-row-title {
+			margin-top: 6px;
+			font-size: var(--text-21);
+			line-height: 1.25;
+			letter-spacing: 0;
+		}
+		.post-row-desc {
+			margin: 6px 0 0;
+			line-height: 1.55;
+		}
+		.post-row-thumb {
+			flex-basis: 96px;
+			height: 72px;
+			margin-top: 2px;
+		}
+	}
+</style>

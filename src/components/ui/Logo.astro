@@ -1,0 +1,55 @@
+---
+import { headerCopy } from "@/content/copy/header";
+import { withBase } from "@/utils/path";
+
+interface Props {
+	href?: string | null;
+	class?: string;
+}
+
+const { href = "/", class: className } = Astro.props;
+const { logo } = headerCopy;
+const Tag = href === null ? "span" : "a";
+---
+
+<Tag class:list={["logo", className]} href={href === null ? undefined : withBase(href)} aria-label={href === null ? undefined : logo.label}>
+	<span class="logo-prefix">{logo.prefix}</span>{logo.name}<span class="logo-suffix">{logo.suffix}</span><span class="logo-cursor" aria-hidden="true"></span>
+</Tag>
+
+<style>
+	.logo {
+		display: inline-flex;
+		align-items: center;
+		font-family: var(--font-mono);
+		font-size: var(--text-16);
+		font-weight: 500;
+		line-height: 1.5;
+		color: var(--ink);
+		text-decoration: none;
+		white-space: nowrap;
+	}
+	a.logo:focus-visible {
+		outline-offset: 4px;
+		border-radius: var(--radius-sm);
+	}
+	.logo-prefix {
+		color: var(--soft);
+	}
+	.logo-suffix {
+		color: var(--accent);
+	}
+	.logo-cursor {
+		display: inline-block;
+		width: 8px;
+		height: 17px;
+		margin-left: 5px;
+		background: var(--accent);
+	}
+	@media (max-width: 767px) {
+		.logo-cursor {
+			width: 7px;
+			height: 15px;
+			margin-left: 4px;
+		}
+	}
+</style>

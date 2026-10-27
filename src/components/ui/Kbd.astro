@@ -1,0 +1,41 @@
+---
+interface Props {
+	size?: "sm" | "md";
+	class?: string;
+}
+
+const { size = "md", class: className } = Astro.props;
+---
+
+<kbd class:list={["kbd", `kbd-${size}`, className]}><slot /></kbd>
+
+<style>
+	.kbd {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		box-sizing: border-box;
+		border: 1px solid var(--rule-strong);
+		border-bottom-width: 2px;
+		background: var(--paper);
+		font-family: var(--font-mono);
+		font-weight: 400;
+		line-height: 1;
+		color: var(--ink);
+		white-space: nowrap;
+	}
+	.kbd-md {
+		min-width: 26px;
+		height: 26px;
+		padding: 0 7px;
+		border-radius: var(--radius-sm);
+		font-size: var(--text-14);
+	}
+	.kbd-sm {
+		min-width: 22px;
+		height: 22px;
+		padding: 0 6px;
+		border-radius: 5px;
+		font-size: var(--text-12);
+	}
+</style>

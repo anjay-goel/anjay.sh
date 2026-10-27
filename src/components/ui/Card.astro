@@ -1,0 +1,61 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = Omit<HTMLAttributes<"a">, "href"> & {
+	href?: string;
+	padding?: "none" | "md" | "lg";
+	as?: "a" | "div" | "article" | "li";
+};
+
+const { href, padding = "md", as, class: className, ...rest } = Astro.props;
+const Tag = as ?? (href ? "a" : "div");
+---
+
+<Tag class:list={["card", `card-pad-${padding}`, className]} href={Tag === "a" ? href : undefined} {...rest}>
+	<slot />
+</Tag>
+
+<style>
+	.card {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+		border: 1px solid var(--rule);
+		border-radius: var(--radius-xl);
+		background: var(--paper);
+		color: inherit;
+		text-decoration: none;
+		overflow: hidden;
+		transition: border-color var(--dur) var(--ease);
+	}
+	.card-pad-md {
+		padding: 18px;
+	}
+	.card-pad-lg {
+		padding: 30px 28px 26px;
+	}
+	.card-pad-none {
+		padding: 0;
+	}
+	a.card:hover,
+	.card:has(:global(.card-link:hover)) {
+		border-color: var(--accent);
+	}
+	a.card:hover :global(.card-title),
+	.card:has(:global(.card-link:hover)) :global(.card-title) {
+		color: var(--accent);
+	}
+	a.card:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+		border-radius: var(--radius-xl);
+	}
+	.card :global(.card-title) {
+		transition: color var(--dur) var(--ease);
+	}
+	@media (max-width: 767px) {
+		.card {
+			border-radius: var(--radius-lg);
+		}
+	}
+</style>

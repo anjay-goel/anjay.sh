@@ -1,38 +1,30 @@
-{/* Inlined to avoid FOUC — this is a parser-blocking script. */}
+<meta name="theme-color" content="#f6f6f5" />
 <script is:inline>
 	(() => {
-		try {
-			const s = localStorage.getItem("theme");
-			const d = window.matchMedia("(prefers-color-scheme: dark)").matches;
-			document.documentElement.dataset.theme = s || (d ? "dark" : "light");
-		} catch {}
+		const root = document.documentElement;
+		const media = matchMedia("(prefers-color-scheme: dark)");
+		const colors = { light: "#f6f6f5", dark: "#131313" };
+		const stored = () => {
+			try {
+				const v = localStorage.getItem("theme");
+				return v === "light" || v === "dark" ? v : null;
+			} catch {
+				return null;
+			}
+		};
+		const apply = (theme) => {
+			root.dataset.theme = theme;
+			const meta = document.querySelector('meta[name="theme-color"]');
+			if (meta) meta.setAttribute("content", colors[theme]);
+		};
+		apply(stored() ?? (media.matches ? "dark" : "light"));
+		document.addEventListener("theme-change", (e) => {
+			const theme = e.detail && e.detail.theme;
+			if (theme === "light" || theme === "dark") apply(theme);
+		});
+		media.addEventListener("change", (e) => {
+			if (stored()) return;
+			document.dispatchEvent(new CustomEvent("theme-change", { detail: { theme: e.matches ? "dark" : "light" } }));
+		});
 	})();
-
-	function syncThemeColor() {
-		const meta = document.querySelector("meta[name='theme-color']");
-		if (!meta) return;
-		const bg = getComputedStyle(document.documentElement).getPropertyValue("--theme-bg").trim();
-		if (bg) meta.setAttribute("content", `hsl(${bg})`);
-	}
-
-	addEventListener("DOMContentLoaded", () => {
-		syncThemeColor();
-		requestAnimationFrame(() => document.documentElement.classList.add("theme-ready"));
-	});
-
-	const lightModePref = window.matchMedia("(prefers-color-scheme: light)");
-
-	function setTheme(newTheme) {
-		if (newTheme !== "light" && newTheme !== "dark") return;
-		document.documentElement.setAttribute("data-theme", newTheme);
-		syncThemeColor();
-	}
-
-	document.addEventListener("theme-change", (e) => setTheme(e.detail.theme));
-	lightModePref.addEventListener("change", (e) => {
-		let stored = null;
-		try { stored = localStorage.getItem("theme"); } catch {}
-		if (stored) return;
-		document.dispatchEvent(new CustomEvent("theme-change", { detail: { theme: e.matches ? "light" : "dark" } }));
-	});
 </script>

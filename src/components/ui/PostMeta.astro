@@ -1,0 +1,28 @@
+---
+import { metaCopy } from "@/content/copy/meta";
+import type { MetaPart } from "@/data/post";
+import { formatDayMonth, formatDayMonthYear } from "@/utils/date";
+
+interface Props {
+	date?: Date;
+	dateFormat?: "dayMonth" | "full";
+	parts?: MetaPart[];
+	as?: "p" | "span" | "div";
+	class?: string;
+}
+
+const { date, dateFormat = "full", parts = [], as: Tag = "span", class: className } = Astro.props;
+const items = parts.map((p) => (typeof p === "string" ? { text: p, accent: false } : { text: p.text, accent: Boolean(p.accent) }));
+const dateText = date ? (dateFormat === "dayMonth" ? formatDayMonth(date) : formatDayMonthYear(date)) : undefined;
+---
+
+<Tag class:list={["meta", "post-meta", className]}>{dateText && <time datetime={date?.toISOString()}>{dateText}</time>}{items.map((item, i) => <>{(i > 0 || dateText) && metaCopy.separator}<span class:list={[item.accent && "post-meta-accent"]}>{item.text}</span></>)}</Tag>
+
+<style>
+	.post-meta {
+		display: block;
+	}
+	.post-meta-accent {
+		color: var(--accent);
+	}
+</style>

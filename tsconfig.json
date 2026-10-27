@@ -27,6 +27,15 @@
       ],
       "@/site-config": [
         "./src/site.config.ts"
+      ],
+      "@/content/*": [
+        "./src/content/*"
+      ],
+      "@/scripts/*": [
+        "./src/scripts/*"
+      ],
+      "@/styles/*": [
+        "./src/styles/*"
       ]
     }
   },

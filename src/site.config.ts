@@ -42,25 +42,6 @@ export const siteConfig: SiteConfig = {
 	},
 };
 
-export const menuLinks: { path: string; title: string }[] = [
-	{
-		path: "/",
-		title: "Home",
-	},
-	{
-		path: "/posts/",
-		title: "Posts",
-	},
-	{
-		path: "/showcase/",
-		title: "Showcase",
-	},
-	{
-		path: "/about/",
-		title: "About",
-	},
-];
-
 export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
 	styleOverrides: {
 		borderRadius: "4px",

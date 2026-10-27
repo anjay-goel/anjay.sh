@@ -1,3 +1,27 @@
-<a class="sr-only focus:not-sr-only focus:fixed focus:start-1 focus:top-1.5" href="#main"
-	>skip to content
-</a>
+---
+import { headerCopy } from "@/content/copy/header";
+---
+
+<a class="skip-link" href="#main">{headerCopy.skipLink}</a>
+
+<style>
+	.skip-link {
+		position: absolute;
+		top: 8px;
+		left: 8px;
+		z-index: 100;
+		padding: 10px 14px;
+		border: 1px solid var(--rule);
+		border-radius: var(--radius-md);
+		background: var(--paper);
+		color: var(--accent);
+		font-family: var(--font-sans);
+		font-size: var(--text-14);
+		font-weight: 500;
+		transform: translateY(-200%);
+	}
+	.skip-link:focus-visible,
+	.skip-link:focus {
+		transform: none;
+	}
+</style>

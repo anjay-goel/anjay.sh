@@ -1,177 +1,214 @@
 ---
-import { showcase } from "@/data/showcase";
-import { menuLinks, siteConfig } from "@/site-config";
+import ThemeToggle from "@/components/ThemeToggle.astro";
+import Logo from "@/components/ui/Logo.astro";
+import { headerCopy } from "@/content/copy/header";
 import { withBase } from "@/utils/path";
-import ThemeToggle from "../ThemeToggle.astro";
 
-const url = new URL(Astro.request.url);
-const wordmark = siteConfig.title;
+interface Props {
+	current?: string | null;
+	dense?: boolean;
+}
 
-const visibleMenuLinks = menuLinks.filter((link) => {
-	if (link.path === "/showcase/" && showcase.length === 0) return false;
-	return true;
-});
+const { current, dense = false } = Astro.props;
+const { nav, search } = headerCopy;
+const pathname = Astro.url.pathname;
 
-const isActive = (path: string) => {
-	const target = withBase(path);
-	if (path === "/") return url.pathname === target;
-	return url.pathname === target || url.pathname.startsWith(target);
+const isCurrent = (item: (typeof nav.items)[number]) => {
+	if (current !== undefined) return current === item.path;
+	return item.match.some((m) => {
+		const target = withBase(m);
+		return m === "/" ? pathname === target : pathname.startsWith(target);
+	});
 };
 
-const navIcons: Record<string, string> = {
-	"/": '<path d="M2.5 6.5 8 2l5.5 4.5V13a1 1 0 0 1-1 1h-2.5v-4h-4v4H3.5a1 1 0 0 1-1-1Z"/>',
-	"/posts/":
-		'<path d="M3 2.5h7l3 3V13a.5.5 0 0 1-.5.5h-9.5a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5Z"/><path d="M10 2.5V5.5h3"/><path d="M5.5 8.5h5"/><path d="M5.5 11h3.5"/>',
-	"/showcase/":
-		'<rect x="2" y="4.5" width="12" height="8.5" rx="1"/><path d="M5.5 4.5V3a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v1.5"/>',
-	"/about/":
-		'<circle cx="8" cy="6" r="2.5"/><path d="M3 13c.6-2.4 2.6-3.5 5-3.5s4.4 1.1 5 3.5"/>',
-};
+const items = nav.items.map((item) => ({ ...item, href: withBase(item.path), current: isCurrent(item) }));
+
+const searchIcon =
+	'<circle cx="10" cy="10" r="7"></circle><path d="M21 21l-6 -6"></path>';
 ---
 
-<header class="site-header" id="main-header">
-	<a href={withBase("/")} class="wordmark">{wordmark}</a>
-	<div class="header-right">
-		<nav class="nav" aria-label="Primary">
-			{
-				visibleMenuLinks.map((link) => (
-					<a
-						aria-current={isActive(link.path) ? "page" : false}
-						class:list={[{ active: isActive(link.path) }]}
-						data-astro-prefetch
-						href={withBase(link.path)}
-					>
-						<svg
-							aria-hidden="true"
-							viewBox="0 0 16 16"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="1.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							set:html={navIcons[link.path] ?? ""}
-						/>
-						<span>{link.title}</span>
-					</a>
-				))
-			}
-		</nav>
-		<ThemeToggle />
+<header class:list={["site-header", dense && "site-header-dense"]}>
+	<div class="site-header-bar">
+		<Logo />
+		<div class="site-header-right">
+			<nav class="site-nav site-nav-desktop" aria-label={nav.label}>
+				{
+					items.map((item) => (
+						<a class="site-nav-link" href={item.href} aria-current={item.current ? "page" : undefined} data-label={item.title} data-astro-prefetch>
+							{item.title}
+						</a>
+					))
+				}
+			</nav>
+			<div class="site-header-actions">
+				<button class="search-btn" type="button" data-search-open>
+					<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={searchIcon} />
+					<span>{search.button}</span>
+				</button>
+				<button class="search-icon-btn" type="button" aria-label={search.label} data-search-open>
+					<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={searchIcon} />
+				</button>
+				<ThemeToggle />
+			</div>
+		</div>
 	</div>
+	<nav class="site-nav site-nav-phone" aria-label={nav.label}>
+		{
+			items.map((item) => (
+				<a class="site-nav-link" href={item.href} aria-current={item.current ? "page" : undefined} data-label={item.title}>
+					{item.title}
+				</a>
+			))
+		}
+	</nav>
 </header>
 
+<script>
+	for (const btn of document.querySelectorAll<HTMLButtonElement>("[data-search-open]")) {
+		btn.addEventListener("click", () => {
+			document.dispatchEvent(new CustomEvent("search:open", { detail: { trigger: btn } }));
+		});
+	}
+</script>
+
 <style>
-	.site-header {
+	.site-header-bar {
 		display: flex;
-		align-items: baseline;
+		align-items: center;
 		justify-content: space-between;
 		gap: 24px;
-		margin-bottom: 72px;
+		padding: 26px 0;
+		border-bottom: 1px solid var(--rule);
 	}
-	.wordmark {
-		font-family: var(--font-serif);
-		font-size: 17px;
+	.site-header-dense .site-header-bar {
+		padding: 24px 0;
+	}
+	.site-header-right {
+		display: flex;
+		align-items: center;
+		gap: 28px;
+		min-width: 0;
+	}
+	.site-nav-desktop {
+		display: flex;
+		align-items: center;
+		gap: 28px;
+		font-size: var(--text-16);
+	}
+	.site-nav-desktop .site-nav-link {
+		padding: 4px 0;
+		border-bottom: 1.5px solid transparent;
+		color: var(--muted);
+		line-height: 1.5;
+	}
+	.site-nav-desktop .site-nav-link:hover,
+	.site-nav-desktop .site-nav-link[aria-current="page"] {
+		border-bottom-color: var(--accent);
+		color: var(--accent);
 		font-weight: 500;
-		letter-spacing: -0.01em;
-		color: hsl(var(--theme-text));
-		transition: color 0.2s ease, border-color 0.2s ease;
 	}
-	.wordmark:hover {
-		color: hsl(var(--theme-accent));
+	.site-nav-link {
+		display: inline-flex;
+		flex-direction: column;
+		align-items: center;
 	}
-	.header-right {
+	.site-nav-link::after {
+		content: attr(data-label);
+		height: 0;
+		overflow: hidden;
+		visibility: hidden;
+		font-weight: 500;
+		pointer-events: none;
+		user-select: none;
+	}
+	.site-nav-link:focus-visible {
+		outline-offset: 4px;
+		border-radius: var(--radius-sm);
+	}
+	.site-header-actions {
 		display: flex;
-		align-items: baseline;
-		gap: 22px;
+		align-items: center;
+		gap: 8px;
 	}
-	.nav {
+	.search-btn {
 		display: flex;
-		align-items: baseline;
-		gap: 22px;
+		align-items: center;
+		gap: 10px;
+		height: 44px;
+		padding: 0 10px 0 14px;
+		border: 1px solid var(--rule);
+		border-radius: var(--radius-lg);
+		background: var(--paper);
+		color: var(--soft);
 		font-family: var(--font-sans);
-		font-size: 13.5px;
-		color: hsl(var(--theme-text) / 0.72);
+		font-size: var(--text-14);
+		white-space: nowrap;
 	}
-	.nav a {
-		display: inline-block;
-		position: relative;
-		padding-bottom: 3px;
-		transition: color 0.2s ease;
+	.search-btn:hover {
+		border-color: var(--accent);
+		color: var(--accent);
 	}
-	/* Indicator overhangs the text slightly so the underline isn't abrupt. */
-	.nav a::after {
-		content: "";
-		position: absolute;
-		left: -3px;
-		right: -3px;
-		bottom: 0;
-		height: 1px;
+	.search-btn:focus-visible,
+	.search-icon-btn:focus-visible {
+		outline-offset: 2px;
+		border-radius: var(--radius-lg);
+	}
+	.search-icon-btn {
+		display: none;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		padding: 0;
+		border: 0;
+		border-radius: var(--radius-lg);
 		background: transparent;
+		color: var(--muted);
 	}
-	.nav a svg {
-		display: inline-block;
-		width: 14px;
-		height: 14px;
-		stroke: currentColor;
-		vertical-align: -2px;
-		margin-right: 6px;
+	.search-icon-btn:hover {
+		color: var(--accent);
 	}
-	.nav a:hover {
-		color: hsl(var(--theme-accent));
-	}
-	.nav a.active {
-		color: hsl(var(--theme-accent));
-	}
-	.nav a.active::after {
-		background: hsl(var(--theme-accent));
+	.site-nav-phone {
+		display: none;
 	}
 
-	@media (max-width: 720px) {
-		.site-header {
-			margin-bottom: 36px;
-			display: grid;
-			grid-template-columns: 1fr auto;
-			grid-template-areas:
-				"wordmark theme"
-				"nav nav";
-			align-items: center;
-			column-gap: 14px;
-			row-gap: 14px;
+	@media (max-width: 767px) {
+		.site-header-bar,
+		.site-header-dense .site-header-bar {
+			padding: 14px 0;
 		}
-		.wordmark { grid-area: wordmark; }
-		.header-right { display: contents; }
-		.theme-toggle { grid-area: theme; justify-self: end; }
-		.nav {
-			grid-area: nav;
-			gap: 22px;
-			font-size: 13px;
-			flex-wrap: wrap;
-			justify-content: flex-start;
-		}
-		.nav a {
-			/* Add top tap padding; desktop rule keeps the indicator space below. */
-			padding-top: 6px;
-		}
-		.nav a svg {
-			width: 13px;
-			height: 13px;
-		}
-	}
-
-	@media (max-width: 420px) {
-		.site-header {
-			margin-bottom: 28px;
-			row-gap: 12px;
-		}
-		.wordmark {
-			font-size: 16px;
-		}
-		.nav {
-			gap: 18px;
-			font-size: 12.5px;
-		}
-		.nav a svg {
+		.site-nav-desktop,
+		.search-btn {
 			display: none;
+		}
+		.search-icon-btn {
+			display: flex;
+		}
+		.site-header-actions {
+			gap: 4px;
+		}
+		.site-nav-phone {
+			display: flex;
+			gap: 22px;
+			border-bottom: 1px solid var(--rule);
+			font-size: var(--text-14);
+			overflow-x: auto;
+			scrollbar-width: none;
+		}
+		.site-nav-phone .site-nav-link {
+			flex: none;
+			justify-content: center;
+			height: 44px;
+			color: var(--muted);
+		}
+		.site-nav-phone .site-nav-link:hover,
+		.site-nav-phone .site-nav-link[aria-current="page"] {
+			box-shadow: inset 0 -2px 0 var(--accent);
+			color: var(--accent);
+			font-weight: 500;
+		}
+		.site-nav-phone .site-nav-link:focus-visible {
+			outline-offset: -2px;
 		}
 	}
 </style>

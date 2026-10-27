@@ -1,0 +1,40 @@
+---
+import { type CoverKey, coverArt } from "./cover-art";
+
+interface Props {
+	name: CoverKey;
+	detail?: boolean | "desktop";
+	class?: string;
+}
+
+const { name, detail = true, class: className } = Astro.props;
+const art = coverArt[name];
+---
+
+<svg
+	class:list={["cover-art", detail === false && "cover-art-plain", detail === "desktop" && "cover-art-responsive", className]}
+	viewBox={art.viewBox}
+	preserveAspectRatio="xMidYMid meet"
+	fill="none"
+	width="100%"
+	height="100%"
+	aria-hidden="true"
+	focusable="false"
+	set:html={art.body}
+/>
+
+<style>
+	.cover-art {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+	.cover-art-plain :global(.art-detail) {
+		display: none;
+	}
+	@media (max-width: 767px) {
+		.cover-art-responsive :global(.art-detail) {
+			display: none;
+		}
+	}
+</style>

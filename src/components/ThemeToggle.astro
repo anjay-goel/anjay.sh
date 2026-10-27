@@ -1,61 +1,63 @@
-<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">
-	<span class="icon" aria-hidden="true"></span>
-	<span class="label"></span>
+---
+import { headerCopy } from "@/content/copy/header";
+
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+const { theme } = headerCopy;
+---
+
+<button
+	class:list={["icon-btn", "theme-toggle", className]}
+	type="button"
+	aria-label={theme.label}
+	data-theme-toggle
+	data-label-to-dark={theme.toDark}
+	data-label-to-light={theme.toLight}
+>
+	<svg class="theme-icon-moon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"></path></svg>
+	<svg class="theme-icon-sun" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"></path></svg>
 </button>
 
-<style is:global>
+<style>
 	.theme-toggle {
-		display: inline-block;
-		padding: 6px 12px;
-		border-radius: 999px;
-		background: var(--accent-soft);
-		color: hsl(var(--theme-text-muted));
-		border: 1px solid transparent;
-		font-family: var(--font-sans);
-		font-size: 12px;
-		font-weight: 500;
-		line-height: 1.4;
-		cursor: pointer;
-		transition: background 0.2s ease, color 0.2s ease;
+		flex: none;
 	}
-	.theme-toggle:hover {
-		background: var(--accent-soft-strong);
-		color: hsl(var(--theme-accent));
+	.theme-icon-sun {
+		display: none;
 	}
-	.theme-toggle:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
+	:global(:root[data-theme="dark"]) .theme-icon-sun {
+		display: block;
 	}
-
-	.theme-toggle .icon {
-		display: inline-block;
-		width: 1em;
-		font-size: 13px;
-		margin-right: 6px;
-		text-align: center;
-		transform: translateY(-1px);
+	:global(:root[data-theme="dark"]) .theme-icon-moon {
+		display: none;
 	}
-	.theme-toggle .icon::before { content: "☾"; }
-	[data-theme="dark"] .theme-toggle .icon::before { content: "☀"; }
-
-	.theme-toggle .label {
-		display: inline-block;
-		min-width: 2.6em;
-		text-align: left;
+	@media (prefers-color-scheme: dark) {
+		:global(:root:not([data-theme])) .theme-icon-sun {
+			display: block;
+		}
+		:global(:root:not([data-theme])) .theme-icon-moon {
+			display: none;
+		}
 	}
-	.theme-toggle .label::before { content: "Dark"; }
-	[data-theme="dark"] .theme-toggle .label::before { content: "Light"; }
 </style>
 
 <script>
-	const r = document.documentElement;
-	const btn = document.getElementById("theme-toggle") as HTMLButtonElement | null;
-	if (btn) {
-		btn.addEventListener("click", () => {
-			const next = r.dataset.theme === "dark" ? "light" : "dark";
-			r.dataset.theme = next;
-			try { localStorage.setItem("theme", next); } catch {}
-			document.dispatchEvent(new CustomEvent("theme-change", { detail: { theme: next } }));
-		});
-	}
+	import { getTheme, THEME_EVENT, toggleTheme } from "@/scripts/theme";
+
+	const buttons = document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]");
+
+	const syncLabels = () => {
+		const dark = getTheme() === "dark";
+		for (const btn of buttons) {
+			const label = dark ? btn.dataset.labelToLight : btn.dataset.labelToDark;
+			if (label) btn.setAttribute("aria-label", label);
+		}
+	};
+
+	for (const btn of buttons) btn.addEventListener("click", () => toggleTheme());
+	document.addEventListener(THEME_EVENT, () => requestAnimationFrame(syncLabels));
+	syncLabels();
 </script>

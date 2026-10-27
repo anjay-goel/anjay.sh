@@ -1,0 +1,34 @@
+---
+import { type ThumbnailKey, thumbnailArt, thumbnailViewBox } from "./thumbnail-art";
+
+interface Props {
+	name: ThumbnailKey;
+	part?: string;
+	class?: string;
+}
+
+const defaultParts: Partial<Record<ThumbnailKey, string>> = { proctree: "I", netns: "II", caps: "III" };
+const { name, part = defaultParts[name] ?? "", class: className } = Astro.props;
+const escapeXml = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const body = thumbnailArt[name].replaceAll("__PART__", escapeXml(part));
+---
+
+<svg
+	class:list={["thumbnail-art", className]}
+	viewBox={thumbnailViewBox}
+	preserveAspectRatio="xMidYMid meet"
+	fill="none"
+	width="100%"
+	height="100%"
+	aria-hidden="true"
+	focusable="false"
+	set:html={body}
+/>
+
+<style>
+	.thumbnail-art {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+</style>

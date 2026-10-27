@@ -1,78 +1,128 @@
 ---
+import Socials from "@/components/ui/Socials.astro";
+import { footerCopy } from "@/content/copy/footer";
 import { siteConfig } from "@/site-config";
 import { withBase } from "@/utils/path";
 
+interface Props {
+	variant?: "standard" | "home";
+}
+
+const { variant = "standard" } = Astro.props;
 const year = new Date().getFullYear();
+const copyright = footerCopy.copyright(year, siteConfig.author);
+const rssHref = withBase("/rss.xml");
+const colophonHref = withBase("/colophon/");
+const email = siteConfig.profile?.email;
+const { home } = footerCopy;
 ---
 
-<footer class="site-footer">
-	<div class="left">
-		<span>&copy; {year} {siteConfig.author}</span>
-		{!siteConfig.hideThemeCredit && (
-			<span class="theme-credit">
-				🚀 Powered by <a href="https://github.com/anjay-goel/astro-sienna" rel="noopener">Astro Sienna</a>
-			</span>
-		)}
-	</div>
-	<div class="right">
-		<a href={withBase("/tags/")}>Tags</a>
-		<span class="sep" aria-hidden="true">·</span>
-		<a href={withBase("/rss.xml")}>RSS</a>
-	</div>
-</footer>
+{
+	variant === "home" ? (
+		<footer class="site-footer site-footer-home">
+			<div class="footer-home-row">
+				<p class="footer-home-line">{email ? <a class="footer-home-link" href={`mailto:${email}`}>{home.email}</a> : home.email}{home.middle}<a class="footer-home-link" href={rssHref}>{home.rss}</a>{home.end}</p>
+				<div class="footer-socials-inline">
+					<Socials />
+				</div>
+				<div class="footer-socials-boxed">
+					<Socials variant="boxed" label={false} />
+				</div>
+			</div>
+			<p class="footer-legal footer-legal-home">{copyright}{footerCopy.separator}<a class="link-quiet" href={colophonHref}>{footerCopy.colophon}</a></p>
+		</footer>
+	) : (
+		<footer class="site-footer site-footer-standard">
+			<p class="footer-legal">{copyright}<span class="footer-rss">{footerCopy.separator}<a class="link-quiet" href={rssHref}>{footerCopy.rss}</a></span>{footerCopy.separator}<a class="link-quiet" href={colophonHref}>{footerCopy.colophon}</a></p>
+		</footer>
+	)
+}
 
 <style>
 	.site-footer {
-		border-top: 1px solid var(--hairline);
-		padding-top: 22px;
+		border-top: 1px solid var(--rule);
+	}
+	.footer-legal {
+		margin: 0;
+		font-family: var(--font-mono);
+		font-size: var(--text-12);
+		line-height: 1.8;
+		color: var(--soft);
+	}
+	.footer-legal a:focus-visible {
+		outline-offset: 2px;
+	}
+	.site-footer-standard {
+		padding: 24px 0 48px;
+	}
+	.site-footer-home {
+		padding: 56px 0 64px;
+	}
+	.footer-home-row {
 		display: flex;
-		align-items: center;
+		flex-wrap: wrap;
+		align-items: flex-end;
 		justify-content: space-between;
-		flex-wrap: wrap;
-		gap: 16px;
+		gap: 32px;
+	}
+	.footer-home-line {
+		flex: 1 1 380px;
+		min-width: 0;
+		margin: 0;
 		font-family: var(--font-sans);
-		font-size: 12.5px;
-		color: hsl(var(--theme-text) / 0.72);
-		transition: border-color 0.35s ease;
+		font-size: var(--text-18);
+		line-height: 1.6;
+		color: var(--muted);
 	}
-	.site-footer .left {
-		display: flex;
-		gap: 18px;
-		align-items: center;
-		flex-wrap: wrap;
+	.footer-home-link {
+		color: var(--ink);
+		text-decoration-line: underline;
+		text-decoration-thickness: 1px;
+		text-decoration-color: var(--rule-strong);
+		text-underline-offset: 4px;
 	}
-	.site-footer .theme-credit {
-		font-size: 11.5px;
-		color: hsl(var(--theme-text) / 0.55);
+	.footer-home-link:hover {
+		color: var(--accent);
+		text-decoration-color: var(--accent);
+		text-decoration-thickness: 2px;
 	}
-	.site-footer .theme-credit a {
-		color: inherit;
-		border-bottom: 1px dotted hsl(var(--theme-text) / 0.35);
+	.footer-socials-boxed {
+		display: none;
 	}
-	.site-footer .theme-credit a:hover {
-		color: hsl(var(--theme-accent));
-		border-bottom-color: currentColor;
-	}
-	.site-footer .right {
-		display: flex;
-		align-items: center;
-		gap: 12px;
-	}
-	.site-footer .right .sep {
-		color: var(--faint);
-	}
-	.site-footer a {
-		color: hsl(var(--theme-text-muted));
-		transition: color 0.2s ease;
-	}
-	.site-footer a:hover {
-		color: hsl(var(--theme-accent));
+	.footer-legal-home {
+		margin-top: 44px;
+		padding-top: 20px;
+		border-top: 1px dashed var(--rule-strong);
+		line-height: 1.5;
 	}
 
-	@media (max-width: 420px) {
-		.site-footer {
-			font-size: 11.5px;
-			gap: 12px;
+	@media (max-width: 767px) {
+		.site-footer-standard {
+			padding: 20px 0 40px;
+		}
+		.footer-rss {
+			display: none;
+		}
+		.site-footer-home {
+			padding: 36px 0 48px;
+		}
+		.footer-home-row {
+			display: block;
+		}
+		.footer-home-line {
+			font-size: var(--text-16);
+		}
+		.footer-socials-inline {
+			display: none;
+		}
+		.footer-socials-boxed {
+			display: block;
+			margin-top: 20px;
+		}
+		.footer-legal-home {
+			margin-top: 28px;
+			padding-top: 16px;
+			line-height: 1.8;
 		}
 	}
 </style>
