@@ -1,0 +1,38 @@
+---
+import Kbd from "@/components/ui/Kbd.astro";
+import { type Shortcut, shortcutsCopy } from "@/content/copy/shortcuts";
+
+interface Props {
+	shortcut: Shortcut;
+	size?: "sm" | "md";
+	class?: string;
+}
+
+const { shortcut, size = "md", class: className } = Astro.props;
+const joiner = shortcut.join ? shortcutsCopy.joins[shortcut.join] : undefined;
+---
+
+<span class:list={["shortcut-keys", className]}>
+	{
+		shortcut.keys.map((key, i) => (
+			<>
+				{i > 0 && joiner && <span class="shortcut-join">{joiner}</span>}
+				<Kbd size={size}>{key}</Kbd>
+			</>
+		))
+	}
+</span>
+
+<style>
+	.shortcut-keys {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+	.shortcut-join {
+		font-family: var(--font-sans);
+		font-size: var(--text-12);
+		line-height: 1;
+		color: var(--soft);
+	}
+</style>

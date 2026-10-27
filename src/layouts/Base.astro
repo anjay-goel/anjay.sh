@@ -2,6 +2,8 @@
 import BaseHead from "@/components/BaseHead.astro";
 import SkipLink from "@/components/SkipLink.astro";
 import ThemeProvider from "@/components/ThemeProvider.astro";
+import SearchDialog from "@/components/search/SearchDialog.astro";
+import ShortcutsDialog from "@/components/shortcuts/ShortcutsDialog.astro";
 import Footer from "@/components/layout/Footer.astro";
 import Header from "@/components/layout/Header.astro";
 import Container from "@/components/ui/Container.astro";
@@ -51,6 +53,8 @@ const {
 			{footer !== "none" && <Footer variant={footer} />}
 		</Container>
 		<slot name="after" />
+		<SearchDialog />
+		<ShortcutsDialog />
 	</body>
 </html>
 
