@@ -1,0 +1,118 @@
+---
+import { postCopy } from "@/content/copy/post";
+
+export interface SeriesItem {
+	roman: string;
+	title: string;
+	href: string;
+	current: boolean;
+}
+
+interface Props {
+	title: string;
+	href: string;
+	items: SeriesItem[];
+	index: number;
+}
+
+const { title, href, items, index } = Astro.props;
+---
+
+<section class="series-box" aria-label={postCopy.series.label}>
+	<p class="series-kicker">{postCopy.series.boxLabel}</p>
+	<p class="series-title"><a href={href}>{title}</a></p>
+	<ol class="series-parts">
+		{
+			items.map((item) => (
+				<li>
+					<a class:list={["series-part", item.current && "is-current"]} href={item.href} aria-current={item.current ? "page" : undefined}>
+						<span class="series-roman">{item.roman}</span>
+						<span class="series-part-title">{item.title}</span>
+					</a>
+				</li>
+			))
+		}
+	</ol>
+	<div class="series-steps" aria-hidden="true">{items.map((_, i) => <span class:list={[i < index && "is-done"]} />)}</div>
+	<p class="series-count">{postCopy.series.partOf(index, items.length)}</p>
+</section>
+
+<style>
+	.series-kicker {
+		line-height: normal;
+		margin: 0 0 10px;
+		font-size: var(--text-12);
+		color: var(--soft);
+	}
+	.series-title {
+		margin: 0 0 16px;
+		font-family: var(--font-serif);
+		font-size: var(--text-21);
+		line-height: 1.2;
+		font-weight: 500;
+	}
+	.series-title a:hover {
+		color: var(--accent);
+	}
+	.series-parts {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.series-part {
+		display: flex;
+		gap: 12px;
+		align-items: baseline;
+		padding: 10px 0;
+		border-top: 1px dashed var(--rule-strong);
+		color: var(--muted);
+	}
+	.series-parts li:last-child .series-part {
+		border-bottom: 1px dashed var(--rule-strong);
+	}
+	.series-part:hover,
+	.series-part.is-current {
+		color: var(--accent);
+	}
+	.series-part:focus-visible {
+		outline-offset: 2px;
+	}
+	.series-roman {
+		flex: 0 0 22px;
+		font-family: var(--font-mono);
+		font-size: var(--text-12);
+		color: var(--soft);
+	}
+	.series-part:hover .series-roman,
+	.is-current .series-roman {
+		color: inherit;
+	}
+	.series-part-title {
+		font-size: var(--text-14);
+		line-height: 1.4;
+	}
+	.is-current .series-part-title {
+		font-weight: 500;
+	}
+	.series-steps {
+		display: flex;
+		gap: 4px;
+		margin-top: 16px;
+	}
+	.series-steps span {
+		flex: 1;
+		height: 4px;
+		border-radius: 2px;
+		background: var(--rule);
+	}
+	.series-steps span.is-done {
+		background: var(--accent);
+	}
+	.series-count {
+		line-height: normal;
+		margin: 8px 0 0;
+		font-family: var(--font-mono);
+		font-size: var(--text-12);
+		color: var(--soft);
+	}
+</style>

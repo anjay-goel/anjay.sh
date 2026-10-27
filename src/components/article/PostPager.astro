@@ -1,0 +1,103 @@
+---
+import { postCopy } from "@/content/copy/post";
+
+export interface PagerLink {
+	label: string;
+	title: string;
+	href: string;
+}
+
+interface Props {
+	previous?: PagerLink;
+	next?: PagerLink;
+}
+
+const { previous, next } = Astro.props;
+---
+
+{
+	(previous || next) && (
+		<nav class="pager" aria-label={postCopy.pager.label} data-pagefind-ignore>
+			{previous && (
+				<a class="pager-card" href={previous.href} data-astro-prefetch>
+					<span class="pager-label">{previous.label}</span>
+					<span class="pager-title">{previous.title}</span>
+				</a>
+			)}
+			{next && (
+				<a class="pager-card pager-next" href={next.href} data-astro-prefetch>
+					<span class="pager-label">{next.label}</span>
+					<span class="pager-title">{next.title}</span>
+				</a>
+			)}
+		</nav>
+	)
+}
+
+<style>
+	.pager {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 16px;
+		margin-top: 64px;
+	}
+	.pager-card {
+		display: block;
+		min-width: 0;
+		padding: 20px 22px;
+		border: 1px solid var(--rule);
+		border-radius: var(--radius-lg);
+		background: var(--paper);
+		color: inherit;
+	}
+	.pager-next {
+		text-align: right;
+	}
+	.pager-card:only-child.pager-next {
+		grid-column: 1 / -1;
+	}
+	.pager-card:hover {
+		border-color: var(--accent);
+	}
+	.pager-card:hover .pager-title {
+		color: var(--accent);
+	}
+	.pager-card:focus-visible {
+		outline-offset: 2px;
+		border-radius: var(--radius-lg);
+	}
+	.pager-label {
+		line-height: normal;
+		display: block;
+		font-family: var(--font-mono);
+		font-size: var(--text-12);
+		color: var(--soft);
+	}
+	.pager-title {
+		display: block;
+		margin-top: 6px;
+		font-family: var(--font-serif);
+		font-size: var(--text-21);
+		line-height: 1.3;
+		text-wrap: balance;
+		transition: color var(--dur) var(--ease);
+	}
+	@media (max-width: 767px) {
+		.pager {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			margin-top: 44px;
+		}
+		.pager-card {
+			padding: 16px 18px;
+			border-radius: var(--radius-xl);
+		}
+		.pager-next {
+			text-align: left;
+		}
+		.pager-title {
+			font-size: var(--text-18);
+		}
+	}
+</style>

@@ -1,0 +1,50 @@
+---
+import { postCopy } from "@/content/copy/post";
+import { siteConfig } from "@/site-config";
+import { absoluteUrl } from "@/utils/path";
+
+const comments = siteConfig.comments;
+const themes = import.meta.env.PROD
+	? {
+			light: absoluteUrl("/giscus-light.css", Astro.site),
+			dark: absoluteUrl("/giscus-dark.css", Astro.site),
+		}
+	: { light: "noborder_light", dark: "noborder_dark" };
+---
+
+{
+	comments && (
+		<section class="comments" aria-label={postCopy.comments.label} data-pagefind-ignore>
+			<div
+				class="comments-mount"
+				data-giscus
+				data-repo={comments.repo}
+				data-repo-id={comments.repoId}
+				data-category={comments.category}
+				data-category-id={comments.categoryId}
+				data-theme-light={themes.light}
+				data-theme-dark={themes.dark}
+			/>
+		</section>
+	)
+}
+
+<style>
+	.comments {
+		margin-top: 56px;
+	}
+	.comments-mount {
+		min-height: 1px;
+	}
+	@media (max-width: 767px) {
+		.comments {
+			margin-top: 40px;
+		}
+	}
+</style>
+
+<script>
+	import { initComments } from "@/scripts/comments";
+
+	initComments();
+</script>
