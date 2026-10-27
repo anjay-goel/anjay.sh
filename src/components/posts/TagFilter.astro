@@ -1,0 +1,138 @@
+---
+import { metaCopy } from "@/content/copy/meta";
+import { postsCopy } from "@/content/copy/posts";
+import { tagHref } from "@/data/post";
+import { withBase } from "@/utils/path";
+
+interface Props {
+	tags: string[];
+	current?: string;
+	class?: string;
+}
+
+const { tags, current, class: className } = Astro.props;
+---
+
+<nav class:list={["tag-filter", className]} aria-label={postsCopy.filter.label} data-tag-filter>
+	<a
+		class="tag-filter-link"
+		href={withBase("/posts/")}
+		aria-current={current ? undefined : "page"}
+		data-astro-prefetch
+	>
+		{postsCopy.filter.all}
+	</a>
+	{
+		tags.map((tag) => (
+			<>
+				<span class="tag-filter-sep" aria-hidden="true">
+					·
+				</span>
+				<a
+					class="tag-filter-link"
+					href={tagHref(tag)}
+					aria-current={tag === current ? "page" : undefined}
+					data-astro-prefetch
+				>
+					{metaCopy.tag(tag)}
+				</a>
+			</>
+		))
+	}
+</nav>
+
+<script>
+	function markScrolled(nav: HTMLElement) {
+		nav.toggleAttribute("data-scrolled", nav.scrollLeft > 0);
+	}
+	function setupTagFilters() {
+		for (const nav of document.querySelectorAll<HTMLElement>("[data-tag-filter]")) {
+			const current = nav.querySelector<HTMLElement>("[aria-current]");
+			if (current) {
+				const end = current.offsetLeft + current.offsetWidth;
+				if (end > nav.scrollLeft + nav.clientWidth - 56) {
+					nav.scrollLeft = current.offsetLeft - nav.clientWidth / 3;
+				}
+			}
+			markScrolled(nav);
+			nav.addEventListener("scroll", () => markScrolled(nav), { passive: true });
+		}
+	}
+	setupTagFilters();
+</script>
+
+<style>
+	.tag-filter {
+		display: flex;
+		align-items: center;
+		gap: 0 4px;
+		margin: 20px 0 0 -6px;
+		overflow-x: auto;
+		white-space: nowrap;
+		scrollbar-width: none;
+		--fade-start: 0px;
+		-webkit-mask-image: linear-gradient(
+			to right,
+			transparent,
+			#000 var(--fade-start),
+			#000 calc(100% - 48px),
+			transparent
+		);
+		mask-image: linear-gradient(
+			to right,
+			transparent,
+			#000 var(--fade-start),
+			#000 calc(100% - 48px),
+			transparent
+		);
+	}
+	.tag-filter[data-scrolled] {
+		--fade-start: 32px;
+	}
+	.tag-filter::-webkit-scrollbar {
+		display: none;
+	}
+	.tag-filter::after {
+		content: "";
+		flex: 0 0 40px;
+	}
+	.tag-filter-link {
+		flex: 0 0 auto;
+		display: flex;
+		align-items: center;
+		height: 44px;
+		padding: 0 6px;
+		font-family: var(--font-mono);
+		font-size: var(--text-12);
+		color: var(--muted);
+		text-decoration-line: underline;
+		text-decoration-color: transparent;
+		text-decoration-thickness: 1.5px;
+		text-underline-offset: 5px;
+		transition:
+			color var(--dur) var(--ease),
+			text-decoration-color var(--dur) var(--ease);
+	}
+	.tag-filter-link:hover,
+	.tag-filter-link[aria-current] {
+		color: var(--accent);
+		font-weight: 500;
+		text-decoration-color: currentColor;
+	}
+	.tag-filter-link:focus-visible {
+		outline-offset: -4px;
+		border-radius: var(--radius-sm);
+	}
+	.tag-filter-sep {
+		flex: 0 0 auto;
+		color: var(--rule-strong);
+		font-size: var(--text-16);
+	}
+	@media (max-width: 767px) {
+		.tag-filter {
+			gap: 0 2px;
+			margin: 16px calc(var(--gutter) * -1) 0;
+			padding: 0 calc(var(--gutter) - 6px);
+		}
+	}
+</style>
