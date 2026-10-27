@@ -1,0 +1,68 @@
+---
+import Socials from "@/components/ui/Socials.astro";
+import { homeCopy } from "@/content/copy/home";
+import HomeTerminal from "./HomeTerminal.astro";
+
+interface Props {
+	postCount: number;
+}
+
+const { postCount } = Astro.props;
+const copy = homeCopy.hero;
+---
+
+<section class="hero">
+	<div class="hero-text">
+		<h1 class="page-title">{copy.title}</h1>
+		<p class="hero-intro reading">{copy.intro}</p>
+		<Socials class="hero-socials" iconSize={23} />
+	</div>
+	<HomeTerminal postCount={postCount} />
+</section>
+
+<style>
+	.hero {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 64px;
+		padding: 96px 0 104px;
+	}
+	.hero-text {
+		flex: 999 1 560px;
+		min-width: 0;
+	}
+	.hero > :global(.terminal) {
+		flex: 1 1 342px;
+	}
+	.hero-intro {
+		max-width: 34em;
+		margin: 28px 0 0;
+		font-size: var(--text-21);
+		line-height: 1.6;
+		color: var(--muted);
+	}
+	.hero :global(.hero-socials) {
+		margin-top: 30px;
+	}
+	@media (max-width: 767px) {
+		.hero {
+			display: block;
+			padding: 48px 0 40px;
+		}
+		.hero-intro {
+			margin-top: 20px;
+			font-size: var(--text-18);
+		}
+		.hero :global(.hero-socials) {
+			margin-top: 18px;
+		}
+		.hero :global(.hero-socials svg) {
+			width: 22px;
+			height: 22px;
+		}
+		.hero > :global(.terminal) {
+			margin-top: 28px;
+		}
+	}
+</style>
