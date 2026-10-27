@@ -20,7 +20,6 @@ export const siteConfig: SiteConfig = {
 	ogLocale: "en_US",
 	sortPostsByUpdatedDate: false,
 	title: "Anjay Goel",
-	hideThemeCredit: true,
 	profile: {
 		name: "Anjay Goel",
 		email: "anjay.goel@gmail.com",

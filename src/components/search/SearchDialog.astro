@@ -47,8 +47,9 @@ const searchIcon = '<circle cx="10" cy="10" r="7"></circle><path d="M21 21l-6 -6
 		</button>
 		<button class="search-cancel" type="button" data-search-close>{searchCopy.cancel}</button>
 	</div>
+	<p class="sr-only" aria-live="polite" aria-atomic="true" data-search-live></p>
 	<div class="search-body" data-search-body hidden>
-		<p class="search-status" aria-live="polite" data-search-status></p>
+		<p class="search-status" data-search-status></p>
 		<ul class="search-results" id="search-results" role="listbox" aria-label={searchCopy.resultsLabel} data-search-results></ul>
 		<div class="search-empty" data-search-empty hidden>
 			<p class="search-empty-title" data-search-empty-title></p>
@@ -95,12 +96,6 @@ const searchIcon = '<circle cx="10" cy="10" r="7"></circle><path d="M21 21l-6 -6
 		</li>
 	</template>
 </dialog>
-
-<script>
-	import { initSearch } from "@/scripts/search";
-
-	initSearch();
-</script>
 
 <style>
 	.search {
@@ -275,7 +270,7 @@ const searchIcon = '<circle cx="10" cy="10" r="7"></circle><path d="M21 21l-6 -6
 		margin: 0;
 		font-size: var(--text-16);
 		font-weight: 600;
-		line-height: 1.3;
+		line-height: normal;
 		color: var(--ink);
 	}
 	.search-empty-hint {
@@ -291,11 +286,15 @@ const searchIcon = '<circle cx="10" cy="10" r="7"></circle><path d="M21 21l-6 -6
 		margin: 16px 0 0;
 		padding: 0;
 		list-style: none;
+		line-height: normal;
+	}
+	.search-tags > li {
+		display: flex;
 	}
 	.search-tag {
 		font-family: var(--font-mono);
 		font-size: var(--text-14);
-		line-height: 1.3;
+		line-height: normal;
 	}
 	.search-foot {
 		display: flex;

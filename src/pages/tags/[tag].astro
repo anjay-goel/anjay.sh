@@ -31,7 +31,7 @@ const meta = {
 <PageLayout meta={meta}>
 	<ArchiveHero title={postsCopy.tag.heading(tag)}>
 		{postsCopy.tag.summary(summaries.length, tag)}{postsCopy.separator}<a
-			class="link"
+			class="link link-solid"
 			href={withBase("/posts/")}
 			data-astro-prefetch>{postsCopy.tag.allPosts}</a
 		>

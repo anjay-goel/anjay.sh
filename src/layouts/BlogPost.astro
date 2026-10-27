@@ -1,7 +1,7 @@
 ---
 import "@/styles/article.css";
 import type { MarkdownHeading } from "astro";
-import { Schema } from "astro-seo-schema";
+import JsonLd from "@/components/JsonLd.astro";
 import katexStylesheet from "katex/dist/katex.min.css?url";
 import ArticleHeader, { type HeaderMetaItem } from "@/components/article/ArticleHeader.astro";
 import ArticleIcon from "@/components/article/ArticleIcon.astro";
@@ -102,7 +102,7 @@ const postUrl = absoluteUrl(`/posts/${id}/`, Astro.site);
 <BaseLayout meta={{ articleDate, articleModified, description, ogImage: socialImage, title }} width="article" headerDense>
 	{hasMath && <link rel="stylesheet" href={katexStylesheet} slot="head" />}
 	{hasMermaid && <Mermaid slot="head" />}
-	<Schema
+	<JsonLd
 		slot="head"
 		item={{
 			"@context": "https://schema.org",

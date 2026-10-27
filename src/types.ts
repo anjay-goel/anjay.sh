@@ -65,7 +65,6 @@ export interface SiteConfig {
 		link: string;
 		pingback?: string;
 	};
-	hideThemeCredit?: boolean;
 }
 
 export interface SiteMeta {

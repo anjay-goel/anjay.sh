@@ -12,7 +12,7 @@ const { logo } = headerCopy;
 const Tag = href === null ? "span" : "a";
 ---
 
-<Tag class:list={["logo", className]} href={href === null ? undefined : withBase(href)} aria-label={href === null ? undefined : logo.label}>
+<Tag class:list={["logo", href !== null && "hit-target", className]} href={href === null ? undefined : withBase(href)} aria-label={href === null ? undefined : logo.label}>
 	<span class="logo-prefix">{logo.prefix}</span>{logo.name}<span class="logo-suffix">{logo.suffix}</span><span class="logo-cursor" aria-hidden="true"></span>
 </Tag>
 

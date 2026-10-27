@@ -4,7 +4,7 @@
 	font-weight: 400;
 	font-display: swap;
 	src: url("../assets/fonts/ibm-plex-sans-400.woff2") format("woff2");
-	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+	unicode-range: U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
 }
 
 @font-face {
@@ -13,7 +13,7 @@
 	font-weight: 500;
 	font-display: swap;
 	src: url("../assets/fonts/ibm-plex-sans-500.woff2") format("woff2");
-	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+	unicode-range: U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
 }
 
 @font-face {
@@ -22,7 +22,7 @@
 	font-weight: 600;
 	font-display: swap;
 	src: url("../assets/fonts/ibm-plex-sans-600.woff2") format("woff2");
-	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+	unicode-range: U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
 }
 
 @font-face {
@@ -31,7 +31,7 @@
 	font-weight: 400;
 	font-display: swap;
 	src: url("../assets/fonts/ibm-plex-mono-400.woff2") format("woff2");
-	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+	unicode-range: U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
 }
 
 @font-face {
@@ -40,7 +40,7 @@
 	font-weight: 500;
 	font-display: swap;
 	src: url("../assets/fonts/ibm-plex-mono-500.woff2") format("woff2");
-	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+	unicode-range: U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
 }
 
 @font-face {
@@ -49,7 +49,7 @@
 	font-weight: 400;
 	font-display: swap;
 	src: url("../assets/fonts/source-serif-4-400.woff2") format("woff2");
-	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+	unicode-range: U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
 }
 
 @font-face {
@@ -58,7 +58,7 @@
 	font-weight: 400;
 	font-display: swap;
 	src: url("../assets/fonts/source-serif-4-400-italic.woff2") format("woff2");
-	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+	unicode-range: U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
 }
 
 @font-face {
@@ -67,7 +67,7 @@
 	font-weight: 600;
 	font-display: swap;
 	src: url("../assets/fonts/source-serif-4-600.woff2") format("woff2");
-	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+	unicode-range: U+0020-007E, U+00A0-00FF, U+00D7, U+2013-2014, U+2018-201D, U+2022, U+2026, U+2190-2193, U+2197;
 }
 
 @font-face {
@@ -97,9 +97,9 @@
 	font-style: normal;
 	font-weight: 400 500;
 	src: local("Georgia"), local("Noto Serif");
-	size-adjust: 107.23%;
-	ascent-override: 96.61%;
-	descent-override: 31.24%;
+	size-adjust: 102%;
+	ascent-override: 101.57%;
+	descent-override: 32.84%;
 	line-gap-override: 0%;
 }
 
@@ -108,9 +108,9 @@
 	font-style: italic;
 	font-weight: 400 500;
 	src: local("Georgia Italic"), local("Georgia-Italic"), local("Noto Serif Italic");
-	size-adjust: 97.24%;
-	ascent-override: 106.54%;
-	descent-override: 34.45%;
+	size-adjust: 93.21%;
+	ascent-override: 111.15%;
+	descent-override: 35.94%;
 	line-gap-override: 0%;
 }
 
@@ -119,9 +119,9 @@
 	font-style: normal;
 	font-weight: 600 700;
 	src: local("Georgia Bold"), local("Georgia-Bold"), local("Noto Serif Bold");
-	size-adjust: 93.8%;
-	ascent-override: 110.45%;
-	descent-override: 35.71%;
+	size-adjust: 89.28%;
+	ascent-override: 116.04%;
+	descent-override: 37.52%;
 	line-gap-override: 0%;
 }
 

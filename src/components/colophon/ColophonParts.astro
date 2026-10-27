@@ -18,7 +18,7 @@ const { parts } = Astro.props;
 		) : part.kind === "font" ? (
 			<span class:list={["specimen", `specimen-${part.font}`]}>{part.text}</span>
 		) : part.kind === "link" ? (
-			<a class="link colophon-link" href={part.href}>
+			<a class="link link-solid colophon-link hit-target" href={part.href}>
 				{part.text}
 			</a>
 		) : part.kind === "swatches" ? (

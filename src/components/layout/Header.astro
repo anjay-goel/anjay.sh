@@ -63,14 +63,6 @@ const searchIcon =
 	</nav>
 </header>
 
-<script>
-	for (const btn of document.querySelectorAll<HTMLButtonElement>("[data-search-open]")) {
-		btn.addEventListener("click", () => {
-			document.dispatchEvent(new CustomEvent("search:open", { detail: { trigger: btn } }));
-		});
-	}
-</script>
-
 <style>
 	.site-header-bar {
 		display: flex;

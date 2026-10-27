@@ -27,7 +27,6 @@
 	font-weight: 600;
 	color: var(--ink);
 	scroll-margin-top: 24px;
-	text-wrap: balance;
 }
 
 .prose :where(h1, h2) {
@@ -444,6 +443,25 @@
 
 .prose .expressive-code .copy button:hover::after {
 	background-color: var(--accent);
+}
+
+@media (pointer: coarse) {
+	.prose .expressive-code .copy {
+		inset-block-start: 1px;
+		inset-inline-end: 1px;
+	}
+
+	.prose .expressive-code .frame.has-title .copy {
+		inset-block-start: -2px;
+	}
+
+	.prose .expressive-code .copy button {
+		box-sizing: border-box;
+		width: 44px;
+		height: 44px;
+		border: 7px solid transparent;
+		background-clip: padding-box;
+	}
 }
 
 .prose .expressive-code .copy .feedback {

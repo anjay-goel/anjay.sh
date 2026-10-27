@@ -1,3 +1,5 @@
+import { palette } from "@/data/palette";
+
 export type ColophonFont = "sans" | "serif" | "mono";
 
 export interface ColophonSwatch {
@@ -58,11 +60,11 @@ export const colophonCopy = {
 				{
 					kind: "swatches",
 					items: [
-						{ name: "paper", hex: "#f6f6f5" },
-						{ name: "ink", hex: "#1a1a1a" },
-						{ name: "blue", hex: "#335a85" },
-						{ name: "night", hex: "#131313" },
-						{ name: "night blue", hex: "#9fc3e6" },
+						{ name: "paper", hex: palette.light.bg },
+						{ name: "ink", hex: palette.light.ink },
+						{ name: "blue", hex: palette.light.accent },
+						{ name: "night", hex: palette.dark.bg },
+						{ name: "night blue", hex: palette.dark.accent },
 					],
 				},
 			],

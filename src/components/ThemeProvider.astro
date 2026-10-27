@@ -1,9 +1,14 @@
-<meta name="theme-color" content="#f6f6f5" />
-<script is:inline>
+---
+import { palette } from "@/data/palette";
+
+const colors = { light: palette.light.bg, dark: palette.dark.bg };
+---
+
+<meta name="theme-color" content={colors.light} />
+<script is:inline define:vars={{ colors }}>
 	(() => {
 		const root = document.documentElement;
 		const media = matchMedia("(prefers-color-scheme: dark)");
-		const colors = { light: "#f6f6f5", dark: "#131313" };
 		const stored = () => {
 			try {
 				const v = localStorage.getItem("theme");

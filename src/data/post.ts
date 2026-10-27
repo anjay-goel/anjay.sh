@@ -47,11 +47,6 @@ export function getAllTags(posts: CollectionEntry<"post">[]): string[] {
 	return posts.flatMap((post) => post.data.tags);
 }
 
-/** Unique tags across the given posts, sorted alphabetically. */
-export function getUniqueTags(posts: CollectionEntry<"post">[]): string[] {
-	return [...new Set(getAllTags(posts))].sort((a, b) => a.localeCompare(b));
-}
-
 /** Unique tags with their post counts, sorted by count (desc) then tag (asc). */
 export function getUniqueTagsWithCount(posts: CollectionEntry<"post">[]): [string, number][] {
 	const counts = getAllTags(posts).reduce((map, tag) => {

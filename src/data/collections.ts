@@ -4,7 +4,6 @@ import { withBase } from "@/utils/path";
 import { toRoman } from "@/utils/roman";
 
 export type CollectionDoc = CollectionEntry<"collections">;
-export type CollectionKind = CollectionDoc["data"]["kind"];
 
 export interface SeriesPart {
 	collection: CollectionDoc;
@@ -19,10 +18,6 @@ export interface SeriesPart {
 export async function getCollections(): Promise<CollectionDoc[]> {
 	const entries = await getCollection("collections");
 	return entries.sort((a, b) => a.data.order - b.data.order);
-}
-
-export async function getCollectionBySlug(slug: string): Promise<CollectionDoc | undefined> {
-	return (await getCollections()).find((c) => c.id === slug);
 }
 
 export function collectionPostIds(collection: CollectionDoc): string[] {
@@ -46,10 +41,6 @@ export function findCollectionForPost(
 	return collections.find((c) => collectionPostIds(c).includes(postId));
 }
 
-export async function getCollectionForPost(postId: string): Promise<CollectionDoc | undefined> {
-	return findCollectionForPost(await getCollections(), postId);
-}
-
 export function seriesPartFor(collection: CollectionDoc, postId: string): SeriesPart | undefined {
 	if (collection.data.kind !== "series") return undefined;
 	const ids = collectionPostIds(collection);
@@ -65,11 +56,6 @@ export function seriesPartFor(collection: CollectionDoc, postId: string): Series
 		prevId: ids[i - 1],
 		nextId: ids[i + 1],
 	};
-}
-
-export async function getSeriesPart(postId: string): Promise<SeriesPart | undefined> {
-	const collection = await getCollectionForPost(postId);
-	return collection ? seriesPartFor(collection, postId) : undefined;
 }
 
 export function orderCollectionPosts<T extends { id: string }>(collection: CollectionDoc, posts: T[]): T[] {

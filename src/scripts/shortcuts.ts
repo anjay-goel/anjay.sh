@@ -1,4 +1,4 @@
-import { SEARCH_OPEN_EVENT } from "@/scripts/search";
+import { SEARCH_OPEN_EVENT } from "@/scripts/events";
 import { toggleTheme } from "@/scripts/theme";
 
 const SEQUENCE_MS = 1200;

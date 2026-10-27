@@ -1,3 +1,5 @@
+import { metaCopy } from "@/content/copy/meta";
+
 export const searchCopy = {
 	dialogLabel: "Search posts",
 	inputLabel: "Search posts",
@@ -6,7 +8,7 @@ export const searchCopy = {
 	closeLabel: "Close search",
 	cancel: "Cancel",
 	resultsLabel: "Results",
-	count: (n: number) => (n === 1 ? "1 post" : `${n} posts`),
+	count: metaCopy.postCount,
 	inSection: (title: string) => `in “${title}”`,
 	loading: "Searching…",
 	unavailable: "Search isn’t available right now.",

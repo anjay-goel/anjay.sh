@@ -2,7 +2,7 @@
 import FrameoPipeline from "@/components/art/FrameoPipeline.astro";
 import { homeCopy } from "@/content/copy/home";
 import { metaCopy } from "@/content/copy/meta";
-import { featuredProject as featured, showcase } from "@/data/showcase";
+import { featuredProject as featured, showcase, showcaseBadge } from "@/data/showcase";
 
 const copy = homeCopy.shipped;
 
@@ -11,7 +11,7 @@ const rows = showcase.map((item) => ({
 	href: item.href,
 	description: item.summary,
 	kind: item.stack,
-	reach: item.badge,
+	reach: showcaseBadge(item),
 	reachAccent: item.highlight === true,
 }));
 

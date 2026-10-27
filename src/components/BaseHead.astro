@@ -83,18 +83,26 @@ const goatcounter = analytics?.goatcounterUrl;
 <meta content={Astro.generator} name="generator"/>
 
 {gaId && (
-    <>
-        <script is:inline type="text/partytown" async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
-        <script is:inline type="text/partytown" set:html={`
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', '${gaId}');
-`}></script>
-    </>
+    <script is:inline define:vars={{ gaId }}>
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+            window.dataLayer.push(arguments);
+        };
+        window.gtag("js", new Date());
+        window.gtag("config", gaId);
+        const events = ["pointerdown", "keydown", "scroll", "touchstart"];
+        const load = () => {
+            for (const name of events) removeEventListener(name, load);
+            const script = document.createElement("script");
+            script.async = true;
+            script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+            document.head.append(script);
+        };
+        for (const name of events) addEventListener(name, load, { once: true, passive: true });
+    </script>
 )}
 {goatcounter && (
     <script is:inline data-goatcounter={goatcounter}
-            async src="//gc.zgo.at/count.js"></script>
+            async src="https://gc.zgo.at/count.js"></script>
 )}
 

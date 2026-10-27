@@ -1,3 +1,6 @@
+import { education } from "@/content/copy/about";
+import { installsSuffix, showcase } from "@/data/showcase";
+
 export interface TerminalRow {
 	key: string;
 	value: string;
@@ -23,16 +26,16 @@ export const homeCopy = {
 			name: "anjay goel",
 			rows: [
 				{ key: "building", value: "frameo.ai" },
-				{ key: "education", value: "IIT Kharagpur ’23" },
+				{ key: "education", value: education },
 			] satisfies TerminalRow[],
 		},
 		shipped: {
 			command: "ls ~/shipped",
-			rows: [
-				{ key: "DashReels", accent: "50M+", value: " installs" },
-				{ key: "DashToon", accent: "1M+", value: " installs" },
-				{ key: "RedScout", value: "open source" },
-			] satisfies TerminalRow[],
+			rows: showcase
+				.slice(0, 3)
+				.map((item): TerminalRow =>
+					item.reach ? { key: item.name, accent: item.reach, value: installsSuffix } : { key: item.name, value: item.badge ?? "" },
+				),
 		},
 		posts: {
 			command: "ls ~/posts | wc -l",

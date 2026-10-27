@@ -174,7 +174,6 @@
 		font-family: var(--font-sans);
 		font-weight: 600;
 		color: var(--ink);
-		text-wrap: balance;
 	}
 
 	code,
@@ -228,6 +227,23 @@
 	.link:hover {
 		text-decoration-thickness: 2px;
 		text-decoration-color: var(--accent);
+	}
+
+	.link-solid {
+		text-decoration-color: var(--accent);
+	}
+
+	.hit-target {
+		position: relative;
+	}
+
+	.hit-target::after {
+		content: "";
+		position: absolute;
+		inset-inline: 0;
+		top: 50%;
+		height: max(100%, 44px);
+		transform: translateY(-50%);
 	}
 
 	.link-quiet {
@@ -332,7 +348,7 @@
 		font-family: var(--font-mono);
 		font-size: var(--text-12);
 		font-weight: 400;
-		line-height: 1.5;
+		line-height: normal;
 		color: var(--soft);
 	}
 

@@ -8,7 +8,7 @@ import { getAllPosts, getPostYears } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
 import { siteConfig } from "@/site-config";
 import { absoluteUrl } from "@/utils/path";
-import { Schema } from "astro-seo-schema";
+import JsonLd from "@/components/JsonLd.astro";
 
 const entry = await getEntry("page", "about");
 if (!entry) throw new Error("Missing src/content/page/about.md");
@@ -39,7 +39,7 @@ const partsOf = (parts: (typeof facts)[number]["parts"]) =>
 ---
 
 <PageLayout meta={meta}>
-	<Schema
+	<JsonLd
 		slot="head"
 		item={{
 			"@context": "https://schema.org",

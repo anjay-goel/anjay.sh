@@ -22,7 +22,7 @@ const recent = (await getPostSummaries()).slice(0, copy.recentCount);
 		<h1 class="nf-heading">{copy.heading}</h1>
 		<p class="nf-body">{copy.body}</p>
 		<nav class="nf-links" aria-label={copy.linksLabel}>
-			{copy.links.map((l) => <a class="link nf-link" href={withBase(l.href)}>{l.text}</a>)}
+			{copy.links.map((l) => <a class="link link-solid nf-link" href={withBase(l.href)}>{l.text}</a>)}
 		</nav>
 		<h2 class="nf-recent-heading">{copy.recentHeading}</h2>
 		<ul class="nf-recent">

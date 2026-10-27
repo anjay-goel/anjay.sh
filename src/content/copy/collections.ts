@@ -1,3 +1,5 @@
+import { postCopy } from "@/content/copy/post";
+
 export const collectionsCopy = {
 	back: {
 		text: "All posts",
@@ -5,6 +7,6 @@ export const collectionsCopy = {
 	},
 	start: (part: string) => `Start with ${part}`,
 	postsLabel: "Posts in this collection",
-	partsLabel: "Parts in this series",
+	partsLabel: postCopy.series.partsLabel,
 	more: "More collections",
 };

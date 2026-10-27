@@ -10,7 +10,7 @@ import { unified } from "@astrojs/markdown-remark";
 import { defineConfig } from "astro/config";
 import { expressiveCodeOptions } from "./src/site.config";
 import { siteConfig } from "./src/site.config";
-import partytown from "@astrojs/partytown";
+import { palette } from "./src/data/palette";
 
 import remarkDirective from "remark-directive";
 import remarkMath from "remark-math";
@@ -47,9 +47,6 @@ export default defineConfig({
 		inlineStylesheets: "always",
 	},
 	integrations: [
-		...(siteConfig.analytics?.googleAnalyticsId
-			? [partytown({ config: { forward: ["dataLayer.push"] } })]
-			: []),
 		expressiveCode(expressiveCodeOptions),
 		icon(),
 		sitemap({
@@ -93,8 +90,8 @@ export default defineConfig({
 				},
 			],
 			start_url: START_URL,
-			background_color: "#f6f6f5",
-			theme_color: "#f6f6f5",
+			background_color: palette.light.bg,
+			theme_color: palette.light.bg,
 			display: "standalone",
 			config: {
 				insertFaviconLinks: false,

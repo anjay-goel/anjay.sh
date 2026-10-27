@@ -1,5 +1,8 @@
 {
 	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+	"files": {
+		"includes": ["**", "!!**/.claude"]
+	},
 	"formatter": {
 		"indentStyle": "tab",
 		"indentWidth": 2,
@@ -35,5 +38,18 @@
 		"clientKind": "git",
 		"enabled": true,
 		"useIgnoreFile": true
-	}
+	},
+	"overrides": [
+		{
+			"includes": ["**/*.astro"],
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noUnusedVariables": "off",
+						"noUnusedImports": "off"
+					}
+				}
+			}
+		}
+	]
 }

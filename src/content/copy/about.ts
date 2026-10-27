@@ -1,4 +1,9 @@
+import { metaCopy } from "@/content/copy/meta";
 import type { MetaPart } from "@/data/post";
+import { showcase } from "@/data/showcase";
+import { siteConfig } from "@/site-config";
+
+export const education = `${siteConfig.profile?.alumni ?? ""} ’23`;
 
 export interface AboutFact {
 	term: string;
@@ -13,9 +18,11 @@ export const aboutCopy = {
 		{ term: "now", parts: ["frameo.ai at Dashverse"] },
 		{
 			term: "before",
-			parts: ["DashReels ", { text: "50M+", accent: true }, " · DashToon ", { text: "1M+", accent: true }],
+			parts: showcase
+				.filter((item) => item.reach)
+				.flatMap((item, i): MetaPart[] => [`${i > 0 ? metaCopy.separator : ""}${item.name} `, { text: item.reach ?? "", accent: true }]),
 		},
-		{ term: "education", parts: ["IIT Kharagpur ’23"] },
+		{ term: "education", parts: [education] },
 	] satisfies AboutFact[],
 	writing: {
 		term: "writing",

@@ -43,21 +43,3 @@ const { theme } = headerCopy;
 		}
 	}
 </style>
-
-<script>
-	import { getTheme, THEME_EVENT, toggleTheme } from "@/scripts/theme";
-
-	const buttons = document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]");
-
-	const syncLabels = () => {
-		const dark = getTheme() === "dark";
-		for (const btn of buttons) {
-			const label = dark ? btn.dataset.labelToLight : btn.dataset.labelToDark;
-			if (label) btn.setAttribute("aria-label", label);
-		}
-	};
-
-	for (const btn of buttons) btn.addEventListener("click", () => toggleTheme());
-	document.addEventListener(THEME_EVENT, () => requestAnimationFrame(syncLabels));
-	syncLabels();
-</script>

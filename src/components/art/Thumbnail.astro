@@ -7,8 +7,7 @@ interface Props {
 	class?: string;
 }
 
-const defaultParts: Partial<Record<ThumbnailKey, string>> = { proctree: "I", netns: "II", caps: "III" };
-const { name, part = defaultParts[name] ?? "", class: className } = Astro.props;
+const { name, part = "", class: className } = Astro.props;
 const escapeXml = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const body = thumbnailArt[name].replaceAll("__PART__", escapeXml(part));
 ---

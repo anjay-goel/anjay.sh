@@ -18,9 +18,6 @@ importers:
       '@astrojs/mdx':
         specifier: 8.0.3
         version: 8.0.3(@astrojs/markdown-remark@7.3.2)(@astrojs/markdown-satteri@0.4.3)(astro@7.3.8(@astrojs/markdown-remark@7.3.2)(@types/node@26.1.2)(jiti@2.7.0)(terser@5.49.2)(yaml@2.9.1))
-      '@astrojs/partytown':
-        specifier: ^2.1.8
-        version: 2.1.8
       '@astrojs/rss':
         specifier: 4.0.19
         version: 4.0.19
@@ -45,9 +42,6 @@ importers:
       astro-robots-txt:
         specifier: ^1.0.0
         version: 1.0.0
-      astro-seo-schema:
-        specifier: ^7.0.0
-        version: 7.0.0(astro@7.3.8(@astrojs/markdown-remark@7.3.2)(@types/node@26.1.2)(jiti@2.7.0)(terser@5.49.2)(yaml@2.9.1))(schema-dts@1.1.5)
       astro-webmanifest:
         specifier: ^1.0.0
         version: 1.0.0(@types/node@26.1.2)
@@ -275,9 +269,6 @@ packages:
     peerDependenciesMeta:
       '@astrojs/markdown-remark':
         optional: true
-
-  '@astrojs/partytown@2.1.8':
-    resolution: {integrity: sha512-iCRNNPqvdQEORyAYC8jN8nTCN2wW66WS+Pft2fhqq52cj3GcWvzlAZlyfjtpCeiEYI0op6u5OtWqqItiS7INDA==}
 
   '@astrojs/prism@4.0.2':
     resolution: {integrity: sha512-KTivpmnz6lDsC6o9H4+DNm2SrE/GHzw8cNAvEJwAvUT+eoaEnn/4NtbDNfRRaxaJHdp15gf+tfHAWiXR4wB3BA==}
@@ -792,11 +783,6 @@ packages:
 
   '@playform/pipe@0.1.6':
     resolution: {integrity: sha512-cqFMhdxiz4zO5ReKp+HJ0d0GJ6aE8a4gKVrvzIQACZcPQatttvIW2KkvOXD/gKD9NGSX69mi1rAIHriA3knEfw==}
-
-  '@qwik.dev/partytown@0.14.5':
-    resolution: {integrity: sha512-DxVGNgz2oWZvNT76LmMwxSroN1+r8rHqH/55fLGpO7tiVbYtC8PoXICyS1vGwL2mvmvfQhccqbudKrDnQO1mgg==}
-    engines: {node: '>=18.0.0'}
-    hasBin: true
 
   '@resvg/resvg-js-android-arm-eabi@2.6.2':
     resolution: {integrity: sha512-FrJibrAk6v29eabIPgcTUMPXiEz8ssrAk7TXxsiZzww9UTQ1Z5KAbFJs+Z0Ez+VZTYgnE5IQJqBcoSiMebtPHA==}
@@ -1362,12 +1348,6 @@ packages:
 
   astro-robots-txt@1.0.0:
     resolution: {integrity: sha512-6JQSLid4gMhoWjOm85UHLkgrw0+hHIjnJVIUqxjU2D6feKlVyYukMNYjH44ZDZBK1P8hNxd33PgWlHzCASvedA==}
-
-  astro-seo-schema@7.0.0:
-    resolution: {integrity: sha512-icG6vL2pKNf7WBI03JxZYn6gQiLASxq/U3JVv27roaPJ+WH0p3sats9mMInzp6x40G1mVdLLoAEUObmKY1If+A==}
-    peerDependencies:
-      astro: ^7.0.0
-      schema-dts: ^1.1.0
 
   astro-webmanifest@1.0.0:
     resolution: {integrity: sha512-ar8SZuFf8k2XuqAYpiaiGmzgpqVufyPx0A9d8OljPup+Sgs+1trG2bpvo7JcM+m4L3figPaYEZOy1rRawCEU0w==}
@@ -3758,11 +3738,6 @@ snapshots:
     optionalDependencies:
       '@astrojs/markdown-remark': 7.3.2
 
-  '@astrojs/partytown@2.1.8':
-    dependencies:
-      '@qwik.dev/partytown': 0.14.5
-      mrmime: 2.0.1
-
   '@astrojs/prism@4.0.2':
     dependencies:
       prismjs: 1.30.0
@@ -4292,8 +4267,6 @@ snapshots:
       deepmerge-ts: 7.1.5
       fast-glob: 3.3.3
 
-  '@qwik.dev/partytown@0.14.5': {}
-
   '@resvg/resvg-js-android-arm-eabi@2.6.2':
     optional: true
 
@@ -4800,11 +4773,6 @@ snapshots:
     dependencies:
       valid-filename: 4.0.0
       zod: 3.25.76
-
-  astro-seo-schema@7.0.0(astro@7.3.8(@astrojs/markdown-remark@7.3.2)(@types/node@26.1.2)(jiti@2.7.0)(terser@5.49.2)(yaml@2.9.1))(schema-dts@1.1.5):
-    dependencies:
-      astro: 7.3.8(@astrojs/markdown-remark@7.3.2)(@types/node@26.1.2)(jiti@2.7.0)(terser@5.49.2)(yaml@2.9.1)
-      schema-dts: 1.1.5
 
   astro-webmanifest@1.0.0(@types/node@26.1.2):
     dependencies:

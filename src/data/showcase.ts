@@ -5,11 +5,14 @@ export interface ShowcaseItem {
 	href: string;
 	stack: string;
 	badge?: string;
+	reach?: string;
 	highlight?: boolean;
 	desc: string;
 	summary: string;
 	source: ShowcaseSource;
 }
+
+export const installsSuffix = " installs";
 
 export interface ShowcaseFeatured {
 	name: string;
@@ -30,7 +33,7 @@ export const showcase: ShowcaseItem[] = [
 		name: "DashReels",
 		href: "https://play.google.com/store/apps/details?id=com.dashtoon.video.reels&hl=en_IN",
 		stack: "App · Short videos",
-		badge: "50M+ installs",
+		reach: "50M+",
 		highlight: true,
 		desc: "A mobile entertainment app offering short-form video content across multiple genres. Features include free short dramas, a personalized recommendation system, and an engaging, user-friendly experience.",
 		summary: "Short-form drama app with personalised recommendations.",
@@ -40,7 +43,7 @@ export const showcase: ShowcaseItem[] = [
 		name: "DashToon",
 		href: "https://play.google.com/store/apps/details?id=com.dashtoon.app&hl=en_IN",
 		stack: "App · Comics",
-		badge: "1M+ installs",
+		reach: "1M+",
 		highlight: true,
 		desc: "A mobile application focused on comics and webtoons. Provides users with access to a wide variety of digital comics and manga content with an intuitive reading experience.",
 		summary: "A reader for comics and webtoons.",
@@ -65,3 +68,7 @@ export const showcase: ShowcaseItem[] = [
 		source: "github",
 	},
 ];
+
+export function showcaseBadge(item: ShowcaseItem): string | undefined {
+	return item.reach ? `${item.reach}${installsSuffix}` : item.badge;
+}

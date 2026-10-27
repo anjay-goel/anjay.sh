@@ -1,8 +1,6 @@
 import { searchCopy } from "@/content/copy/search";
 import type { Pagefind, PagefindData, PagefindSubResult, SearchPostIndex } from "@/scripts/search-types";
 
-export const SEARCH_OPEN_EVENT = "search:open";
-
 const RESULT_LIMIT = 16;
 const DEBOUNCE_MS = 120;
 const EXCERPT_WORDS = 22;
@@ -95,17 +93,23 @@ function toItem(data: PagefindData, index: SearchPostIndex, terms: string[]): Se
 	};
 }
 
-export function initSearch(): void {
+export interface SearchController {
+	opened: (returnTo: HTMLElement | null) => void;
+	warm: () => void;
+}
+
+export function initSearch(): SearchController | null {
 	const dialog = document.querySelector<HTMLDialogElement>("[data-search-dialog]");
-	if (!dialog) return;
+	if (!dialog) return null;
 	const input = dialog.querySelector<HTMLInputElement>("[data-search-input]");
 	const body = dialog.querySelector<HTMLElement>("[data-search-body]");
 	const status = dialog.querySelector<HTMLElement>("[data-search-status]");
+	const live = dialog.querySelector<HTMLElement>("[data-search-live]");
 	const results = dialog.querySelector<HTMLUListElement>("[data-search-results]");
 	const empty = dialog.querySelector<HTMLElement>("[data-search-empty]");
 	const emptyTitle = dialog.querySelector<HTMLElement>("[data-search-empty-title]");
 	const template = dialog.querySelector<HTMLTemplateElement>("[data-search-item]");
-	if (!input || !body || !status || !results || !empty || !emptyTitle || !template) return;
+	if (!input || !body || !status || !live || !results || !empty || !emptyTitle || !template) return null;
 
 	const pagefindUrl = dialog.dataset.pagefind ?? "";
 	const indexUrl = dialog.dataset.index ?? "";
@@ -157,8 +161,9 @@ export function initSearch(): void {
 		}
 	};
 
-	const showStatus = (text: string) => {
+	const showStatus = (text: string, spoken = text) => {
 		status.textContent = text;
+		live.textContent = spoken;
 	};
 
 	const reset = () => {
@@ -191,8 +196,9 @@ export function initSearch(): void {
 		body.hidden = false;
 		const found = nodes.length > 0;
 		empty.hidden = found;
-		emptyTitle.textContent = found ? "" : searchCopy.empty.title(query);
-		showStatus(found ? searchCopy.count(nodes.length) : "");
+		const emptyText = found ? "" : searchCopy.empty.title(query);
+		emptyTitle.textContent = emptyText;
+		showStatus(found ? searchCopy.count(nodes.length) : "", found ? searchCopy.count(nodes.length) : emptyText);
 		input.setAttribute("aria-expanded", String(found));
 		setActive(found ? 0 : -1);
 	};
@@ -229,14 +235,6 @@ export function initSearch(): void {
 			.map((p) => toItem(p, loaded.index, terms))
 			.filter((i): i is SearchItem => i !== null);
 		renderItems(items, query);
-	};
-
-	const open = (trigger?: HTMLElement | null) => {
-		returnFocus = trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
-		if (!dialog.open) dialog.showModal();
-		input.focus();
-		input.select();
-		warm();
 	};
 
 	const close = () => {
@@ -295,13 +293,13 @@ export function initSearch(): void {
 		button.addEventListener("click", close);
 	}
 
-	for (const trigger of document.querySelectorAll<HTMLElement>("[data-search-open]")) {
-		trigger.addEventListener("pointerenter", warm, { once: true });
-		trigger.addEventListener("focus", warm, { once: true });
-	}
+	if (input.value.trim()) void run();
 
-	document.addEventListener(SEARCH_OPEN_EVENT, (event) => {
-		const detail = (event as CustomEvent<{ trigger?: HTMLElement | null }>).detail;
-		open(detail?.trigger ?? null);
-	});
+	return {
+		opened: (returnTo) => {
+			returnFocus = returnTo;
+			warm();
+		},
+		warm,
+	};
 }
