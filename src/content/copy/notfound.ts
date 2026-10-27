@@ -10,7 +10,7 @@ export const notFoundCopy = {
 	links: [
 		{ text: "Home", href: "/" },
 		{ text: "All posts", href: "/posts/" },
-		{ text: "Collections", href: "/#series-h" },
+		{ text: "Collections", href: "/#collections-h" },
 	],
 	recentHeading: "Recent posts",
 	recentCount: 3,

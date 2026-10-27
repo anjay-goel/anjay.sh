@@ -4,15 +4,6 @@ export interface TerminalRow {
 	accent?: string;
 }
 
-export interface ShippedRow {
-	name: string;
-	showcase: string;
-	description: string;
-	kind: string;
-	reach: string;
-	reachAccent: boolean;
-}
-
 export const homeCopy = {
 	meta: {
 		title: "Home",
@@ -87,46 +78,6 @@ export const homeCopy = {
 		title: "Things I’ve shipped",
 		shortTitle: "Shipped",
 		listLabel: "Other projects",
-		featured: {
-			status: "Building now",
-			name: "frameo.ai",
-			description: "An AI video production studio for short films, micro-dramas, ads, anything you can imagine.",
-			linkText: "frameo.ai",
-			href: "https://frameo.ai",
-		},
-		rows: [
-			{
-				name: "DashReels",
-				showcase: "DashReels",
-				description: "Short-form drama app with personalised recommendations.",
-				kind: "App · Short videos",
-				reach: "50M+ installs",
-				reachAccent: true,
-			},
-			{
-				name: "DashToon",
-				showcase: "DashToon",
-				description: "A reader for comics and webtoons.",
-				kind: "App · Comics",
-				reach: "1M+ installs",
-				reachAccent: true,
-			},
-			{
-				name: "RedScout",
-				showcase: "RedScout",
-				description: "Namespace-level Redis insights: memory, TTLs and ops/sec.",
-				kind: "Redis · Monitoring · CLI",
-				reach: "open source",
-				reachAccent: false,
-			},
-			{
-				name: "Stable Roommate",
-				showcase: "Generalised Stable Roommate",
-				description: "Groups people into optimal teams from their own preferences.",
-				kind: "Python · Algorithms",
-				reach: "open source",
-				reachAccent: false,
-			},
-		] satisfies ShippedRow[],
+		status: "Building now",
 	},
 };

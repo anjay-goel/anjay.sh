@@ -18,7 +18,7 @@ const copy = homeCopy.archive;
 				years.map((year, i) => (
 					<>
 						{i > 0 && <span class="archive-dot" aria-hidden="true">·</span>}
-						<a class="archive-year" href={withBase(`/posts/#${year}`)} aria-label={copy.yearLabel(year)}>{year}</a>
+						<a class="archive-year" href={withBase(`/posts/#year-${year}`)} aria-label={copy.yearLabel(year)}>{year}</a>
 					</>
 				))
 			}

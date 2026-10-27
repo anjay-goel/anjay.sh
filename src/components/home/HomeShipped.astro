@@ -2,16 +2,18 @@
 import FrameoPipeline from "@/components/art/FrameoPipeline.astro";
 import { homeCopy } from "@/content/copy/home";
 import { metaCopy } from "@/content/copy/meta";
-import { showcase } from "@/data/showcase";
+import { featuredProject as featured, showcase } from "@/data/showcase";
 
 const copy = homeCopy.shipped;
-const featured = copy.featured;
 
-const rows = copy.rows.map((row) => {
-	const item = showcase.find((s) => s.name === row.showcase);
-	if (!item) throw new Error(`Unknown showcase item: ${row.showcase}`);
-	return { ...row, href: item.href };
-});
+const rows = showcase.map((item) => ({
+	name: item.name,
+	href: item.href,
+	description: item.summary,
+	kind: item.stack,
+	reach: item.badge,
+	reachAccent: item.highlight === true,
+}));
 
 const arrowPaths = '<path d="M17 7l-10 10"></path><path d="M8 7h9v9"></path>';
 ---
@@ -22,9 +24,9 @@ const arrowPaths = '<path d="M17 7l-10 10"></path><path d="M8 7h9v9"></path>';
 	</h2>
 	<a class="spread" href={featured.href} rel="noopener">
 		<div class="spread-text">
-			<span class="spread-status">{featured.status}</span>
+			<span class="spread-status">{copy.status}</span>
 			<span class="spread-name">{featured.name}</span>
-			<span class="spread-desc">{featured.description}</span>
+			<span class="spread-desc">{featured.desc}</span>
 			<span class="spread-link">
 				{featured.linkText}
 				<svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={arrowPaths} />
