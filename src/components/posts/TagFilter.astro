@@ -56,6 +56,11 @@ const { tags, current, class: className } = Astro.props;
 			}
 			markScrolled(nav);
 			nav.addEventListener("scroll", () => markScrolled(nav), { passive: true });
+			nav.addEventListener("focusin", (event) => {
+				if (event.target instanceof HTMLElement) {
+					event.target.scrollIntoView({ block: "nearest", inline: "nearest" });
+				}
+			});
 		}
 	}
 	setupTagFilters();
@@ -70,6 +75,7 @@ const { tags, current, class: className } = Astro.props;
 		overflow-x: auto;
 		white-space: nowrap;
 		scrollbar-width: none;
+		scroll-padding-inline: 48px;
 		--fade-start: 0px;
 		-webkit-mask-image: linear-gradient(
 			to right,
@@ -94,7 +100,7 @@ const { tags, current, class: className } = Astro.props;
 	}
 	.tag-filter::after {
 		content: "";
-		flex: 0 0 40px;
+		flex: 0 0 44px;
 	}
 	.tag-filter-link {
 		flex: 0 0 auto;
