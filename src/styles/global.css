@@ -7,8 +7,8 @@
 	--font-mono:
 		"IBM Plex Mono", "IBM Plex Mono Fallback", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-	--text-12: 0.75rem;
-	--text-14: 0.875rem;
+	--text-12: max(0.75rem, 12px);
+	--text-14: max(0.875rem, 13px);
 	--text-16: 1rem;
 	--text-18: 1.125rem;
 	--text-21: 1.3125rem;
@@ -87,21 +87,6 @@
 		}
 	}
 
-	@media (min-width: 768px) {
-		:root {
-			--px: calc(1rem / 14.4);
-			--text-12: calc(12 * var(--px));
-			--text-14: calc(13.5 * var(--px));
-			--text-16: calc(15 * var(--px));
-			--text-18: calc(16.5 * var(--px));
-			--text-21: calc(18.5 * var(--px));
-			--text-26: calc(22 * var(--px));
-			--text-34: calc(27 * var(--px));
-			--text-44: calc(36 * var(--px));
-			--text-64: calc(48 * var(--px));
-		}
-	}
-
 	@media (min-width: 768px) and (max-width: 1023px) {
 		:root {
 			--text-display: var(--text-44);
@@ -110,7 +95,7 @@
 
 	@media (min-width: 1024px) {
 		:root {
-			--px: calc(1rem / 12.8);
+			--text-64: 3.5rem;
 		}
 	}
 
@@ -181,13 +166,13 @@
 
 	@media (min-width: 768px) {
 		html {
-			font-size: 90%;
+			font-size: 93.75%;
 		}
 	}
 
 	@media (min-width: 1024px) {
 		html {
-			font-size: 80%;
+			font-size: 87.5%;
 		}
 	}
 
