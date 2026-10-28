@@ -116,7 +116,7 @@ const linkAttrs = (post: PostSummary) =>
 	}
 	.featured-visual {
 		position: relative;
-		height: 15.5rem;
+		height: 12rem;
 		border: 1px solid var(--rule);
 		border-radius: var(--radius-lg);
 		background: var(--panel);
@@ -138,12 +138,12 @@ const linkAttrs = (post: PostSummary) =>
 		margin: 0 0 0.75rem;
 	}
 	.featured-visual + .featured-meta {
-		margin-top: 1.625rem;
+		margin-top: 1.25rem;
 	}
 	.featured-title {
 		margin: 0;
-		font-size: var(--text-44);
-		line-height: 1.08;
+		font-size: var(--text-34);
+		line-height: 1.1;
 		letter-spacing: -0.022em;
 		text-wrap: balance;
 		transition: color var(--dur) var(--ease);
@@ -168,7 +168,7 @@ const linkAttrs = (post: PostSummary) =>
 		list-style: none;
 	}
 	.recent-item {
-		padding: 1.375rem 0;
+		padding: 1.125rem 0;
 		border-bottom: 1px solid var(--rule);
 	}
 	.recent-item:first-child {
@@ -183,8 +183,8 @@ const linkAttrs = (post: PostSummary) =>
 	}
 	.recent-title {
 		margin: 0;
-		font-size: var(--text-26);
-		line-height: 1.22;
+		font-size: var(--text-21);
+		line-height: 1.25;
 		letter-spacing: -0.012em;
 		text-wrap: balance;
 		transition: color var(--dur) var(--ease);
@@ -199,11 +199,6 @@ const linkAttrs = (post: PostSummary) =>
 	}
 	.latest-all {
 		display: none;
-	}
-	@media (min-width: 768px) and (max-width: 1023px) {
-		.featured-title {
-			font-size: var(--text-34);
-		}
 	}
 	@media (max-width: 767px) {
 		.latest {
