@@ -942,10 +942,6 @@
 		border-inline-width: 0;
 	}
 
-	.prose .expressive-code pre code {
-		font-size: var(--text-12);
-	}
-
 	.prose table {
 		width: max-content;
 		min-width: 100%;
