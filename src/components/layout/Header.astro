@@ -43,8 +43,8 @@ const items = nav.items.map((item) => ({ ...item, href: withBase(item.path), cur
 					<Icon name="search" />
 					<span>{search.button}</span>
 				</button>
-				<button class="search-icon-btn" type="button" aria-label={search.label} data-search-open>
-					<Icon name="search" size={20} strokeWidth={1.6} />
+				<button class="icon-btn search-icon-btn" type="button" aria-label={search.label} data-search-open>
+					<Icon name="search" size={18} strokeWidth={1.6} />
 				</button>
 				<ThemeToggle />
 			</div>
@@ -148,25 +148,12 @@ const items = nav.items.map((item) => ({ ...item, href: withBase(item.path), cur
 		border-color: var(--accent);
 		color: var(--accent);
 	}
-	.search-btn:focus-visible,
-	.search-icon-btn:focus-visible {
+	.search-btn:focus-visible {
 		outline-offset: 2px;
 		border-radius: var(--radius-lg);
 	}
 	.search-icon-btn {
 		display: none;
-		align-items: center;
-		justify-content: center;
-		width: var(--tap);
-		height: var(--tap);
-		padding: 0;
-		border: 0;
-		border-radius: var(--radius-lg);
-		background: transparent;
-		color: var(--muted);
-	}
-	.search-icon-btn:hover {
-		color: var(--accent);
 	}
 	.site-nav-phone {
 		display: none;
@@ -200,6 +187,7 @@ const items = nav.items.map((item) => ({ ...item, href: withBase(item.path), cur
 		.site-nav-phone .site-nav-link {
 			flex: none;
 			justify-content: center;
+			min-width: var(--tap);
 			height: var(--tap);
 			color: var(--muted);
 		}

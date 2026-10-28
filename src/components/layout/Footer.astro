@@ -16,6 +16,7 @@ const rssHref = withBase("/rss.xml");
 const colophonHref = withBase("/colophon/");
 const email = siteConfig.profile?.email;
 const { home } = footerCopy;
+const onColophon = Astro.url.pathname.replace(/\/?$/, "/") === colophonHref;
 ---
 
 {
@@ -30,11 +31,11 @@ const { home } = footerCopy;
 					<Socials variant="boxed" label={false} />
 				</div>
 			</div>
-			<p class="footer-legal footer-legal-home">{copyright}{metaCopy.separator}<a class="link-quiet hit-target" href={colophonHref}>{footerCopy.colophon}</a></p>
+			<p class="footer-legal footer-legal-home">{copyright}{metaCopy.separator}<a class="link-quiet hit-target" href={colophonHref} aria-current={onColophon ? "page" : undefined}>{footerCopy.colophon}</a></p>
 		</footer>
 	) : (
 		<footer class="site-footer site-footer-standard">
-			<p class="footer-legal">{copyright}<span class="footer-rss">{metaCopy.separator}<a class="link-quiet hit-target" href={rssHref}>{footerCopy.rss}</a></span>{metaCopy.separator}<a class="link-quiet hit-target" href={colophonHref}>{footerCopy.colophon}</a></p>
+			<p class="footer-legal">{copyright}<span class="footer-rss">{metaCopy.separator}<a class="link-quiet hit-target" href={rssHref}>{footerCopy.rss}</a></span>{metaCopy.separator}<a class="link-quiet hit-target" href={colophonHref} aria-current={onColophon ? "page" : undefined}>{footerCopy.colophon}</a></p>
 		</footer>
 	)
 }
@@ -49,6 +50,10 @@ const { home } = footerCopy;
 		font-size: var(--text-12);
 		line-height: normal;
 		color: var(--soft);
+	}
+	.footer-legal a[aria-current="page"] {
+		color: var(--ink);
+		text-decoration: none;
 	}
 	.footer-legal a:focus-visible {
 		outline-offset: 2px;

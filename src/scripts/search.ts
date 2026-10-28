@@ -8,7 +8,8 @@ import type {
 
 const RESULT_LIMIT = 16;
 const DEBOUNCE_MS = 120;
-const EXCERPT_WORDS = 22;
+const EXCERPT_WORDS = 16;
+const ELLIPSIS = "…";
 const MIN_STEM = 3;
 const STEM_RATIO = 0.6;
 
@@ -18,6 +19,10 @@ interface SearchItem {
 	meta: string;
 	crumb: string;
 	excerpt: string;
+}
+
+interface PagefindPage extends PagefindData {
+	anchors?: { text: string; location: number }[];
 }
 
 interface Loaded {
@@ -61,6 +66,40 @@ function tightenMarks(excerpt: string): string {
 	);
 }
 
+function plainWords(text: string): string[] {
+	return text
+		.replace(/<[^>]*>/g, "")
+		.split(/\s+/)
+		.filter(Boolean)
+		.map((word) => word.replace(/&[#\w]+;/g, "").replace(/[^\p{L}\p{N}]/gu, "").toLowerCase());
+}
+
+function findRun(words: string[], run: string[]): number {
+	for (let i = 0; i + run.length <= words.length; i++) {
+		if (run.every((word, j) => words[i + j] === word)) return i;
+	}
+	return -1;
+}
+
+function withEllipses(excerpt: string, data: PagefindPage): string {
+	const run = plainWords(excerpt);
+	if (run.length < EXCERPT_WORDS) return excerpt;
+	const words = plainWords(data.content ?? "");
+	const start = findRun(words, run);
+	if (start < 0) return `${ELLIPSIS}${excerpt}${ELLIPSIS}`;
+	const bounds = new Set([0, words.length]);
+	for (const anchor of data.anchors ?? []) {
+		bounds.add(anchor.location);
+		bounds.add(anchor.location + plainWords(anchor.text).length);
+	}
+	const head = bounds.has(start) ? "" : ELLIPSIS;
+	const tail =
+		bounds.has(start + run.length) || /[.!?…]$/.test(excerpt.replace(/<[^>]*>/g, "").trim())
+			? ""
+			: ELLIPSIS;
+	return `${head}${excerpt}${tail}`;
+}
+
 function coversTerms(data: PagefindData, terms: string[]): boolean {
 	if (!data.content) return true;
 	const words = new Set(`${data.meta.title ?? ""} ${data.content}`.toLowerCase().split(NON_WORD));
@@ -97,7 +136,7 @@ function pageKey(url: string): string {
 	return path.endsWith("/") ? path : `${path}/`;
 }
 
-function toItem(data: PagefindData, index: SearchPostIndex, terms: string[]): SearchItem | null {
+function toItem(data: PagefindPage, index: SearchPostIndex, terms: string[]): SearchItem | null {
 	const post = index[pageKey(data.url)];
 	if (!post && Object.keys(index).length > 0) return null;
 	const title = post?.title ?? data.meta.title ?? "";
@@ -108,7 +147,7 @@ function toItem(data: PagefindData, index: SearchPostIndex, terms: string[]): Se
 		title: highlight(title, terms),
 		meta: post?.meta ?? "",
 		crumb: section ? searchCopy.inSection(section.title) : "",
-		excerpt: tightenMarks(section?.excerpt ?? data.excerpt),
+		excerpt: withEllipses(tightenMarks(section?.excerpt ?? data.excerpt), data),
 	};
 }
 
