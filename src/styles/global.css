@@ -55,6 +55,7 @@
 		--rail: 13.75rem;
 		--rail-gap: 3.5rem;
 		--tap: 2.75rem;
+		--text-display: var(--text-64);
 		--dur: 150ms;
 		--ease: ease;
 
@@ -83,6 +84,12 @@
 	@media (max-width: 767px) {
 		:root {
 			--gutter: 1.25rem;
+		}
+	}
+
+	@media (min-width: 768px) and (max-width: 1023px) {
+		:root {
+			--text-display: var(--text-44);
 		}
 	}
 
@@ -381,7 +388,7 @@
 	.page-title {
 		margin: 0;
 		font-family: var(--font-sans);
-		font-size: var(--text-64);
+		font-size: var(--text-display);
 		font-weight: 600;
 		line-height: 1;
 		letter-spacing: -0.03em;
