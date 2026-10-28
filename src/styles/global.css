@@ -369,7 +369,7 @@
 
 	@media (max-width: 767px) {
 		.page-title {
-			font-size: var(--text-44);
+			font-size: var(--text-34);
 		}
 	}
 }

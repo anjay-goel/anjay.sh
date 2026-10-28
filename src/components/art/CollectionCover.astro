@@ -3,15 +3,14 @@ import { type CoverKey, coverArt } from "./cover-art";
 
 interface Props {
 	name: CoverKey;
-	detail?: boolean;
 }
 
-const { name, detail = true } = Astro.props;
+const { name } = Astro.props;
 const art = coverArt[name];
 ---
 
 <svg
-	class:list={["cover-art", !detail && "cover-art-plain"]}
+	class="cover-art"
 	viewBox={art.viewBox}
 	preserveAspectRatio="xMidYMid meet"
 	fill="none"
@@ -27,8 +26,5 @@ const art = coverArt[name];
 		display: block;
 		width: 100%;
 		height: 100%;
-	}
-	.cover-art-plain :global(.art-detail) {
-		display: none;
 	}
 </style>

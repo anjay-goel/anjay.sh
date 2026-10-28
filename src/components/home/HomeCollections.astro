@@ -71,7 +71,10 @@ const cards = collections.map((c) => {
 						<h3 class="card-heading">
 							<span class="card-title">{card.collection.data.title}</span> <span class="card-count">{card.count}</span>
 						</h3>
-						<p class="card-desc">{card.collection.data.description}</p>
+						<p class="card-desc">
+							<span class="desc-long">{card.collection.data.description}</span>
+							{card.collection.data.shortDescription && <span class="desc-short">{card.collection.data.shortDescription}</span>}
+						</p>
 						<ol class="card-items" role="list">
 							{card.items.map((item) => (
 								<li>
@@ -89,26 +92,6 @@ const cards = collections.map((c) => {
 							))}
 						</ol>
 						<a class="card-link card-cta hit-target" href={card.href} data-astro-prefetch>{card.collection.data.cta ?? card.collection.data.title}</a>
-					</Card>
-				</li>
-			))
-		}
-	</ul>
-
-	<ul class="track track-short" role="list" data-scroll-focus>
-		{
-			cards.map((card) => (
-				<li class="slide-short">
-					<Card href={collectionHref(card.collection)} class="collection-card-short" data-astro-prefetch>
-						<div class="short-cover" aria-hidden="true">
-							<CollectionCover name={card.collection.data.cover} detail={false} />
-						</div>
-						<div class="short-body">
-							<p class="short-heading">
-								<span class="card-title">{card.collection.data.title}</span> <span class="card-count">{card.count}</span>
-							</p>
-							<p class="short-desc">{card.collection.data.shortDescription ?? card.collection.data.description}</p>
-						</div>
 					</Card>
 				</li>
 			))
@@ -186,7 +169,7 @@ const cards = collections.map((c) => {
 	}
 	.title-short,
 	.swipe-hint,
-	.track-short {
+	.desc-short {
 		display: none;
 	}
 	.carousel-controls {
@@ -342,54 +325,58 @@ const cards = collections.map((c) => {
 		}
 		.title-wide,
 		.carousel-controls,
-		.track-wide {
+		.desc-long:has(+ .desc-short) {
 			display: none;
+		}
+		.desc-short {
+			display: inline;
 		}
 		.title-short,
 		.swipe-hint {
 			display: inline;
 		}
-		.track-short {
-			display: flex;
+		.track-wide {
 			gap: 12px;
 			margin: -4px calc(-1 * var(--gutter)) 0;
-			padding: 4px var(--gutter);
-			overflow-x: auto;
-			scroll-snap-type: x mandatory;
+			padding: 4px var(--gutter) 8px;
 			scroll-padding-inline: var(--gutter);
-			scrollbar-width: none;
 		}
-		.track-short::-webkit-scrollbar {
+		.slide {
+			flex: 0 0 min(320px, calc(100vw - 2 * var(--gutter) - 24px));
+		}
+		.slide :global(.collection-card) {
+			padding: 20px 20px 18px;
+		}
+		.card-cover {
+			height: 124px;
+			margin: -20px -20px 18px;
+		}
+		.card-cover :global(.art-detail) {
 			display: none;
 		}
-		.slide-short {
-			display: flex;
-			flex: 0 0 292px;
-			max-width: calc(100vw - 2 * var(--gutter) - 24px);
-			scroll-snap-align: start;
+		.card-heading {
+			margin-bottom: 6px;
+			font-size: var(--text-21);
+			line-height: 1.2;
+			letter-spacing: -0.01em;
 		}
-		.slide-short :global(.collection-card-short) {
-			flex: 1;
+		.card-count {
+			font-size: var(--text-12);
 		}
-		.short-cover {
-			height: 124px;
-			border-bottom: 1px solid var(--rule);
-			background: var(--panel);
-		}
-		.short-body {
-			padding: 18px 18px 20px;
-		}
-		.short-heading {
-			margin: 0 0 6px;
-			font-size: var(--text-26);
-			font-weight: 600;
-			line-height: 1.12;
-		}
-		.short-desc {
-			margin: 0;
+		.card-desc {
+			margin-bottom: 14px;
 			font-size: var(--text-14);
 			line-height: 1.5;
-			color: var(--muted);
+		}
+		.card-item {
+			gap: 12px;
+			padding: 11px 0;
+		}
+		.card-item-title {
+			font-size: var(--text-16);
+		}
+		.card-cta {
+			padding-top: 16px;
 		}
 	}
 </style>
