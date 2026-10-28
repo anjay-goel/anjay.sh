@@ -57,7 +57,7 @@ very few votes. If the number of candidates increases to $N$, a candidate can wi
 than $\frac{1}{N}$ of the total votes. Hence, In such cases, plurality voting is not very good at representing the
 choice of all the voters. Let's move on to other problems with this voting system.
 
-​ Now, Let's say Nehru and Shastri are the usual two candidates, polar opposites on the political spectrum. Fierce
+Now, Let's say Nehru and Shastri are the usual two candidates, polar opposites on the political spectrum. Fierce
 competition between the two makes the outcome very uncertain each year and the margin of winning very small. Patel, an
 ally of Nehru has an disagreement with Nehru. So he decides to nominate himself for the election. In the election, many
 people more closely aligned with Patel than Nehru voted for Patel instead. The final outcome is given below:
@@ -73,13 +73,13 @@ the political spectrum, Patel took a larger chuck out of voters who prefer Nehru
 the majority (the 47% and the 5% who would have chosen Nehru over Shastri in the absence of Patel) dissatisfied with the
 result. This is called the Spoiler effect or [Vote Splitting](https://en.wikipedia.org/wiki/Vote_splitting).
 
-​ The following year comes. People who prefer Patel (a small but significant share of all voters) realize that he can
+The following year comes. People who prefer Patel (a small but significant share of all voters) realize that he can
 never win, and thus their votes are [wasted](https://en.wikipedia.org/wiki/Wasted_vote). So they vote against their
 first preference (aka Patel) and vote for their second preference (aka Nehru) instead. This problem is
 called [tactical voting](https://en.wikipedia.org/wiki/Tactical_voting), where voters vote against their actual
 preference.
 
-​ Despite his best intentions, Patel realizes the problem and drops out of the race the following year. After observing
+Despite his best intentions, Patel realizes the problem and drops out of the race the following year. After observing
 the whole fiasco, no third candidate stood up (or was forced to sit down) for elections ever since. The election thus
 reverts back to its status quo of Nehru vs. Shastri. As we can observe, this voting system tends to reduce the number of
 candidates two. This is called [Duverger's law](https://en.wikipedia.org/wiki/Duverger%27s_law). This is not always

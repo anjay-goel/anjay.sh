@@ -77,7 +77,7 @@ slug: "IIT-KGP-Bypass-Internet-Restrictions"
 
 
 
-  ​	You can skip the -i (identity file) parameter if you have added the ssh config earlier.
+  You can skip the -i (identity file) parameter if you have added the ssh config earlier.
 
 * To start/stop/check status of open-vpn server use `systemctl`:
 
