@@ -10,7 +10,7 @@ export const showcase: ShowcaseItem[] = [
 	{
 		name: "frameo.ai",
 		href: "https://frameo.ai",
-		stack: "Gen AI · Video Production",
+		stack: "Gen AI · Media",
 		badge: "Building now",
 		desc: "A Gen-AI powered video production platform for short films, micro-dramas, ads, anything you can imagine.",
 	},
