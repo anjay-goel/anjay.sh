@@ -1,6 +1,13 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import { menuLinks } from "@/site-config";
 import { withBase } from "@/utils/path";
+
+const dirs = menuLinks
+	.filter((link) => link.path !== "/")
+	.map((link) => ({ href: withBase(link.path), name: `${link.path.replaceAll("/", "")}/` }));
+
+const missingPath = "this-page";
 
 const meta = {
 	description: "The page you were looking for doesn't exist.",
@@ -10,48 +17,107 @@ const meta = {
 ---
 
 <PageLayout meta={meta}>
-	<section class="not-found">
-		<div class="eyebrow">Error · 404</div>
-		<h1>This page wandered off.</h1>
-		<p>
-			The page you were looking for doesn't exist. It may have been moved, renamed,
-			or just isn't there yet. Try the <a href={withBase("/")}>home</a> page, or browse the
-			<a href={withBase("/posts/")}>writing</a>.
+	<section class="not-found" aria-labelledby="not-found-code">
+		<p class="line">
+			<span class="prompt" aria-hidden="true">$</span>
+			cd /<span data-missing-path>{missingPath}</span>
 		</p>
+		<p class="line error">cd: no such file or directory: /<span data-missing-path>{missingPath}</span></p>
+
+		<h1 class="code" id="not-found-code">404<span class="cursor" aria-hidden="true"></span></h1>
+
+		<p class="line">
+			<span class="prompt" aria-hidden="true">$</span>
+			ls
+		</p>
+		<ul class="dirs">
+			{
+				dirs.map((dir) => (
+					<li>
+						<a href={dir.href} data-astro-prefetch>
+							{dir.name}
+						</a>
+					</li>
+				))
+			}
+		</ul>
 	</section>
 </PageLayout>
 
+<script>
+	const path = decodeURIComponent(window.location.pathname).replace(/^\/+|\/+$/g, "");
+	if (path) {
+		for (const el of document.querySelectorAll<HTMLElement>("[data-missing-path]")) el.textContent = path;
+	}
+</script>
+
 <style>
-	.not-found { padding: 24px 0 80px; max-width: 56ch; }
-	.eyebrow {
+	.not-found {
+		padding: 24px 0 80px;
 		font-family: var(--font-mono);
-		font-size: 11.5px;
-		font-weight: 500;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		color: hsl(var(--theme-text-muted));
-		margin-bottom: 24px;
-	}
-	.not-found h1 {
-		font-family: var(--font-serif);
-		font-weight: 500;
-		font-size: clamp(32px, 5vw, 44px);
-		letter-spacing: -0.02em;
-		line-height: 1.12;
-		color: hsl(var(--theme-text));
-		margin: 0 0 18px;
-	}
-	.not-found p {
-		font-size: 17.5px;
+		font-size: 15px;
 		line-height: 1.7;
 		color: hsl(var(--theme-text));
+	}
+	.line {
 		margin: 0;
+		overflow-wrap: anywhere;
 	}
-	.not-found a {
+	.prompt {
+		color: hsl(var(--theme-text) / 0.55);
+	}
+	.error {
+		color: hsl(var(--theme-text-muted));
+	}
+	.code {
+		display: flex;
+		align-items: center;
+		margin: 36px 0 40px;
+		font-family: var(--font-mono);
+		font-size: 120px;
+		font-weight: 600;
+		line-height: 1;
+		letter-spacing: -0.04em;
+		color: hsl(var(--theme-text));
+	}
+	.cursor {
+		width: 0.3em;
+		height: 0.78em;
+		margin-left: 0.12em;
+		background: hsl(var(--theme-accent));
+	}
+	.dirs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px 28px;
+		margin: 0 0 4px;
+		padding: 0;
+		list-style: none;
+	}
+	.dirs a {
 		color: hsl(var(--theme-accent));
-		border-bottom: 1px solid hsl(var(--theme-accent) / 0.4);
-		padding-bottom: 1px;
-		transition: border-color 0.2s ease;
+		text-decoration: underline;
+		text-decoration-color: hsl(var(--theme-accent) / 0.4);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 3px;
+		transition: text-decoration-color 0.2s ease;
 	}
-	.not-found a:hover { border-color: hsl(var(--theme-accent)); }
+	.dirs a:hover {
+		text-decoration-color: hsl(var(--theme-accent));
+	}
+	.dirs a:focus-visible {
+		outline: 2px solid hsl(var(--theme-accent));
+		outline-offset: 3px;
+		border-radius: 3px;
+	}
+
+	@media (max-width: 720px) {
+		.not-found {
+			font-size: 13.5px;
+		}
+		.code {
+			margin: 28px 0 32px;
+			font-size: 88px;
+		}
+	}
 </style>

@@ -1,0 +1,165 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import type { GetStaticPaths } from "astro";
+import PostList from "@/components/blog/PostList.astro";
+import { collectionsCopy } from "@/content/copy/collections";
+import { type CollectionDoc, getCollections, orderCollectionPosts } from "@/data/collections";
+import { getAllPosts, getPostHref } from "@/data/post";
+import PageLayout from "@/layouts/Base.astro";
+import { withBase } from "@/utils/path";
+
+export const getStaticPaths = (async () => {
+	const collections = await getCollections();
+	const posts = await getAllPosts();
+	return collections.map((collection) => ({
+		params: { slug: collection.id },
+		props: { collection, posts: orderCollectionPosts(collection, posts) },
+	}));
+}) satisfies GetStaticPaths;
+
+interface Props {
+	collection: CollectionDoc;
+	posts: CollectionEntry<"post">[];
+}
+
+const { collection, posts } = Astro.props;
+const { Content } = await render(collection);
+const hasIntro = Boolean(collection.body?.trim());
+const startHref = collection.data.kind === "series" && posts[0] ? getPostHref(posts[0]) : undefined;
+
+const meta = {
+	description: collection.data.description,
+	title: collection.data.title,
+};
+---
+
+<PageLayout meta={meta}>
+	<section class="collection" aria-labelledby="collection-title">
+		<nav class="crumbs" aria-label="Breadcrumb">
+			<a data-astro-prefetch href={withBase("/posts/")}>{collectionsCopy.crumb}</a>
+			<span class="sep" aria-hidden="true">/</span>
+			<span class="current" aria-current="page">{collection.data.title}</span>
+		</nav>
+		<h1 class="collection-title" id="collection-title">{collection.data.title}</h1>
+		<p class="collection-desc">{collection.data.description}</p>
+		{
+			hasIntro && (
+				<div class="collection-intro">
+					<Content />
+				</div>
+			)
+		}
+		{
+			startHref && (
+				<a class="collection-start" data-astro-prefetch href={startHref}>
+					{collection.data.cta ?? collection.data.title} →
+				</a>
+			)
+		}
+		<div class="timeline">
+			<PostList posts={posts} />
+		</div>
+	</section>
+</PageLayout>
+
+<style>
+	.collection {
+		margin-bottom: 96px;
+	}
+	.crumbs {
+		font-family: var(--font-mono);
+		font-size: 11.5px;
+		letter-spacing: 0.04em;
+		color: hsl(var(--theme-text) / 0.55);
+		margin-bottom: 18px;
+	}
+	.crumbs a {
+		color: hsl(var(--theme-text-muted));
+		text-decoration: underline;
+		text-decoration-color: hsl(var(--theme-text) / 0.35);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 3px;
+		transition:
+			color 0.2s ease,
+			text-decoration-color 0.2s ease;
+	}
+	.crumbs a:hover {
+		color: hsl(var(--theme-accent));
+		text-decoration-color: hsl(var(--theme-accent));
+	}
+	.crumbs a:focus-visible,
+	.collection-start:focus-visible {
+		outline: 2px solid hsl(var(--theme-accent));
+		outline-offset: 3px;
+		border-radius: 3px;
+	}
+	.crumbs .sep {
+		color: var(--faint);
+		margin: 0 8px;
+	}
+	.collection-title {
+		margin: 0;
+		font-family: var(--font-serif);
+		font-size: 34px;
+		font-weight: 600;
+		line-height: 1.12;
+		letter-spacing: -0.02em;
+	}
+	.collection-desc {
+		max-width: 58ch;
+		margin: 16px 0 0;
+		font-size: 18px;
+		line-height: 1.62;
+		color: hsl(var(--theme-text-muted));
+	}
+	.collection-intro {
+		max-width: 64ch;
+		margin-top: 16px;
+		font-size: 17px;
+		line-height: 1.65;
+		color: hsl(var(--theme-text));
+	}
+	.collection-intro :global(p) {
+		margin: 0 0 12px;
+	}
+	.collection-start {
+		display: inline-block;
+		margin-top: 8px;
+		padding: 6px 0;
+		font-size: 13.5px;
+		color: hsl(var(--theme-accent));
+		text-decoration: underline;
+		text-decoration-color: hsl(var(--theme-accent) / 0.4);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 3px;
+		transition: text-decoration-color 0.2s ease;
+	}
+	.collection-start:hover {
+		text-decoration-color: hsl(var(--theme-accent));
+	}
+	.timeline {
+		margin-top: 44px;
+	}
+
+	@media (max-width: 720px) {
+		.collection-title {
+			font-size: 28px;
+		}
+		.collection-desc {
+			font-size: 16.5px;
+		}
+		.collection-intro {
+			font-size: 16px;
+		}
+	}
+
+	@media (max-width: 420px) {
+		.collection {
+			margin-bottom: 64px;
+		}
+		.collection-title {
+			font-size: 24px;
+		}
+	}
+</style>

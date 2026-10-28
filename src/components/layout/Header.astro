@@ -1,11 +1,12 @@
 ---
+import { headerCopy } from "@/content/copy/header";
 import { showcase } from "@/data/showcase";
-import { menuLinks, siteConfig } from "@/site-config";
+import { menuLinks } from "@/site-config";
 import { withBase } from "@/utils/path";
 import ThemeToggle from "../ThemeToggle.astro";
 
 const url = new URL(Astro.request.url);
-const wordmark = siteConfig.title;
+const { logo } = headerCopy;
 
 const visibleMenuLinks = menuLinks.filter((link) => {
 	if (link.path === "/showcase/" && showcase.length === 0) return false;
@@ -30,7 +31,15 @@ const navIcons: Record<string, string> = {
 ---
 
 <header class="site-header" id="main-header">
-	<a href={withBase("/")} class="wordmark">{wordmark}</a>
+	<script is:inline>
+		try {
+			if (sessionStorage.getItem("landed")) document.documentElement.dataset.landed = "";
+			else sessionStorage.setItem("landed", "1");
+		} catch {}
+	</script>
+	<a href={withBase("/")} class="wordmark" aria-label={logo.label}>
+		<span class="wordmark-prefix">{logo.prefix}</span>{logo.name}<span class="wordmark-suffix">{logo.suffix}</span><span class="wordmark-cursor" aria-hidden="true"></span>
+	</a>
 	<div class="header-right">
 		<nav class="nav" aria-label="Primary">
 			{
@@ -69,12 +78,38 @@ const navIcons: Record<string, string> = {
 		margin-bottom: 72px;
 	}
 	.wordmark {
-		font-family: var(--font-serif);
-		font-size: 17px;
+		display: inline-flex;
+		align-items: center;
+		font-family: var(--font-mono);
+		font-size: 16px;
 		font-weight: 500;
-		letter-spacing: -0.01em;
+		line-height: 1.5;
 		color: hsl(var(--theme-text));
+		white-space: nowrap;
 		transition: color 0.2s ease, border-color 0.2s ease;
+	}
+	.wordmark-prefix {
+		color: hsl(var(--theme-text) / 0.55);
+	}
+	.wordmark-suffix {
+		color: hsl(var(--theme-accent));
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		:global(html:not([data-landed])) .wordmark-cursor {
+			animation: wordmark-blink 1s steps(1) 0.3s 3;
+		}
+	}
+	@keyframes wordmark-blink {
+		50% {
+			opacity: 0;
+		}
+	}
+	.wordmark-cursor {
+		display: inline-block;
+		width: 8px;
+		height: 17px;
+		margin-left: 5px;
+		background: hsl(var(--theme-accent));
 	}
 	.wordmark:hover {
 		color: hsl(var(--theme-accent));
@@ -164,7 +199,12 @@ const navIcons: Record<string, string> = {
 			row-gap: 12px;
 		}
 		.wordmark {
-			font-size: 16px;
+			font-size: 15px;
+		}
+		.wordmark-cursor {
+			width: 7px;
+			height: 15px;
+			margin-left: 4px;
 		}
 		.nav {
 			gap: 18px;

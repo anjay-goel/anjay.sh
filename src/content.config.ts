@@ -1,4 +1,4 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection, reference, z } from "astro:content";
 import { glob } from "astro/loaders";
 
 function removeDupsAndLowerCase(array: string[]) {
@@ -44,4 +44,18 @@ const page = defineCollection({
 	}),
 });
 
-export const collections = { post, page };
+const collection = defineCollection({
+	loader: glob({ pattern: "**/*.md", base: "./src/content/collections" }),
+	schema: z.object({
+		title: z.string(),
+		kind: z.enum(["collection", "series"]),
+		description: z.string(),
+		shortDescription: z.string().optional(),
+		cta: z.string().optional(),
+		order: z.number(),
+		cover: z.enum(["surge", "stack", "sip", "container"]),
+		posts: z.array(reference("post")).min(1),
+	}),
+});
+
+export const collections = { post, page, collections: collection };
