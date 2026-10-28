@@ -21,14 +21,14 @@ const { as: Tag = "div", class: className, ...attrs } = Astro.props;
 <style>
 	.archive-row {
 		display: grid;
-		grid-template-columns: 200px minmax(0, 720px);
+		grid-template-columns: 12.5rem minmax(0, 45rem);
 	}
 	.archive-main {
 		min-width: 0;
 	}
 	@media (max-width: 1023px) {
 		.archive-row {
-			grid-template-columns: 160px minmax(0, 1fr);
+			grid-template-columns: 10rem minmax(0, 1fr);
 		}
 	}
 	@media (max-width: 767px) {

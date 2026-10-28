@@ -101,14 +101,14 @@ const { hints } = searchCopy;
 	.search {
 		--search-mark-line: rgba(51, 90, 133, 0.3);
 		box-sizing: border-box;
-		width: min(642px, calc(100vw - 2 * var(--gutter)));
+		width: min(40.125rem, calc(100vw - 2 * var(--gutter)));
 		max-width: none;
-		max-height: calc(100dvh - 150px);
-		margin: 110px auto auto;
+		max-height: calc(100dvh - 9.375rem);
+		margin: 6.875rem auto auto;
 		padding: 0;
 		overflow: hidden;
 		border: 1px solid var(--rule);
-		border-radius: 14px;
+		border-radius: 0.875rem;
 		background: var(--paper);
 		color: var(--ink);
 		font-family: var(--font-sans);
@@ -130,8 +130,8 @@ const { hints } = searchCopy;
 		display: flex;
 		flex: none;
 		align-items: center;
-		gap: 12px;
-		padding: 16px 20px;
+		gap: 0.75rem;
+		padding: 1rem 1.25rem;
 		border-bottom: 1px solid var(--rule);
 	}
 	.search-bar :global(.search-icon) {
@@ -148,7 +148,7 @@ const { hints } = searchCopy;
 		color: var(--ink);
 		font-family: var(--font-sans);
 		font-size: var(--text-18);
-		line-height: 23px;
+		line-height: 1.4375rem;
 		caret-color: var(--accent);
 		appearance: none;
 	}
@@ -189,7 +189,7 @@ const { hints } = searchCopy;
 	}
 	.search-status {
 		margin: 0;
-		padding: 12px 22px 4px;
+		padding: 0.75rem 1.375rem 0.25rem;
 		font-size: var(--text-12);
 		line-height: 1.5;
 		color: var(--soft);
@@ -199,7 +199,7 @@ const { hints } = searchCopy;
 	}
 	.search-results {
 		margin: 0;
-		padding: 0 0 8px;
+		padding: 0 0 0.5rem;
 		list-style: none;
 	}
 	.search-results:empty {
@@ -207,8 +207,8 @@ const { hints } = searchCopy;
 	}
 	.search-results :global(.search-link) {
 		display: block;
-		margin: 0 8px;
-		padding: 12px 14px;
+		margin: 0 0.5rem;
+		padding: 0.75rem 0.875rem;
 		border-radius: var(--radius-lg);
 		color: inherit;
 		text-decoration: none;
@@ -226,7 +226,7 @@ const { hints } = searchCopy;
 	}
 	.search-results :global(.search-title) {
 		display: block;
-		margin-top: 4px;
+		margin-top: 0.25rem;
 		font-size: var(--text-16);
 		font-weight: 600;
 		line-height: 1.35;
@@ -248,7 +248,7 @@ const { hints } = searchCopy;
 	}
 	.search-results :global(.search-excerpt) {
 		display: block;
-		margin-top: 6px;
+		margin-top: 0.375rem;
 		font-size: var(--text-14);
 		line-height: 1.55;
 		color: var(--muted);
@@ -258,13 +258,13 @@ const { hints } = searchCopy;
 	}
 	.search-results :global(mark) {
 		padding: 0 2px;
-		border-radius: 3px;
+		border-radius: 0.1875rem;
 		background: var(--mark-bg);
 		box-shadow: inset 0 -1px 0 var(--search-mark-line);
 		color: inherit;
 	}
 	.search-empty {
-		padding: 40px 28px 36px;
+		padding: 2.5rem 1.75rem 2.25rem;
 	}
 	.search-empty-title {
 		margin: 0;
@@ -274,7 +274,7 @@ const { hints } = searchCopy;
 		color: var(--ink);
 	}
 	.search-empty-hint {
-		margin: 8px 0 0;
+		margin: 0.5rem 0 0;
 		font-size: var(--text-16);
 		line-height: 1.55;
 		color: var(--muted);
@@ -282,8 +282,8 @@ const { hints } = searchCopy;
 	.search-tags {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 8px 18px;
-		margin: 16px 0 0;
+		gap: 0.5rem 1.125rem;
+		margin: 1rem 0 0;
 		padding: 0;
 		list-style: none;
 		line-height: normal;
@@ -300,8 +300,8 @@ const { hints } = searchCopy;
 		display: flex;
 		flex: none;
 		align-items: center;
-		gap: 26px;
-		padding: 12px 20px;
+		gap: 1.625rem;
+		padding: 0.75rem 1.25rem;
 		border-top: 1px solid var(--rule);
 		font-size: var(--text-12);
 		line-height: 1.5;
@@ -310,7 +310,7 @@ const { hints } = searchCopy;
 	.search-hint {
 		display: inline-flex;
 		align-items: center;
-		gap: 6px;
+		gap: 0.375rem;
 		white-space: nowrap;
 	}
 	.search-credit {
@@ -328,7 +328,7 @@ const { hints } = searchCopy;
 			border-radius: 0;
 		}
 		.search-bar {
-			padding: 12px 16px;
+			padding: 0.75rem 1rem;
 		}
 		.search-input {
 			margin-block: -12px;
@@ -342,9 +342,9 @@ const { hints } = searchCopy;
 			display: inline-flex;
 			flex: none;
 			align-items: center;
-			height: 44px;
+			height: 2.75rem;
 			margin: -2px 0;
-			padding: 0 4px;
+			padding: 0 0.25rem;
 			border: 0;
 			background: transparent;
 			color: var(--accent);
@@ -356,14 +356,14 @@ const { hints } = searchCopy;
 			border-radius: var(--radius-sm);
 		}
 		.search-status {
-			padding: 12px 20px 4px;
+			padding: 0.75rem 1.25rem 0.25rem;
 		}
 		.search-results {
-			padding: 0 20px 20px;
+			padding: 0 1.25rem 1.25rem;
 		}
 		.search-results :global(.search-link) {
 			margin: 0;
-			padding: 12px 0;
+			padding: 0.75rem 0;
 			border-radius: 0;
 		}
 		.search-results :global([aria-selected="true"] .search-link) {
@@ -376,16 +376,16 @@ const { hints } = searchCopy;
 			color: var(--accent);
 		}
 		.search-empty {
-			padding: 28px 20px;
+			padding: 1.75rem 1.25rem;
 		}
 		.search-tags {
-			gap: 0 18px;
-			margin-top: 6px;
+			gap: 0 1.125rem;
+			margin-top: 0.375rem;
 		}
 		.search-tag {
 			display: inline-flex;
 			align-items: center;
-			min-height: 44px;
+			min-height: 2.75rem;
 		}
 		:global(html:has(.search[open])) {
 			overflow: hidden;

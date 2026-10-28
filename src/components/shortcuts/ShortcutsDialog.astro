@@ -38,15 +38,15 @@ import { withBase } from "@/utils/path";
 <style>
 	.shortcuts {
 		box-sizing: border-box;
-		width: min(540px, calc(100vw - 2 * var(--gutter)));
+		width: min(33.75rem, calc(100vw - 2 * var(--gutter)));
 		max-width: none;
-		max-height: calc(100dvh - 180px);
-		margin: 150px auto auto;
-		padding: 22px 26px 18px;
+		max-height: calc(100dvh - 11.25rem);
+		margin: 9.375rem auto auto;
+		padding: 1.375rem 1.625rem 1.125rem;
 		overflow-y: auto;
 		overscroll-behavior: contain;
 		border: 1px solid var(--rule);
-		border-radius: 14px;
+		border-radius: 0.875rem;
 		background: var(--paper);
 		color: var(--ink);
 		font-family: var(--font-sans);
@@ -64,8 +64,8 @@ import { withBase } from "@/utils/path";
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: 16px;
-		margin-bottom: 14px;
+		gap: 1rem;
+		margin-bottom: 0.875rem;
 	}
 	.shortcuts-title {
 		margin: 0;
@@ -94,13 +94,13 @@ import { withBase } from "@/utils/path";
 	.shortcuts-row {
 		display: flex;
 		align-items: center;
-		gap: 16px;
-		padding: 10px 0;
+		gap: 1rem;
+		padding: 0.625rem 0;
 		border-top: 1px solid var(--rule);
 	}
 	.shortcuts-keys {
 		display: flex;
-		flex: 0 0 150px;
+		flex: 0 0 9.375rem;
 		align-items: center;
 	}
 	.shortcuts-action {
@@ -110,8 +110,8 @@ import { withBase } from "@/utils/path";
 		color: var(--muted);
 	}
 	.shortcuts-note {
-		margin: 14px 0 0;
-		padding-top: 12px;
+		margin: 0.875rem 0 0;
+		padding-top: 0.75rem;
 		border-top: 1px solid var(--rule);
 		font-size: var(--text-14);
 		line-height: 1.3;
@@ -122,10 +122,10 @@ import { withBase } from "@/utils/path";
 		.shortcuts {
 			max-height: calc(100dvh - 2 * var(--gutter));
 			margin: auto;
-			padding: 18px 20px 16px;
+			padding: 1.125rem 1.25rem 1rem;
 		}
 		.shortcuts-keys {
-			flex-basis: 112px;
+			flex-basis: 7rem;
 		}
 	}
 </style>

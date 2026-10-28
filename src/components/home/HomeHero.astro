@@ -24,47 +24,47 @@ const copy = homeCopy.hero;
 <style>
 	.hero {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) 342px;
+		grid-template-columns: minmax(0, 1fr) 21.375rem;
 		align-items: center;
-		column-gap: clamp(40px, 6vw, 64px);
-		padding: 96px 0 104px;
+		column-gap: clamp(2.5rem, 6vw, 4rem);
+		padding: 6rem 0 6.5rem;
 	}
 	.hero-intro {
 		max-width: 34em;
-		margin: 28px 0 0;
+		margin: 1.75rem 0 0;
 		font-size: var(--text-21);
 		line-height: 1.6;
 		color: var(--muted);
 	}
 	.hero :global(.hero-socials) {
-		margin-top: 30px;
+		margin-top: 1.875rem;
 	}
 	@media (max-width: 899px) {
 		.hero .page-title {
 			font-size: var(--text-44);
 		}
 		.hero-intro {
-			margin-top: 20px;
+			margin-top: 1.25rem;
 			font-size: var(--text-18);
 		}
 	}
 	@media (max-width: 767px) {
 		.hero {
 			display: block;
-			padding: 48px 0 40px;
+			padding: 3rem 0 2.5rem;
 		}
 		.hero .page-title {
 			font-size: var(--text-34);
 		}
 		.hero :global(.hero-socials) {
-			margin-top: 18px;
+			margin-top: 1.125rem;
 		}
 		.hero :global(.hero-socials svg) {
-			width: 22px;
-			height: 22px;
+			width: 1.375rem;
+			height: 1.375rem;
 		}
 		.hero > :global(.terminal) {
-			margin-top: 28px;
+			margin-top: 1.75rem;
 		}
 	}
 </style>

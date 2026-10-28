@@ -132,26 +132,26 @@ const facts = entry.data.facts
 		display: flex;
 		flex-wrap: wrap;
 		align-items: flex-start;
-		gap: 56px;
-		padding: 80px 0 120px;
+		gap: 3.5rem;
+		padding: 5rem 0 7.5rem;
 	}
 	.about :global(.about-picture) {
 		display: block;
-		flex: 0 0 262px;
+		flex: 0 0 16.375rem;
 	}
 	.about :global(.about-photo) {
 		display: block;
-		width: 262px;
-		height: 262px;
+		width: 16.375rem;
+		height: 16.375rem;
 		box-sizing: border-box;
 		border: 1px solid var(--rule);
-		border-radius: 20px;
+		border-radius: 1.25rem;
 		object-fit: cover;
 		background: var(--panel);
 	}
 	.about-text {
-		flex: 1 1 520px;
-		max-width: 640px;
+		flex: 1 1 32.5rem;
+		max-width: 40rem;
 		min-width: 0;
 	}
 	.about-heading {
@@ -162,7 +162,7 @@ const facts = entry.data.facts
 		letter-spacing: -0.028em;
 	}
 	.about-body {
-		margin-top: 28px;
+		margin-top: 1.75rem;
 		font-family: var(--font-serif);
 		font-size: var(--text-21);
 		line-height: 1.7;
@@ -171,7 +171,7 @@ const facts = entry.data.facts
 	.about-body :global(p),
 	.about-body :global(ul),
 	.about-body :global(ol) {
-		margin: 20px 0 0;
+		margin: 1.25rem 0 0;
 		text-wrap: pretty;
 	}
 	.about-body :global(ul),
@@ -180,7 +180,7 @@ const facts = entry.data.facts
 		list-style: none;
 	}
 	.about-body :global(li + li) {
-		margin-top: 20px;
+		margin-top: 1.25rem;
 	}
 	.about-body > :global(:first-child) {
 		margin-top: 0;
@@ -190,7 +190,7 @@ const facts = entry.data.facts
 		text-decoration-line: underline;
 		text-decoration-thickness: 1px;
 		text-decoration-color: var(--link-line);
-		text-underline-offset: 3px;
+		text-underline-offset: 0.1875rem;
 	}
 	.about-body :global(a:hover) {
 		text-decoration-thickness: 2px;
@@ -198,10 +198,10 @@ const facts = entry.data.facts
 	}
 	.about-facts {
 		display: grid;
-		grid-template-columns: 120px minmax(0, 1fr);
-		gap: 10px 16px;
-		margin: 36px 0 0;
-		padding: 18px 0 0;
+		grid-template-columns: 7.5rem minmax(0, 1fr);
+		gap: 0.625rem 1rem;
+		margin: 2.25rem 0 0;
+		padding: 1.125rem 0 0;
 		border-top: 1px solid var(--rule-strong);
 		font-family: var(--font-mono);
 		font-size: var(--text-14);
@@ -221,11 +221,11 @@ const facts = entry.data.facts
 		color: var(--accent);
 	}
 	.about-text :global(.about-socials-inline) {
-		margin-top: 32px;
+		margin-top: 2rem;
 		font-family: var(--font-serif);
 	}
 	.about-text :global(.about-socials-inline .socials-label) {
-		margin-right: 12px;
+		margin-right: 0.75rem;
 	}
 	.about-text :global(.about-socials-boxed) {
 		display: none;
@@ -234,30 +234,30 @@ const facts = entry.data.facts
 	@media (max-width: 767px) {
 		.about {
 			display: block;
-			padding: 40px 0 56px;
+			padding: 2.5rem 0 3.5rem;
 		}
 		.about :global(.about-photo) {
-			width: 132px;
-			height: 132px;
-			margin-bottom: 24px;
+			width: 8.25rem;
+			height: 8.25rem;
+			margin-bottom: 1.5rem;
 			border-radius: var(--radius-xl);
 		}
 		.about-heading {
 			font-size: var(--text-34);
 		}
 		.about-body {
-			margin-top: 20px;
+			margin-top: 1.25rem;
 			font-size: var(--text-18);
 		}
 		.about-body :global(p),
 		.about-body :global(ul),
 		.about-body :global(ol),
 		.about-body :global(li + li) {
-			margin-top: 16px;
+			margin-top: 1rem;
 		}
 		.about-facts {
-			grid-template-columns: 96px minmax(0, 1fr);
-			margin-top: 28px;
+			grid-template-columns: 6rem minmax(0, 1fr);
+			margin-top: 1.75rem;
 			font-size: var(--text-12);
 		}
 		.about-text :global(.about-socials-inline) {
@@ -265,7 +265,7 @@ const facts = entry.data.facts
 		}
 		.about-text :global(.about-socials-boxed) {
 			display: flex;
-			margin-top: 24px;
+			margin-top: 1.5rem;
 		}
 	}
 </style>

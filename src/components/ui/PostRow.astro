@@ -58,14 +58,14 @@ const thumb = post.thumbnail;
 	.post-row {
 		display: flex;
 		align-items: center;
-		gap: 36px;
+		gap: 2.25rem;
 		color: inherit;
 		text-decoration: none;
-		scroll-margin-block: 96px;
+		scroll-margin-block: 6rem;
 	}
 	.post-row:focus-visible {
 		outline: 2px solid var(--accent);
-		outline-offset: 8px;
+		outline-offset: 0.5rem;
 		border-radius: var(--radius-md);
 	}
 	.post-row-text {
@@ -74,7 +74,7 @@ const thumb = post.thumbnail;
 	}
 	.post-row-title {
 		display: block;
-		margin: 8px 0 0;
+		margin: 0.5rem 0 0;
 		font-family: var(--font-sans);
 		font-size: var(--text-26);
 		font-weight: 600;
@@ -92,35 +92,35 @@ const thumb = post.thumbnail;
 	}
 	.post-row-desc {
 		display: block;
-		max-width: 720px;
-		margin: 8px 0 0;
+		max-width: 45rem;
+		margin: 0.5rem 0 0;
 		font-size: var(--text-16);
 		line-height: 1.6;
 		color: var(--muted);
 	}
 	.post-row-thumb {
-		flex: 0 0 176px;
-		height: 114px;
+		flex: 0 0 11rem;
+		height: 7.125rem;
 		overflow: hidden;
 	}
 	@media (max-width: 767px) {
 		.post-row {
 			align-items: flex-start;
-			gap: 16px;
+			gap: 1rem;
 		}
 		.post-row-title {
-			margin-top: 6px;
+			margin-top: 0.375rem;
 			font-size: var(--text-18);
 			line-height: 1.25;
 			letter-spacing: 0;
 		}
 		.post-row-desc {
-			margin: 6px 0 0;
+			margin: 0.375rem 0 0;
 			line-height: 1.55;
 		}
 		.post-row-thumb {
-			flex-basis: 96px;
-			height: 72px;
+			flex-basis: 6rem;
+			height: 4.5rem;
 			margin-top: 2px;
 		}
 	}

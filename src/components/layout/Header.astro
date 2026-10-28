@@ -66,27 +66,27 @@ const items = nav.items.map((item) => ({ ...item, href: withBase(item.path), cur
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: 24px;
-		padding: 26px 0;
+		gap: 1.5rem;
+		padding: 1.625rem 0;
 		border-bottom: 1px solid var(--rule);
 	}
 	.site-header-dense .site-header-bar {
-		padding: 24px 0;
+		padding: 1.5rem 0;
 	}
 	.site-header-right {
 		display: flex;
 		align-items: center;
-		gap: 28px;
+		gap: 1.75rem;
 		min-width: 0;
 	}
 	.site-nav-desktop {
 		display: flex;
 		align-items: center;
-		gap: 28px;
+		gap: 1.75rem;
 		font-size: var(--text-16);
 	}
 	.site-nav-desktop .site-nav-link {
-		padding: 4px 0;
+		padding: 0.25rem 0;
 		border-bottom: 1.5px solid transparent;
 		color: var(--muted);
 		line-height: 1.5;
@@ -108,7 +108,7 @@ const items = nav.items.map((item) => ({ ...item, href: withBase(item.path), cur
 		position: absolute;
 		inset-inline: 0;
 		top: 50%;
-		height: max(100%, 44px);
+		height: max(100%, 2.75rem);
 		transform: translateY(-50%);
 	}
 	.site-nav-link::after {
@@ -121,20 +121,20 @@ const items = nav.items.map((item) => ({ ...item, href: withBase(item.path), cur
 		user-select: none;
 	}
 	.site-nav-link:focus-visible {
-		outline-offset: 4px;
+		outline-offset: 0.25rem;
 		border-radius: var(--radius-sm);
 	}
 	.site-header-actions {
 		display: flex;
 		align-items: center;
-		gap: 8px;
+		gap: 0.5rem;
 	}
 	.search-btn {
 		display: flex;
 		align-items: center;
-		gap: 10px;
-		height: 44px;
-		padding: 0 10px 0 14px;
+		gap: 0.625rem;
+		height: 2.75rem;
+		padding: 0 0.625rem 0 0.875rem;
 		border: 1px solid var(--rule);
 		border-radius: var(--radius-lg);
 		background: var(--paper);
@@ -156,8 +156,8 @@ const items = nav.items.map((item) => ({ ...item, href: withBase(item.path), cur
 		display: none;
 		align-items: center;
 		justify-content: center;
-		width: 44px;
-		height: 44px;
+		width: 2.75rem;
+		height: 2.75rem;
 		padding: 0;
 		border: 0;
 		border-radius: var(--radius-lg);
@@ -173,10 +173,10 @@ const items = nav.items.map((item) => ({ ...item, href: withBase(item.path), cur
 
 	@media (max-width: 767px) {
 		.site-header-bar {
-			padding: 14px 0;
+			padding: 0.875rem 0;
 		}
 		.site-header-dense .site-header-bar {
-			padding: 12px 0;
+			padding: 0.75rem 0;
 		}
 		.site-nav-desktop,
 		.search-btn {
@@ -186,11 +186,11 @@ const items = nav.items.map((item) => ({ ...item, href: withBase(item.path), cur
 			display: flex;
 		}
 		.site-header-actions {
-			gap: 4px;
+			gap: 0.25rem;
 		}
 		.site-nav-phone {
 			display: flex;
-			gap: 22px;
+			gap: 1.375rem;
 			border-bottom: 1px solid var(--rule);
 			font-size: var(--text-14);
 			overflow-x: auto;
@@ -199,7 +199,7 @@ const items = nav.items.map((item) => ({ ...item, href: withBase(item.path), cur
 		.site-nav-phone .site-nav-link {
 			flex: none;
 			justify-content: center;
-			height: 44px;
+			height: 2.75rem;
 			color: var(--muted);
 		}
 		.site-nav-phone .site-nav-link:hover,

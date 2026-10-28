@@ -167,35 +167,35 @@ const postUrl = absoluteUrl(`/posts/${id}/`, Astro.site);
 		display: flex;
 		justify-content: center;
 		gap: var(--rail-gap);
-		padding: 56px 0 120px;
+		padding: 3.5rem 0 7.5rem;
 	}
 	.article-rail {
 		order: -1;
-		flex: 1 1 200px;
+		flex: 1 1 12.5rem;
 		max-width: var(--rail);
 		min-width: 0;
 	}
 	.article {
-		flex: 999 1 620px;
+		flex: 999 1 38.75rem;
 		max-width: var(--article-col);
 		min-width: 0;
 	}
 	.article-spacer {
-		flex: 1 1 180px;
+		flex: 1 1 11.25rem;
 		max-width: var(--rail);
 		min-width: 0;
 	}
 	.article-rail :global(.article-toc) {
 		position: sticky;
-		top: 24px;
-		max-height: calc(100dvh - 48px);
-		margin-inline: -6px;
-		padding: 0 6px 6px;
+		top: 1.5rem;
+		max-height: calc(100dvh - 3rem);
+		margin-inline: -0.375rem;
+		padding: 0 0.375rem 0.375rem;
 		overflow-y: auto;
 		scrollbar-width: thin;
 	}
 	.article-rail :global(.article-toc-series) {
-		margin-top: 48px;
+		margin-top: 3rem;
 	}
 	.article-bars {
 		display: none;
@@ -217,10 +217,10 @@ const postUrl = absoluteUrl(`/posts/${id}/`, Astro.site);
 		.article-back {
 			display: flex;
 			align-items: center;
-			gap: 6px;
+			gap: 0.375rem;
 			width: fit-content;
-			height: 44px;
-			margin-top: 8px;
+			height: 2.75rem;
+			margin-top: 0.5rem;
 			font-size: var(--text-14);
 			color: var(--muted);
 		}
@@ -228,7 +228,7 @@ const postUrl = absoluteUrl(`/posts/${id}/`, Astro.site);
 			color: var(--accent);
 		}
 		.article-layout {
-			padding: 0 0 48px;
+			padding: 0 0 3rem;
 		}
 	}
 </style>

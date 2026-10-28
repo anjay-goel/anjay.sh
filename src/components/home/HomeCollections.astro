@@ -152,14 +152,14 @@ const cards = collections.map((c) => {
 
 <style>
 	.collections {
-		padding-bottom: 112px;
+		padding-bottom: 7rem;
 	}
 	.collections-head {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: 18px;
-		margin-bottom: 36px;
+		gap: 1.125rem;
+		margin-bottom: 2.25rem;
 	}
 	.collections-title {
 		margin: 0;
@@ -174,14 +174,14 @@ const cards = collections.map((c) => {
 	}
 	.carousel-controls {
 		display: flex;
-		gap: 8px;
+		gap: 0.5rem;
 	}
 	.carousel-btn {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 44px;
-		height: 44px;
+		width: 2.75rem;
+		height: 2.75rem;
 		padding: 0;
 		border: 1px solid var(--rule);
 		border-radius: 50%;
@@ -212,10 +212,10 @@ const cards = collections.map((c) => {
 	}
 	.track-wide {
 		display: flex;
-		gap: 24px;
-		margin-top: -4px;
+		gap: 1.5rem;
+		margin-top: -0.25rem;
 		margin-right: calc((100cqw - 100%) / -2);
-		padding: 4px 40px 8px 0;
+		padding: 0.25rem 2.5rem 0.5rem 0;
 		overflow-x: auto;
 		scroll-snap-type: x mandatory;
 		scrollbar-width: none;
@@ -226,21 +226,21 @@ const cards = collections.map((c) => {
 	.slide {
 		position: relative;
 		display: flex;
-		flex: 0 0 388px;
+		flex: 0 0 24.25rem;
 		scroll-snap-align: start;
 	}
 	.slide :global(.collection-card) {
 		flex: 1;
 	}
 	.card-cover {
-		height: 150px;
-		margin: -30px -28px 24px;
+		height: 9.375rem;
+		margin: -1.875rem -1.75rem 1.5rem;
 		border-bottom: 1px solid var(--rule);
 		background: var(--panel);
 		overflow: hidden;
 	}
 	.card-heading {
-		margin: 0 0 10px;
+		margin: 0 0 0.625rem;
 		font-size: var(--text-34);
 		line-height: 1.1;
 		letter-spacing: -0.018em;
@@ -252,7 +252,7 @@ const cards = collections.map((c) => {
 		color: var(--soft);
 	}
 	.card-desc {
-		margin: 0 0 20px;
+		margin: 0 0 1.25rem;
 		font-size: var(--text-16);
 		line-height: 1.55;
 		color: var(--muted);
@@ -265,8 +265,8 @@ const cards = collections.map((c) => {
 	.card-item {
 		display: flex;
 		align-items: baseline;
-		gap: 16px;
-		padding: 13px 0;
+		gap: 1rem;
+		padding: 0.8125rem 0;
 		border-top: 1px dashed var(--rule-strong);
 		color: inherit;
 		text-decoration: none;
@@ -278,7 +278,7 @@ const cards = collections.map((c) => {
 		outline-offset: 2px;
 	}
 	.card-item-marker {
-		flex: 0 0 24px;
+		flex: 0 0 1.5rem;
 		margin-right: -2px;
 		font-family: var(--font-mono);
 		font-size: var(--text-12);
@@ -303,12 +303,12 @@ const cards = collections.map((c) => {
 	.card-cta {
 		align-self: flex-start;
 		margin-top: auto;
-		padding-top: 20px;
+		padding-top: 1.25rem;
 		font-size: var(--text-14);
 		color: var(--accent);
 		text-decoration-line: underline;
 		text-decoration-color: transparent;
-		text-underline-offset: 4px;
+		text-underline-offset: 0.25rem;
 	}
 	.card-cta:hover {
 		text-decoration-color: var(--accent);
@@ -316,12 +316,12 @@ const cards = collections.map((c) => {
 
 	@media (max-width: 767px) {
 		.collections {
-			padding-bottom: 56px;
+			padding-bottom: 3.5rem;
 		}
 		.collections-head {
 			align-items: baseline;
-			gap: 12px;
-			margin-bottom: 20px;
+			gap: 0.75rem;
+			margin-bottom: 1.25rem;
 		}
 		.title-wide,
 		.carousel-controls,
@@ -336,26 +336,26 @@ const cards = collections.map((c) => {
 			display: inline;
 		}
 		.track-wide {
-			gap: 12px;
-			margin: -4px calc(-1 * var(--gutter)) 0;
-			padding: 4px var(--gutter) 8px;
+			gap: 0.75rem;
+			margin: -0.25rem calc(-1 * var(--gutter)) 0;
+			padding: 0.25rem var(--gutter) 0.5rem;
 			scroll-padding-inline: var(--gutter);
 		}
 		.slide {
-			flex: 0 0 min(320px, calc(100vw - 2 * var(--gutter) - 24px));
+			flex: 0 0 min(20rem, calc(100vw - 2 * var(--gutter) - 1.5rem));
 		}
 		.slide :global(.collection-card) {
-			padding: 20px 20px 18px;
+			padding: 1.25rem 1.25rem 1.125rem;
 		}
 		.card-cover {
-			height: 124px;
-			margin: -20px -20px 18px;
+			height: 7.75rem;
+			margin: -1.25rem -1.25rem 1.125rem;
 		}
 		.card-cover :global(.art-detail) {
 			display: none;
 		}
 		.card-heading {
-			margin-bottom: 6px;
+			margin-bottom: 0.375rem;
 			font-size: var(--text-21);
 			line-height: 1.2;
 			letter-spacing: -0.01em;
@@ -364,19 +364,19 @@ const cards = collections.map((c) => {
 			font-size: var(--text-12);
 		}
 		.card-desc {
-			margin-bottom: 14px;
+			margin-bottom: 0.875rem;
 			font-size: var(--text-14);
 			line-height: 1.5;
 		}
 		.card-item {
-			gap: 12px;
-			padding: 11px 0;
+			gap: 0.75rem;
+			padding: 0.6875rem 0;
 		}
 		.card-item-title {
 			font-size: var(--text-16);
 		}
 		.card-cta {
-			padding-top: 16px;
+			padding-top: 1rem;
 		}
 	}
 </style>

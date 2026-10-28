@@ -75,9 +75,9 @@ const meta = {
 	.back {
 		display: inline-flex;
 		align-items: center;
-		gap: 4px;
-		height: 44px;
-		margin-top: 24px;
+		gap: 0.25rem;
+		height: 2.75rem;
+		margin-top: 1.5rem;
 		font-size: var(--text-14);
 		color: var(--muted);
 		text-decoration: none;
@@ -88,7 +88,7 @@ const meta = {
 	}
 	.intro {
 		max-width: var(--article-col);
-		padding-bottom: 64px;
+		padding-bottom: 4rem;
 	}
 	.intro-prose {
 		font-size: var(--text-21);
@@ -96,13 +96,13 @@ const meta = {
 		color: var(--ink);
 	}
 	.intro-prose :global(p) {
-		margin: 20px 0 0;
+		margin: 1.25rem 0 0;
 	}
 	.intro-prose :global(p:first-child) {
 		margin-top: 0;
 	}
 	.intro-start {
-		margin-top: 28px;
+		margin-top: 1.75rem;
 		border-radius: var(--radius-xl);
 	}
 	.intro-start:focus-visible {
@@ -111,33 +111,33 @@ const meta = {
 	.rows {
 		display: flex;
 		flex-direction: column;
-		gap: 44px;
-		max-width: 920px;
+		gap: 2.75rem;
+		max-width: 57.5rem;
 		margin: 0;
-		padding: 0 0 104px;
+		padding: 0 0 6.5rem;
 		list-style: none;
 	}
 	@media (max-width: 767px) {
 		.back {
-			margin-top: 8px;
+			margin-top: 0.5rem;
 		}
 		.intro {
-			padding: 28px 0 0;
+			padding: 1.75rem 0 0;
 		}
 		.intro-prose {
 			font-size: var(--text-18);
 		}
 		.intro-prose :global(p) {
-			margin-top: 16px;
+			margin-top: 1rem;
 		}
 		.intro-start {
 			display: flex;
-			height: 50px;
-			margin-top: 22px;
+			height: 3.125rem;
+			margin-top: 1.375rem;
 		}
 		.rows {
-			gap: 28px;
-			padding: 40px 0 48px;
+			gap: 1.75rem;
+			padding: 2.5rem 0 3rem;
 		}
 	}
 </style>

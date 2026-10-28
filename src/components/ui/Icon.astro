@@ -48,14 +48,15 @@ interface Props {
 }
 
 const { name, size = 16, strokeWidth = 1.75, class: className } = Astro.props;
+const length = typeof size === "number" ? `${size / 16}rem` : size;
 ---
 
 <svg
 	class:list={["icon", className]}
 	aria-hidden="true"
 	focusable="false"
-	width={size}
-	height={size}
+	width={length}
+	height={length}
 	viewBox="0 0 24 24"
 	fill="none"
 	stroke="currentColor"

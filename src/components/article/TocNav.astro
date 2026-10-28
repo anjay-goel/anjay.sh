@@ -54,7 +54,7 @@ const flat = items.every((item) => item.children.length === 0);
 <style>
 	.toc-label {
 		line-height: normal;
-		margin: 0 0 12px;
+		margin: 0 0 0.75rem;
 		font-family: var(--font-mono);
 		font-size: var(--text-12);
 		color: var(--soft);
@@ -66,12 +66,12 @@ const flat = items.every((item) => item.children.length === 0);
 		list-style: none;
 	}
 	.toc-flat .toc-list {
-		padding-left: 14px;
+		padding-left: 0.875rem;
 		border-left: 1px solid var(--rule-strong);
 	}
 	.toc-link {
 		display: block;
-		padding: 7px 0;
+		padding: 0.4375rem 0;
 		font-size: var(--text-14);
 		line-height: 1.4;
 		color: var(--muted);
@@ -89,16 +89,16 @@ const flat = items.every((item) => item.children.length === 0);
 	.toc-flat .toc-link[aria-current="location"],
 	.toc-sub-link[aria-current="location"] {
 		margin-left: -15px;
-		padding-left: 13px;
+		padding-left: 0.8125rem;
 		border-left: 2px solid var(--accent);
 	}
 	.toc-sub {
-		margin: 2px 0 6px 1px;
-		padding-left: 14px;
+		margin: 2px 0 0.375rem 1px;
+		padding-left: 0.875rem;
 		border-left: 1px solid var(--rule-strong);
 	}
 	.toc-sub-link {
-		padding: 6px 0;
+		padding: 0.375rem 0;
 	}
 	.toc-nested li:has(.toc-sub-link[aria-current="location"]) > .toc-link {
 		font-weight: 500;
@@ -107,12 +107,12 @@ const flat = items.every((item) => item.children.length === 0);
 	.toc-progress {
 		display: flex;
 		align-items: center;
-		gap: 10px;
-		margin-top: 24px;
+		gap: 0.625rem;
+		margin-top: 1.5rem;
 	}
 	.toc-track {
 		flex: 1;
-		height: 3px;
+		height: 0.1875rem;
 		border-radius: 2px;
 		background: var(--rule);
 		overflow: hidden;
@@ -120,7 +120,7 @@ const flat = items.every((item) => item.children.length === 0);
 	.toc-fill {
 		display: block;
 		width: 100%;
-		height: 3px;
+		height: 0.1875rem;
 		border-radius: 2px;
 		background: var(--accent);
 		transform: scaleX(0);
@@ -138,14 +138,14 @@ const flat = items.every((item) => item.children.length === 0);
 	.toc-actions {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 4px 16px;
-		margin-top: 10px;
+		gap: 0.25rem 1rem;
+		margin-top: 0.625rem;
 	}
 	.toc-action {
 		display: inline-flex;
 		align-items: center;
-		gap: 6px;
-		height: 40px;
+		gap: 0.375rem;
+		height: 2.5rem;
 		padding: 0;
 		border: 0;
 		background: transparent;
