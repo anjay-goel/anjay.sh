@@ -70,7 +70,7 @@ export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
 		codeBackground: "var(--code)",
 		codeForeground: "var(--ink)",
 		codeFontFamily: "var(--font-mono)",
-		codeFontSize: "0.875rem",
+		codeFontSize: "var(--text-14)",
 		codeFontWeight: "400",
 		codeLineHeight: "1.75",
 		codePaddingBlock: "0.875rem",
