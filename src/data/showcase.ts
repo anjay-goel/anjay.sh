@@ -19,7 +19,7 @@ export const showcase: ShowcaseItem[] = [
 		href: "https://github.com/anjay-goel/RedScout",
 		stack: "Redis · Monitoring · CLI",
 		badge: "OSS",
-		desc: "A Redis monitoring tool that provides namespace-level insights into your Redis database. Unlike traditional tools, It breaks down memory metrics by logical namespaces.",
+		desc: "A Redis monitoring tool that provides real application-level insights by breaking down metrics by logical namespaces.",
 	},
 	{
 		name: "DashReels",
