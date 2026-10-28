@@ -81,6 +81,7 @@ const thumb = post.thumbnail;
 		line-height: 1.22;
 		letter-spacing: -0.012em;
 		color: var(--ink);
+		text-wrap: balance;
 		transition: color var(--dur) var(--ease);
 	}
 	.post-row:hover .post-row-title {
@@ -97,6 +98,7 @@ const thumb = post.thumbnail;
 		font-size: var(--text-16);
 		line-height: 1.6;
 		color: var(--muted);
+		text-wrap: pretty;
 	}
 	.post-row-thumb {
 		flex: 0 0 11rem;
@@ -116,7 +118,15 @@ const thumb = post.thumbnail;
 		}
 		.post-row-desc {
 			margin: 0.375rem 0 0;
+			font-size: var(--text-14);
 			line-height: 1.55;
+		}
+		.post-row:has(.post-row-thumb) .post-row-desc {
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 3;
+			line-clamp: 3;
+			overflow: hidden;
 		}
 		.post-row-thumb {
 			flex-basis: 6rem;
