@@ -88,6 +88,16 @@ const navIcons: Record<string, string> = {
 	.wordmark-suffix {
 		color: hsl(var(--theme-accent));
 	}
+	@media (prefers-reduced-motion: no-preference) {
+		.wordmark-cursor {
+			animation: wordmark-blink 1s steps(1) 0.3s 3;
+		}
+	}
+	@keyframes wordmark-blink {
+		50% {
+			opacity: 0;
+		}
+	}
 	.wordmark-cursor {
 		display: inline-block;
 		width: 8px;
