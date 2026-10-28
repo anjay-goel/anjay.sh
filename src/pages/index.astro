@@ -41,7 +41,7 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 			},
 		}}
 	/>
-	<HomeHero postCount={summaries.length} />
+	<HomeHero />
 	{featured && <HomeLatest featured={featured} recent={recent} total={summaries.length} />}
 	<HomeCollections collections={collections} posts={summaries} />
 	<HomeArchive years={years} />

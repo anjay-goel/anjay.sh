@@ -1,11 +1,4 @@
-import { education } from "@/content/copy/about";
 import { metaCopy } from "./meta";
-
-export interface TerminalRow {
-	key: string;
-	value: string;
-	accent?: string;
-}
 
 export const homeCopy = {
 	meta: {
@@ -13,26 +6,6 @@ export const homeCopy = {
 	},
 	hero: {
 		title: "Hi! I’m Anjay.",
-	},
-	terminal: {
-		label: "whoami",
-		title: "anjay@web: ~",
-		shell: "zsh",
-		prompt: metaCopy.prompt,
-		whoami: {
-			command: "whoami",
-			name: "anjay goel",
-			rows: [
-				{ key: "building", value: "frameo.ai" },
-				{ key: "education", value: education },
-			] satisfies TerminalRow[],
-		},
-		shipped: {
-			command: "ls ~/shipped",
-		},
-		posts: {
-			command: "ls ~/posts | wc -l",
-		},
 	},
 	latest: {
 		title: "Latest",
