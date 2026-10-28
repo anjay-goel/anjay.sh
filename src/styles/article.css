@@ -492,7 +492,7 @@
 
 @media (min-width: 768px) and (pointer: coarse) {
 	.prose .expressive-code .copy button {
-		height: 2.75rem;
+		height: var(--tap);
 		margin-block: -0.375rem;
 	}
 
@@ -908,8 +908,8 @@
 
 	.prose .expressive-code .copy button {
 		justify-content: center;
-		width: 2.75rem;
-		height: 2.75rem;
+		width: var(--tap);
+		height: var(--tap);
 		padding: 0;
 	}
 
@@ -970,7 +970,7 @@
 	}
 
 	.prose .caps-switch {
-		min-height: 2.75rem;
+		min-height: var(--tap);
 	}
 
 	.prose .caps-output {

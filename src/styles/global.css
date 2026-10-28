@@ -54,6 +54,7 @@
 		--article-col: 42.5rem;
 		--rail: 13.75rem;
 		--rail-gap: 3.5rem;
+		--tap: 2.75rem;
 		--dur: 150ms;
 		--ease: ease;
 
@@ -82,6 +83,12 @@
 	@media (max-width: 767px) {
 		:root {
 			--gutter: 1.25rem;
+		}
+	}
+
+	@media (pointer: coarse) {
+		:root {
+			--tap: max(2.75rem, 44px);
 		}
 	}
 
@@ -256,8 +263,8 @@
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		width: max(100%, 2.75rem);
-		height: max(100%, 2.75rem);
+		width: max(100%, var(--tap));
+		height: max(100%, var(--tap));
 		transform: translate(-50%, -50%);
 	}
 
@@ -279,7 +286,7 @@
 		align-items: center;
 		justify-content: center;
 		gap: 0.5rem;
-		height: 3rem;
+		height: max(3rem, var(--tap));
 		padding: 0 1.375rem;
 		border: 0;
 		border-radius: var(--radius-md);
@@ -307,7 +314,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		height: 3rem;
+		height: max(3rem, var(--tap));
 		padding: 0 1.375rem;
 		border: 1px solid var(--rule);
 		border-radius: var(--radius-lg);
@@ -334,8 +341,8 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: 2.75rem;
-		height: 2.75rem;
+		width: var(--tap);
+		height: var(--tap);
 		padding: 0;
 		border: 1px solid var(--rule);
 		border-radius: var(--radius-lg);

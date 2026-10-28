@@ -22,7 +22,7 @@ const { home } = footerCopy;
 	variant === "home" ? (
 		<footer class="site-footer site-footer-home">
 			<div class="footer-home-row">
-				<p class="footer-home-line">{email ? <a class="footer-home-link" href={`mailto:${email}`}>{home.email}</a> : home.email}{home.middle}<a class="footer-home-link" href={rssHref}>{home.rss}</a>{home.end}</p>
+				<p class="footer-home-line">{email ? <a class="footer-home-link hit-target" href={`mailto:${email}`}>{home.email}</a> : home.email}{home.middle}<a class="footer-home-link hit-target" href={rssHref}>{home.rss}</a>{home.end}</p>
 				<div class="footer-socials-inline">
 					<Socials />
 				</div>

@@ -106,10 +106,11 @@ const items = nav.items.map((item) => ({ ...item, href: withBase(item.path), cur
 	.site-nav-link::before {
 		content: "";
 		position: absolute;
-		inset-inline: 0;
 		top: 50%;
-		height: max(100%, 2.75rem);
-		transform: translateY(-50%);
+		left: 50%;
+		width: max(100%, var(--tap));
+		height: max(100%, var(--tap));
+		transform: translate(-50%, -50%);
 	}
 	.site-nav-link::after {
 		content: attr(data-label);
@@ -133,7 +134,7 @@ const items = nav.items.map((item) => ({ ...item, href: withBase(item.path), cur
 		display: flex;
 		align-items: center;
 		gap: 0.625rem;
-		height: 2.75rem;
+		height: var(--tap);
 		padding: 0 0.625rem 0 0.875rem;
 		border: 1px solid var(--rule);
 		border-radius: var(--radius-lg);
@@ -156,8 +157,8 @@ const items = nav.items.map((item) => ({ ...item, href: withBase(item.path), cur
 		display: none;
 		align-items: center;
 		justify-content: center;
-		width: 2.75rem;
-		height: 2.75rem;
+		width: var(--tap);
+		height: var(--tap);
 		padding: 0;
 		border: 0;
 		border-radius: var(--radius-lg);
@@ -199,7 +200,7 @@ const items = nav.items.map((item) => ({ ...item, href: withBase(item.path), cur
 		.site-nav-phone .site-nav-link {
 			flex: none;
 			justify-content: center;
-			height: 2.75rem;
+			height: var(--tap);
 			color: var(--muted);
 		}
 		.site-nav-phone .site-nav-link:hover,
