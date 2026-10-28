@@ -19,6 +19,7 @@ interface Props {
 }
 
 const { collections, posts } = Astro.props;
+const CARD_ITEMS = 3;
 const copy = homeCopy.collections;
 
 const partTitle = (title: string, collection: CollectionDoc) => {
@@ -28,7 +29,7 @@ const partTitle = (title: string, collection: CollectionDoc) => {
 
 const cards = collections.map((c) => {
 	const series = c.data.kind === "series";
-	const items = orderCollectionPosts(c, posts).map((p) => ({
+	const items = orderCollectionPosts(c, posts).slice(0, CARD_ITEMS).map((p) => ({
 		post: p,
 		title: series ? partTitle(p.title, c) : p.title,
 		marker: series ? seriesPartFor(c, p.id)?.roman : undefined,
@@ -226,23 +227,23 @@ const cards = collections.map((c) => {
 	.slide {
 		position: relative;
 		display: flex;
-		flex: 0 0 24.25rem;
+		flex: 0 0 21rem;
 		scroll-snap-align: start;
 	}
 	.slide :global(.collection-card) {
 		flex: 1;
 	}
 	.card-cover {
-		height: 9.375rem;
+		height: 7.5rem;
 		margin: -1.875rem -1.75rem 1.5rem;
 		border-bottom: 1px solid var(--rule);
 		background: var(--panel);
 		overflow: hidden;
 	}
 	.card-heading {
-		margin: 0 0 0.625rem;
-		font-size: var(--text-34);
-		line-height: 1.1;
+		margin: 0 0 0.5rem;
+		font-size: var(--text-26);
+		line-height: 1.15;
 		letter-spacing: -0.018em;
 	}
 	.card-count {

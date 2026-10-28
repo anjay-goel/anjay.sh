@@ -18,5 +18,3 @@ cardTags:
   cryptocurrencies: finance
   covid-19-india-analysing-death-registration-trends: data
 ---
-
-Economics, finance and society: the things I think about away from the code.

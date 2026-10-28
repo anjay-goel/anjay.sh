@@ -18,5 +18,3 @@ cardTags:
   ios-keychain: ios
   TIL-Partial-Index-And-Soft-Delete: sql
 ---
-
-Ground-up explanations of the systems we lean on, with hands-on examples.
