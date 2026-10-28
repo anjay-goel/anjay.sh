@@ -31,6 +31,12 @@ const navIcons: Record<string, string> = {
 ---
 
 <header class="site-header" id="main-header">
+	<script is:inline>
+		try {
+			if (sessionStorage.getItem("landed")) document.documentElement.dataset.landed = "";
+			else sessionStorage.setItem("landed", "1");
+		} catch {}
+	</script>
 	<a href={withBase("/")} class="wordmark" aria-label={logo.label}>
 		<span class="wordmark-prefix">{logo.prefix}</span>{logo.name}<span class="wordmark-suffix">{logo.suffix}</span><span class="wordmark-cursor" aria-hidden="true"></span>
 	</a>
@@ -89,7 +95,7 @@ const navIcons: Record<string, string> = {
 		color: hsl(var(--theme-accent));
 	}
 	@media (prefers-reduced-motion: no-preference) {
-		.wordmark-cursor {
+		:global(html:not([data-landed])) .wordmark-cursor {
 			animation: wordmark-blink 1s steps(1) 0.3s 3;
 		}
 	}
