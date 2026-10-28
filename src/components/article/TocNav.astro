@@ -88,8 +88,8 @@ const flat = items.every((item) => item.children.length === 0);
 	}
 	.toc-flat .toc-link[aria-current="location"],
 	.toc-sub-link[aria-current="location"] {
-		margin-left: -15px;
-		padding-left: 0.8125rem;
+		margin-left: calc(-0.875rem - 1px);
+		padding-left: calc(0.875rem - 1px);
 		border-left: 2px solid var(--accent);
 	}
 	.toc-sub {

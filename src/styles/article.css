@@ -1,8 +1,9 @@
 .prose {
-	--prose-gap: 1.375rem;
+	--prose-gap: 1.5rem;
 	--prose-block-gap: 2rem;
+	--prose-code-size: 1rem;
 	font-family: var(--font-serif);
-	font-size: var(--text-21);
+	font-size: 1.25rem;
 	line-height: 1.75;
 	color: var(--ink);
 	overflow-wrap: break-word;
@@ -32,6 +33,18 @@
 	) {
 	margin-top: var(--prose-gap);
 	margin-bottom: 0;
+}
+
+.prose :where(figure, .table-scroll, img, video, .katex-display, details, pre.mermaid) {
+	margin-top: var(--prose-block-gap);
+}
+
+.prose :where(.expressive-code, figure, .table-scroll, details, .aside, pre.mermaid) + * {
+	margin-top: var(--prose-block-gap);
+}
+
+.prose p + :where(ul, ol) {
+	margin-top: 1.125rem;
 }
 
 .prose :where(h1, h2, h3, h4, h5, h6) {
@@ -103,8 +116,14 @@
 	border-radius: 0.3125rem;
 	background: var(--code);
 	font-family: var(--font-mono);
+	font-size: min(0.8em, var(--prose-code-size));
+	overflow-wrap: break-word;
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+.prose :where(h1, h2, h3, h4, h5, h6) :not(pre) > code {
 	font-size: 0.8em;
-	overflow-wrap: anywhere;
 }
 
 .prose kbd {
@@ -254,7 +273,7 @@
 	color: var(--soft);
 }
 
-.prose figcaption a {
+.prose figcaption a:not(.caps *) {
 	color: inherit;
 	text-decoration-color: var(--rule-strong);
 }
@@ -287,6 +306,7 @@
 .prose td {
 	padding: 0.625rem 0.875rem;
 	border-bottom: 1px solid var(--rule);
+	font-variant-numeric: tabular-nums;
 }
 
 .prose tbody tr:last-child td {
@@ -381,6 +401,8 @@
 }
 
 .prose .expressive-code {
+	--ec-codeFontSize: var(--prose-code-size);
+	--ec-codePadInl: 1.25rem;
 	margin-top: var(--prose-block-gap);
 }
 
@@ -507,7 +529,7 @@
 }
 
 .prose .expressive-code pre > code {
-	padding-block: 0.875rem 1rem;
+	padding-block: 1rem;
 }
 
 .prose .expressive-code .gutter .ln {
@@ -848,12 +870,31 @@
 	}
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+	.prose {
+		--prose-code-size: 0.9375rem;
+		font-size: 1.1875rem;
+	}
+}
+
+@media (min-width: 1600px) {
+	.prose {
+		--prose-code-size: 0.875rem;
+		font-size: var(--text-21);
+	}
+}
+
 @media (max-width: 767px) {
 	.prose {
 		--prose-gap: 1.125rem;
 		--prose-block-gap: 1.5rem;
-		font-size: var(--text-18);
+		--prose-code-size: 0.84375rem;
+		font-size: 1.0625rem;
 		line-height: 1.7;
+	}
+
+	.prose :where(p, li) {
+		hyphens: auto;
 	}
 
 	.prose > :first-child {
