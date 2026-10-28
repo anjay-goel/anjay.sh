@@ -1,8 +1,11 @@
 ---
 import ExternalIcon from "@/components/blog/ExternalIcon.astro";
 import PostList from "@/components/blog/PostList.astro";
+import Collections from "@/components/home/Collections.astro";
 import Socials from "@/components/Socials.astro";
+import { getCollections } from "@/data/collections";
 import { getAllPosts, getPostHref, getPostSortDate, sortMDByDate } from "@/data/post";
+import { showcase } from "@/data/showcase";
 import PageLayout from "@/layouts/Base.astro";
 import { siteConfig } from "@/site-config";
 import { formatRailDate, formatStampDate } from "@/utils/date";
@@ -11,11 +14,12 @@ import { Schema } from "astro-seo-schema";
 
 const allPosts = await getAllPosts();
 const allPostsByDate = sortMDByDate(allPosts);
-const TIMELINE_LIMIT = 5;
+const TIMELINE_LIMIT = 4;
 const timelinePosts = allPostsByDate.slice(0, TIMELINE_LIMIT);
 const featured = timelinePosts[0];
 const rest = timelinePosts.slice(1);
 const archiveCount = allPosts.length;
+const collections = await getCollections();
 
 const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 ---
@@ -93,6 +97,28 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 			</div>
 		</div>
 	</section>
+
+	<Collections collections={collections} posts={allPosts} />
+
+	{showcase.length > 0 && (
+		<section class="work" aria-labelledby="work-label">
+			<div class="section-label" id="work-label">Showcase</div>
+			<ul class="work-list">
+				{showcase.map((item, idx) => (
+					<li style={`--i: ${idx + 1}`}>
+						<a href={item.href} rel="noreferrer" target="_blank">
+							<div class="head">
+								<span class="name">{item.name}</span>
+								<span class="stack">{item.stack}</span>
+								{item.badge && <span class="badge">{item.badge}</span>}
+							</div>
+							<p>{item.desc}</p>
+						</a>
+					</li>
+				))}
+			</ul>
+		</section>
+	)}
 </PageLayout>
 
 <style>
@@ -158,6 +184,15 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		max-width: 58ch;
 		word-wrap: break-word;
 		overflow-wrap: anywhere;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		overflow: hidden;
+	}
+	.writing :global(.post-preview) {
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
 	}
 	.post.featured .post-meta {
 		position: relative;
@@ -220,6 +255,17 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 	.archive-link a:hover {
 		color: hsl(var(--theme-accent));
 		text-decoration-color: hsl(var(--theme-accent));
+	}
+
+	.work {
+		margin-bottom: 88px;
+	}
+	.work :global(.work-list p) {
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+		line-clamp: 3;
+		overflow: hidden;
 	}
 
 	.archive-link a:focus-visible {

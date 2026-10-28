@@ -8,6 +8,13 @@ export interface ShowcaseItem {
 
 export const showcase: ShowcaseItem[] = [
 	{
+		name: "frameo.ai",
+		href: "https://frameo.ai",
+		stack: "Gen AI · Video",
+		badge: "Building now",
+		desc: "An AI video production studio for short films, micro-dramas, ads, anything you can imagine.",
+	},
+	{
 		name: "RedScout",
 		href: "https://github.com/anjay-goel/RedScout",
 		stack: "Redis · Monitoring · CLI",
@@ -20,13 +27,6 @@ export const showcase: ShowcaseItem[] = [
 		stack: "App ·  Short Videos",
 		badge: "50M+ installs",
 		desc: "A mobile entertainment app offering short-form video content across multiple genres. Features include free short dramas, a personalized recommendation system, and an engaging, user-friendly experience.",
-	},
-	{
-		name: "DashToon",
-		href: "https://play.google.com/store/apps/details?id=com.dashtoon.app&hl=en_IN",
-		stack: "App · Comics",
-		badge: "1M+ installs",
-		desc: "A mobile application focused on comics and webtoons. Provides users with access to a wide variety of digital comics and manga content with an intuitive reading experience.",
 	},
 	{
 		name: "Generalised Stable Roommate",

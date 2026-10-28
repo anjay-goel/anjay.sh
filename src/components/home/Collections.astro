@@ -1,0 +1,384 @@
+---
+import type { CollectionEntry } from "astro:content";
+import CollectionCover from "@/components/art/CollectionCover.astro";
+import { collectionsCopy } from "@/content/copy/collections";
+import { type CollectionDoc, collectionCountLabel, collectionHref, orderCollectionPosts } from "@/data/collections";
+import { getPostHref } from "@/data/post";
+import { toRoman } from "@/utils/roman";
+
+interface Props {
+	collections: CollectionDoc[];
+	posts: CollectionEntry<"post">[];
+}
+
+const { collections, posts } = Astro.props;
+const CARD_ITEMS = 3;
+
+const partTitle = (title: string, collection: CollectionDoc) => {
+	const i = title.indexOf(": ");
+	return title.startsWith(collection.data.title) && i > 0 ? title.slice(i + 2) : title;
+};
+
+const cards = collections.map((c) => {
+	const series = c.data.kind === "series";
+	const ordered = orderCollectionPosts(c, posts);
+	const items = ordered.slice(0, CARD_ITEMS).map((p, i) => ({
+		href: getPostHref(p),
+		title: series ? partTitle(p.data.title, c) : p.data.title,
+		marker: series ? toRoman(i + 1) : undefined,
+	}));
+	return {
+		collection: c,
+		href: series && ordered[0] ? getPostHref(ordered[0]) : collectionHref(c),
+		count: collectionCountLabel(c),
+		items,
+	};
+});
+---
+
+<section class="collections" aria-labelledby="collections-label">
+	<div class="collections-head">
+		<div class="section-label" id="collections-label">{collectionsCopy.title}</div>
+		<div class="carousel-controls">
+			<button type="button" class="carousel-btn" aria-label={collectionsCopy.previous} data-carousel-prev aria-disabled="true">
+				<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6l6 6"></path></svg>
+			</button>
+			<button type="button" class="carousel-btn" aria-label={collectionsCopy.next} data-carousel-next>
+				<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6l-6 6"></path></svg>
+			</button>
+		</div>
+	</div>
+
+	<ul class="track" role="list" data-carousel-track>
+		{
+			cards.map((card) => (
+				<li class="slide">
+					<article class="card">
+						<div class="card-cover" aria-hidden="true">
+							<CollectionCover name={card.collection.data.cover} />
+						</div>
+						<div class="card-body">
+							<h3 class="card-title">
+								<a href={collectionHref(card.collection)} data-astro-prefetch>{card.collection.data.title}</a>
+							</h3>
+							<p class="card-count">{card.count}</p>
+							<p class="card-desc">{card.collection.data.shortDescription ?? card.collection.data.description}</p>
+							<ol class="card-items" role="list">
+								{card.items.map((item) => (
+									<li>
+										<a class="card-item" href={item.href} data-astro-prefetch>
+											{item.marker && (
+												<span class="card-item-marker">
+													<span class="sr-only">{collectionsCopy.part(item.marker)}</span>
+													<span aria-hidden="true">{item.marker}</span>
+												</span>
+											)}
+											<span class="card-item-title">{item.title}</span>
+										</a>
+									</li>
+								))}
+							</ol>
+							<a class="card-cta" href={card.href} data-astro-prefetch>
+								{card.collection.data.cta ?? card.collection.data.title} →
+							</a>
+						</div>
+					</article>
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<script>
+	function initCarousel() {
+		const track = document.querySelector<HTMLElement>("[data-carousel-track]");
+		const prev = document.querySelector<HTMLButtonElement>("[data-carousel-prev]");
+		const next = document.querySelector<HTMLButtonElement>("[data-carousel-next]");
+		if (!track || !prev || !next) return;
+
+		const update = () => {
+			const max = track.scrollWidth - track.clientWidth;
+			const fits = max < 24;
+			prev.setAttribute("aria-disabled", String(fits || track.scrollLeft <= 1));
+			next.setAttribute("aria-disabled", String(fits || track.scrollLeft >= max - 1));
+		};
+
+		const step = () => {
+			const slide = track.querySelector<HTMLElement>("li");
+			const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+			return slide ? slide.offsetWidth + gap : track.clientWidth;
+		};
+
+		const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+		const bind = (button: HTMLButtonElement, dir: number) =>
+			button.addEventListener("click", () => {
+				if (button.getAttribute("aria-disabled") === "true") return;
+				track.scrollBy({ left: dir * step(), behavior: reduced.matches ? "auto" : "smooth" });
+			});
+
+		bind(prev, -1);
+		bind(next, 1);
+
+		let frame = 0;
+		track.addEventListener(
+			"scroll",
+			() => {
+				cancelAnimationFrame(frame);
+				frame = requestAnimationFrame(update);
+			},
+			{ passive: true },
+		);
+		new ResizeObserver(update).observe(track);
+		update();
+	}
+
+	initCarousel();
+</script>
+
+<style>
+	.collections {
+		margin-bottom: 84px;
+	}
+	.collections-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+		margin-bottom: 24px;
+	}
+	.collections-head .section-label {
+		margin-bottom: 0;
+	}
+	.carousel-controls {
+		display: flex;
+		gap: 6px;
+	}
+	.carousel-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 32px;
+		height: 32px;
+		padding: 0;
+		border: 1px solid var(--hairline);
+		border-radius: 50%;
+		background: transparent;
+		color: hsl(var(--theme-text-muted));
+		cursor: pointer;
+		transition: color 0.2s ease, border-color 0.2s ease;
+	}
+	.carousel-btn:hover:not([aria-disabled="true"]) {
+		border-color: hsl(var(--theme-accent));
+		color: hsl(var(--theme-accent));
+	}
+	.carousel-btn[aria-disabled="true"] {
+		color: var(--faint);
+		cursor: default;
+	}
+	.carousel-btn:focus-visible {
+		outline: 2px solid hsl(var(--theme-accent));
+		outline-offset: 2px;
+	}
+	.track {
+		display: flex;
+		gap: 18px;
+		margin: -4px 0 0;
+		padding: 4px 0 8px;
+		list-style: none;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		scrollbar-width: none;
+	}
+	.track::-webkit-scrollbar {
+		display: none;
+	}
+	.slide {
+		display: flex;
+		flex: 0 0 320px;
+		scroll-snap-align: start;
+	}
+	.card {
+		--accent: hsl(var(--theme-accent));
+		--ink: hsl(var(--theme-text));
+		--soft: hsl(var(--theme-text) / 0.55);
+		--rule: var(--hairline);
+		--rule-strong: var(--faint);
+		--art-soft: var(--accent-soft);
+		--bar: var(--accent-soft-strong);
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		min-width: 0;
+		border: 1px solid var(--hairline);
+		border-radius: 10px;
+		background: var(--paper);
+		overflow: hidden;
+		transition: border-color 0.2s ease;
+	}
+	.card:hover {
+		border-color: hsl(var(--theme-text) / 0.3);
+	}
+	.card-cover {
+		height: 120px;
+		padding: 12px 16px;
+		border-bottom: 1px solid var(--hairline);
+		background: hsl(var(--theme-text) / 0.04);
+	}
+	.card-body {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		padding: 22px 24px 20px;
+	}
+	.card-title {
+		margin: 0;
+		font-family: var(--font-serif);
+		font-size: 21px;
+		font-weight: 600;
+		line-height: 1.2;
+		letter-spacing: -0.01em;
+	}
+	.card-title a {
+		color: inherit;
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+	.card-title a::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+	}
+	.card:hover .card-title a {
+		color: hsl(var(--theme-accent));
+	}
+	.card-items,
+	.card-cta {
+		position: relative;
+		z-index: 2;
+	}
+	.card-title a:focus-visible {
+		outline: 2px solid hsl(var(--theme-accent));
+		outline-offset: 3px;
+		border-radius: 3px;
+	}
+	.card-count {
+		margin: 4px 0 10px;
+		font-family: var(--font-mono);
+		font-size: 11px;
+		font-weight: 400;
+		letter-spacing: 0;
+		color: hsl(var(--theme-text) / 0.55);
+	}
+	.card-desc {
+		display: -webkit-box;
+		margin: 0 0 18px;
+		font-size: 15px;
+		line-height: 1.5;
+		color: hsl(var(--theme-text) / 0.72);
+		overflow: hidden;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+	}
+	.card-items {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.card-item {
+		display: flex;
+		align-items: baseline;
+		gap: 12px;
+		padding: 11px 0;
+		border-top: 1px dashed hsl(var(--theme-text) / 0.18);
+		color: inherit;
+		text-decoration: none;
+	}
+	.card-items li:last-child .card-item {
+		border-bottom: 1px dashed hsl(var(--theme-text) / 0.18);
+	}
+	.card-item:focus-visible {
+		outline: 2px solid hsl(var(--theme-accent));
+		outline-offset: 2px;
+		border-radius: 3px;
+	}
+	.card-item-marker {
+		flex: 0 0 22px;
+		font-family: var(--font-mono);
+		font-size: 11px;
+		color: hsl(var(--theme-accent));
+	}
+	.card-item-title {
+		display: -webkit-box;
+		flex: 1;
+		min-width: 0;
+		font-family: var(--font-sans);
+		font-size: 14.5px;
+		font-weight: 400;
+		line-height: 1.4;
+		overflow: hidden;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		transition: color 0.2s ease;
+	}
+	.card-item:hover .card-item-title {
+		color: hsl(var(--theme-accent));
+	}
+	.card-cta {
+		align-self: flex-start;
+		margin-top: auto;
+		padding-top: 18px;
+		font-family: var(--font-sans);
+		font-size: 13.5px;
+		color: hsl(var(--theme-text-muted));
+		text-decoration: underline;
+		text-decoration-color: hsl(var(--theme-text) / 0.35);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 3px;
+		transition: color 0.2s ease, text-decoration-color 0.2s ease;
+	}
+	.card-cta:hover {
+		color: hsl(var(--theme-accent));
+		text-decoration-color: hsl(var(--theme-accent));
+	}
+	.card-cta:focus-visible {
+		outline: 2px solid hsl(var(--theme-accent));
+		outline-offset: 3px;
+		border-radius: 3px;
+	}
+
+	@media (max-width: 720px) {
+		.collections {
+			margin-bottom: 64px;
+		}
+		.track {
+			gap: 12px;
+			margin-inline: calc(-1 * max(22px, env(safe-area-inset-left)));
+			padding-inline: max(22px, env(safe-area-inset-left));
+			scroll-padding-inline: max(22px, env(safe-area-inset-left));
+		}
+		.slide {
+			flex-basis: min(280px, calc(100vw - 72px));
+		}
+		.card-body {
+			padding: 18px 20px;
+		}
+		.card-title {
+			font-size: 20px;
+		}
+	}
+
+	@media (max-width: 420px) {
+		.carousel-controls {
+			display: none;
+		}
+		.track {
+			margin-inline: calc(-1 * max(16px, env(safe-area-inset-left)));
+			padding-inline: max(16px, env(safe-area-inset-left));
+			scroll-padding-inline: max(16px, env(safe-area-inset-left));
+		}
+	}
+</style>
