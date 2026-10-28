@@ -84,7 +84,7 @@ export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
 		scrollbarThumbColor: "var(--rule-strong)",
 		scrollbarThumbHoverColor: "var(--soft)",
 		uiFontFamily: "var(--font-mono)",
-		uiFontSize: "0.75rem",
+		uiFontSize: "var(--text-12)",
 		uiFontWeight: "400",
 		uiLineHeight: "1.5",
 		uiPaddingBlock: "0.625rem",
