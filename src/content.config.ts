@@ -48,12 +48,10 @@ const collection = defineCollection({
 	loader: glob({ pattern: "**/*.md", base: "./src/content/collections" }),
 	schema: z.object({
 		title: z.string(),
-		label: z.string(),
 		kind: z.enum(["collection", "series"]),
 		description: z.string(),
 		shortDescription: z.string().optional(),
 		cta: z.string().optional(),
-		homeLabel: z.string().optional(),
 		order: z.number(),
 		cover: z.enum(["surge", "stack", "sip", "container"]),
 		posts: z.array(reference("post")).min(1),

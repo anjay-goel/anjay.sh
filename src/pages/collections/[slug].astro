@@ -4,7 +4,7 @@ import { render } from "astro:content";
 import type { GetStaticPaths } from "astro";
 import PostList from "@/components/blog/PostList.astro";
 import { collectionsCopy } from "@/content/copy/collections";
-import { type CollectionDoc, collectionCountLabel, getCollections, orderCollectionPosts } from "@/data/collections";
+import { type CollectionDoc, getCollections, orderCollectionPosts } from "@/data/collections";
 import { getAllPosts, getPostHref } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
 import { withBase } from "@/utils/path";
@@ -42,7 +42,6 @@ const meta = {
 			<span class="current" aria-current="page">{collection.data.title}</span>
 		</nav>
 		<h1 class="collection-title" id="collection-title">{collection.data.title}</h1>
-		<p class="collection-count">{collectionCountLabel(collection)}</p>
 		<p class="collection-desc">{collection.data.description}</p>
 		{
 			hasIntro && (
@@ -54,7 +53,7 @@ const meta = {
 		{
 			startHref && (
 				<a class="collection-start" data-astro-prefetch href={startHref}>
-					{collectionsCopy.start} →
+					{collection.data.cta ?? collection.data.title} →
 				</a>
 			)
 		}
@@ -81,7 +80,9 @@ const meta = {
 		text-decoration-color: hsl(var(--theme-text) / 0.35);
 		text-decoration-thickness: 1px;
 		text-underline-offset: 3px;
-		transition: color 0.2s ease, text-decoration-color 0.2s ease;
+		transition:
+			color 0.2s ease,
+			text-decoration-color 0.2s ease;
 	}
 	.crumbs a:hover {
 		color: hsl(var(--theme-accent));
@@ -104,12 +105,6 @@ const meta = {
 		font-weight: 600;
 		line-height: 1.12;
 		letter-spacing: -0.02em;
-	}
-	.collection-count {
-		margin: 8px 0 0;
-		font-family: var(--font-mono);
-		font-size: 11.5px;
-		color: hsl(var(--theme-text) / 0.55);
 	}
 	.collection-desc {
 		max-width: 58ch;

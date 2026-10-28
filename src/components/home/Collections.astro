@@ -2,7 +2,12 @@
 import type { CollectionEntry } from "astro:content";
 import CollectionCover from "@/components/art/CollectionCover.astro";
 import { collectionsCopy } from "@/content/copy/collections";
-import { type CollectionDoc, collectionCountLabel, collectionHref, orderCollectionPosts } from "@/data/collections";
+import {
+	type CollectionDoc,
+	collectionCountLabel,
+	collectionHref,
+	orderCollectionPosts,
+} from "@/data/collections";
 import { getPostHref } from "@/data/post";
 import { toRoman } from "@/utils/roman";
 
@@ -40,11 +45,42 @@ const cards = collections.map((c) => {
 	<div class="collections-head">
 		<div class="section-label" id="collections-label">{collectionsCopy.title}</div>
 		<div class="carousel-controls">
-			<button type="button" class="carousel-btn" aria-label={collectionsCopy.previous} data-carousel-prev aria-disabled="true">
-				<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6l6 6"></path></svg>
+			<button
+				type="button"
+				class="carousel-btn"
+				aria-label={collectionsCopy.previous}
+				data-carousel-prev
+				aria-disabled="true"
+			>
+				<svg
+					viewBox="0 0 24 24"
+					width="16"
+					height="16"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.75"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"><path d="M15 6l-6 6l6 6"></path></svg
+				>
 			</button>
-			<button type="button" class="carousel-btn" aria-label={collectionsCopy.next} data-carousel-next>
-				<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6l-6 6"></path></svg>
+			<button
+				type="button"
+				class="carousel-btn"
+				aria-label={collectionsCopy.next}
+				data-carousel-next
+			>
+				<svg
+					viewBox="0 0 24 24"
+					width="16"
+					height="16"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.75"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"><path d="M9 6l6 6l-6 6"></path></svg
+				>
 			</button>
 		</div>
 	</div>
@@ -59,10 +95,14 @@ const cards = collections.map((c) => {
 						</div>
 						<div class="card-body">
 							<h3 class="card-title">
-								<a href={collectionHref(card.collection)} data-astro-prefetch>{card.collection.data.title}</a>
+								<a href={collectionHref(card.collection)} data-astro-prefetch>
+									{card.collection.data.title}
+								</a>
 							</h3>
 							<p class="card-count">{card.count}</p>
-							<p class="card-desc">{card.collection.data.shortDescription ?? card.collection.data.description}</p>
+							<p class="card-desc">
+								{card.collection.data.shortDescription ?? card.collection.data.description}
+							</p>
 							<ol class="card-items" role="list">
 								{card.items.map((item) => (
 									<li>
@@ -165,7 +205,9 @@ const cards = collections.map((c) => {
 		background: transparent;
 		color: hsl(var(--theme-text-muted));
 		cursor: pointer;
-		transition: color 0.2s ease, border-color 0.2s ease;
+		transition:
+			color 0.2s ease,
+			border-color 0.2s ease;
 	}
 	.carousel-btn:hover:not([aria-disabled="true"]) {
 		border-color: hsl(var(--theme-accent));
@@ -338,7 +380,9 @@ const cards = collections.map((c) => {
 		text-decoration-color: hsl(var(--theme-text) / 0.35);
 		text-decoration-thickness: 1px;
 		text-underline-offset: 3px;
-		transition: color 0.2s ease, text-decoration-color 0.2s ease;
+		transition:
+			color 0.2s ease,
+			text-decoration-color 0.2s ease;
 	}
 	.card-cta:hover {
 		color: hsl(var(--theme-accent));

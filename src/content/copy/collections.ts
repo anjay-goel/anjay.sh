@@ -6,5 +6,4 @@ export const collectionsCopy = {
 	part: (roman: string) => `Part ${roman}`,
 	postCount: (n: number) => (n === 1 ? "1 post" : `${n} posts`),
 	partCount: (n: number) => (n === 1 ? "1 part" : `${n} parts`),
-	start: "Start with Part I",
 };

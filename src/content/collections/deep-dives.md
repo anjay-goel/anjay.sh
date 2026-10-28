@@ -1,15 +1,14 @@
 ---
 title: Deep dives
-label: deep dive
 kind: collection
-description: Ground-up explanations of the systems we lean on, with hands-on examples.
-shortDescription: DNS, async IO, iOS Keychain and SQL indexes, from the ground up.
+description: Ground-up explanations of a few systems we rely on every day, with some hands-on examples.
+shortDescription: Ground-up explanations of a few systems we rely on every day.
 cta: All deep dives
 order: 2
 cover: stack
 posts:
   - non-blocking-io
   - developer-guide-to-domains-and-dns
-  - ios-keychain
   - TIL-Partial-Index-And-Soft-Delete
+  - ios-keychain
 ---

@@ -1,19 +1,13 @@
 ---
 title: Postmortems
-label: postmortem
-homeLabel: Postmortem
 kind: collection
-description: Root-cause analyses of bugs that made it to production, and what they taught me.
-shortDescription: Bugs that made it to production, and what they taught me.
+description: Root-cause analyses of the most intriguing bugs I've shipped to production
+shortDescription: RCAs of the most intriguing bugs I've shipped to production
 cta: Read the postmortems
 order: 1
 cover: surge
 posts:
   - the-bug-that-blamed-everyone-but-itself
   - debugging-in-the-dark
-  - background-app-launch-bug
+  - 10x-surge-in-concurrent-users
 ---
-
-Every bug in this collection made it to production. Each write-up walks through what users saw, the theories that turned out to be wrong, and the root cause that finally explained everything.
-
-The fixes were often small. Finding them was not.

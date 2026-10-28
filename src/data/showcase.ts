@@ -10,23 +10,23 @@ export const showcase: ShowcaseItem[] = [
 	{
 		name: "frameo.ai",
 		href: "https://frameo.ai",
-		stack: "Gen AI · Video",
+		stack: "Gen AI · Video Production",
 		badge: "Building now",
-		desc: "An AI video production studio for short films, micro-dramas, ads, anything you can imagine.",
+		desc: "A Gen-AI powered video production platform for short films, micro-dramas, ads, anything you can imagine.",
 	},
 	{
 		name: "RedScout",
 		href: "https://github.com/anjay-goel/RedScout",
 		stack: "Redis · Monitoring · CLI",
 		badge: "OSS",
-		desc: "A Redis monitoring tool that provides namespace-level insights into your Redis database. Unlike traditional tools, It breaks down memory usage, key TTLs, and operations per second by logical namespaces.",
+		desc: "A Redis monitoring tool that provides namespace-level insights into your Redis database. Unlike traditional tools, It breaks down memory metrics by logical namespaces.",
 	},
 	{
 		name: "DashReels",
 		href: "https://play.google.com/store/apps/details?id=com.dashtoon.video.reels&hl=en_IN",
-		stack: "App ·  Short Videos",
+		stack: "App · Streaming",
 		badge: "50M+ installs",
-		desc: "A mobile entertainment app offering short-form video content across multiple genres. Features include free short dramas, a personalized recommendation system, and an engaging, user-friendly experience.",
+		desc: "An entertainment platform for short-form dramas. Watched by 50M+ users across India, Southeast Asia and North America.",
 	},
 	{
 		name: "Generalised Stable Roommate",

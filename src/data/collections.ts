@@ -15,10 +15,15 @@ export function collectionHref(collection: CollectionDoc): string {
 
 export function collectionCountLabel(collection: CollectionDoc): string {
 	const n = collection.data.posts.length;
-	return collection.data.kind === "series" ? collectionsCopy.partCount(n) : collectionsCopy.postCount(n);
+	return collection.data.kind === "series"
+		? collectionsCopy.partCount(n)
+		: collectionsCopy.postCount(n);
 }
 
-export function orderCollectionPosts<T extends { id: string }>(collection: CollectionDoc, posts: T[]): T[] {
+export function orderCollectionPosts<T extends { id: string }>(
+	collection: CollectionDoc,
+	posts: T[],
+): T[] {
 	const byId = new Map(posts.map((p) => [p.id, p]));
 	return collection.data.posts.map((p) => byId.get(p.id)).filter((p): p is T => p !== undefined);
 }
