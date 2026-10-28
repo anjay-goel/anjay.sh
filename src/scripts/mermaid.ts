@@ -23,6 +23,7 @@ if (diagrams.length) {
 					text: token("--ink"),
 				};
 				const font = token("--font-sans");
+				const rem = Number.parseFloat(styles.fontSize);
 				mermaid.initialize({
 					startOnLoad: false,
 					layout: "dagre",
@@ -42,7 +43,7 @@ if (diagrams.length) {
 						tertiaryColor: palette.soft,
 						clusterBkg: palette.soft,
 						clusterBorder: palette.border,
-						fontSize: "14px",
+						fontSize: `${0.875 * rem}px`,
 						edgeLabelBackground: palette.bg,
 						noteBkgColor: palette.paper,
 						noteBorderColor: palette.border,
@@ -59,7 +60,7 @@ if (diagrams.length) {
 						node.dataset.rendered = "true";
 						const diagram = node.querySelector("svg");
 						if (diagram)
-							diagram.style.minWidth = `${Math.min(diagram.viewBox.baseVal.width * 0.7, 560)}px`;
+							diagram.style.minWidth = `${Math.min(diagram.viewBox.baseVal.width * 0.7, 35 * rem)}px`;
 					} catch (error) {
 						console.error("Could not render Mermaid diagram", error);
 					}
