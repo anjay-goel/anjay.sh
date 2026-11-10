@@ -68,10 +68,10 @@ const meta = {
 		margin-bottom: 96px;
 	}
 	.crumbs {
-		font-family: var(--font-mono);
-		font-size: 11.5px;
+		font-family: var(--font-sans);
+		font-size: var(--text-meta);
 		letter-spacing: 0.04em;
-		color: hsl(var(--theme-text) / 0.55);
+		color: hsl(var(--theme-text-muted));
 		margin-bottom: 18px;
 	}
 	.crumbs a {
@@ -100,23 +100,22 @@ const meta = {
 	}
 	.collection-title {
 		margin: 0;
-		font-family: var(--font-serif);
-		font-size: 34px;
-		font-weight: 600;
-		line-height: 1.12;
-		letter-spacing: -0.02em;
+		font-family: var(--font-sans);
+		font-size: var(--title-xl);
+		font-weight: var(--title-weight-large);
+		line-height: 1.14;
+		letter-spacing: -0.024em;
 	}
 	.collection-desc {
-		max-width: 58ch;
 		margin: 16px 0 0;
-		font-size: 18px;
+		font-size: var(--text-body);
 		line-height: 1.62;
 		color: hsl(var(--theme-text-muted));
 	}
 	.collection-intro {
-		max-width: 64ch;
+		max-width: var(--reading-width);
 		margin-top: 16px;
-		font-size: 17px;
+		font-size: var(--text-body);
 		line-height: 1.65;
 		color: hsl(var(--theme-text));
 	}
@@ -127,7 +126,7 @@ const meta = {
 		display: inline-block;
 		margin-top: 8px;
 		padding: 6px 0;
-		font-size: 13.5px;
+		font-size: var(--text-small);
 		color: hsl(var(--theme-accent));
 		text-decoration: underline;
 		text-decoration-color: hsl(var(--theme-accent) / 0.4);
@@ -142,24 +141,10 @@ const meta = {
 		margin-top: 44px;
 	}
 
-	@media (max-width: 720px) {
-		.collection-title {
-			font-size: 28px;
-		}
-		.collection-desc {
-			font-size: 16.5px;
-		}
-		.collection-intro {
-			font-size: 16px;
-		}
-	}
 
 	@media (max-width: 420px) {
 		.collection {
 			margin-bottom: 64px;
-		}
-		.collection-title {
-			font-size: 24px;
 		}
 	}
 </style>

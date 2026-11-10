@@ -75,7 +75,7 @@ const navIcons: Record<string, string> = {
 		align-items: baseline;
 		justify-content: space-between;
 		gap: 24px;
-		margin-bottom: 72px;
+		margin-bottom: 56px;
 	}
 	.wordmark {
 		display: inline-flex;
@@ -89,7 +89,7 @@ const navIcons: Record<string, string> = {
 		transition: color 0.2s ease, border-color 0.2s ease;
 	}
 	.wordmark-prefix {
-		color: hsl(var(--theme-text) / 0.55);
+		color: hsl(var(--theme-text-muted));
 	}
 	.wordmark-suffix {
 		color: hsl(var(--theme-accent));
@@ -124,8 +124,9 @@ const navIcons: Record<string, string> = {
 		align-items: baseline;
 		gap: 22px;
 		font-family: var(--font-sans);
-		font-size: 13.5px;
-		color: hsl(var(--theme-text) / 0.72);
+		font-size: var(--text-small);
+		font-weight: 500;
+		color: hsl(var(--theme-text-muted));
 	}
 	.nav a {
 		display: inline-block;
@@ -179,7 +180,6 @@ const navIcons: Record<string, string> = {
 		.nav {
 			grid-area: nav;
 			gap: 22px;
-			font-size: 13px;
 			flex-wrap: wrap;
 			justify-content: flex-start;
 		}
@@ -208,7 +208,6 @@ const navIcons: Record<string, string> = {
 		}
 		.nav {
 			gap: 18px;
-			font-size: 12.5px;
 		}
 		.nav a svg {
 			display: none;

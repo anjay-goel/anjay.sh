@@ -55,7 +55,7 @@ const meta = {
 	.not-found {
 		padding: 24px 0 80px;
 		font-family: var(--font-mono);
-		font-size: 15px;
+		font-size: var(--text-sub);
 		line-height: 1.7;
 		color: hsl(var(--theme-text));
 	}
@@ -64,7 +64,7 @@ const meta = {
 		overflow-wrap: anywhere;
 	}
 	.prompt {
-		color: hsl(var(--theme-text) / 0.55);
+		color: hsl(var(--theme-text-muted));
 	}
 	.error {
 		color: hsl(var(--theme-text-muted));
@@ -113,7 +113,7 @@ const meta = {
 
 	@media (max-width: 720px) {
 		.not-found {
-			font-size: 13.5px;
+			font-size: var(--text-small);
 		}
 		.code {
 			margin: 28px 0 32px;

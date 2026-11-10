@@ -42,16 +42,15 @@ const meta = {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 12px 24px;
-		font-family: var(--font-mono);
-		max-width: 60ch;
+		font-family: var(--font-sans);
 	}
 	.tag-run a {
 		display: inline-flex;
 		align-items: baseline;
 		gap: 5px;
 		text-decoration: none;
-		color: hsl(var(--theme-text) / 0.78);
-		font-size: 14.5px;
+		color: hsl(var(--theme-text));
+		font-size: var(--text-small);
 		letter-spacing: 0.01em;
 		transition: color 0.2s ease;
 	}
@@ -72,8 +71,8 @@ const meta = {
 		border-radius: 3px;
 	}
 	.tag-run .count {
-		font-size: 11px;
-		color: hsl(var(--theme-text) / 0.4);
+		font-size: var(--text-meta);
+		color: hsl(var(--theme-text-muted));
 		font-variant-numeric: tabular-nums;
 		font-feature-settings: "tnum";
 	}

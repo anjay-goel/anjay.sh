@@ -59,9 +59,9 @@ const {
 			body {
 				background-color: hsl(var(--theme-bg));
 				color: hsl(var(--theme-text));
-				font-family: var(--font-serif);
-				font-size: 18px;
-				line-height: 1.62;
+				font-family: var(--font-sans);
+				font-size: var(--text-body);
+				line-height: 1.65;
 				font-weight: 400;
 				-webkit-font-smoothing: antialiased;
 				-moz-osx-font-smoothing: grayscale;
@@ -80,7 +80,7 @@ const {
 
 			/* Sticky footer: wrap fills viewport, main grows to push footer down */
 			.wrap {
-				max-width: 760px;
+				max-width: 704px;
 				margin: 0 auto;
 				padding: 36px max(32px, env(safe-area-inset-right))
 					max(80px, env(safe-area-inset-bottom)) max(32px, env(safe-area-inset-left));
@@ -96,18 +96,12 @@ const {
 					padding: 18px max(22px, env(safe-area-inset-right))
 						max(56px, env(safe-area-inset-bottom)) max(22px, env(safe-area-inset-left));
 				}
-				body {
-					font-size: 17px;
-				}
 			}
 
 			@media (max-width: 420px) {
 				.wrap {
 					padding: 14px max(16px, env(safe-area-inset-right))
 						max(44px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
-				}
-				body {
-					font-size: 16.5px;
 				}
 			}
 		</style>

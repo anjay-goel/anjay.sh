@@ -15,11 +15,11 @@ if (diagrams.length) {
 				const palette = dark
 					? { bg: "#151615", paper: "#1c1d1c", border: "#55534d", line: "#c2beb5", text: "#ebe7de" }
 					: {
-							bg: "#f8f6f0",
-							paper: "#fcfbf7",
-							border: "#a9a498",
-							line: "#45433d",
-							text: "#1d1c19",
+							bg: "#ffffff",
+							paper: "#f7f8fa",
+							border: "#9aa0a8",
+							line: "#59606a",
+							text: "#1d2026",
 						};
 				mermaid.initialize({
 					startOnLoad: false,
@@ -28,7 +28,7 @@ if (diagrams.length) {
 					securityLevel: "strict",
 					suppressErrorRendering: true,
 					theme: "base",
-					fontFamily: "Inter Variable, sans-serif",
+					fontFamily: "IBM Plex Sans Variable, sans-serif",
 					themeVariables: {
 						darkMode: dark,
 						background: palette.bg,

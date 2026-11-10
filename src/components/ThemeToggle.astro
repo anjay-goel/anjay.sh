@@ -8,18 +8,18 @@
 		display: inline-block;
 		padding: 6px 12px;
 		border-radius: 999px;
-		background: var(--accent-soft);
+		background: transparent;
 		color: hsl(var(--theme-text-muted));
-		border: 1px solid transparent;
+		border: 1px solid var(--hairline);
 		font-family: var(--font-sans);
-		font-size: 12px;
+		font-size: var(--text-meta);
 		font-weight: 500;
 		line-height: 1.4;
 		cursor: pointer;
-		transition: background 0.2s ease, color 0.2s ease;
+		transition: border-color 0.2s ease, color 0.2s ease;
 	}
 	.theme-toggle:hover {
-		background: var(--accent-soft-strong);
+		border-color: hsl(var(--theme-accent));
 		color: hsl(var(--theme-accent));
 	}
 	.theme-toggle:focus-visible {
@@ -30,7 +30,6 @@
 	.theme-toggle .icon {
 		display: inline-block;
 		width: 1em;
-		font-size: 13px;
 		margin-right: 6px;
 		text-align: center;
 		transform: translateY(-1px);

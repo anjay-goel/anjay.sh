@@ -137,7 +137,7 @@ main .gsc-comment > .gsc-replies {
 }
 
 main, main input, main textarea, main button, main select {
-	font-family: "Newsreader Variable", "Iowan Old Style", Georgia, serif;
+	font-family: "IBM Plex Sans", -apple-system, system-ui, sans-serif;
 }
 main code, main pre, main .markdown code {
 	font-family: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;

@@ -20,7 +20,7 @@ export default {
 				textMuted: "hsl(var(--theme-text-muted) / <alpha-value>)",
 			},
 			fontFamily: {
-				sans: ["Inter", ...defaultTheme.fontFamily.sans],
+				sans: ["IBM Plex Sans Variable", ...defaultTheme.fontFamily.sans],
 				serif: [...defaultTheme.fontFamily.serif],
 			},
 			transitionProperty: {

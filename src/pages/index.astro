@@ -70,7 +70,7 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 							<span class="post-dot" aria-hidden="true" />
 						</div>
 						<div class="post-body">
-							<div class="post-stamp">Latest · {formatStampDate(getPostSortDate(featured))}</div>
+							<div class="post-stamp">Latest<span class="stamp-date"> · {formatStampDate(getPostSortDate(featured))}</span></div>
 							<h2 class="post-title">
 								<a class="post-cardlink" data-astro-prefetch href={getPostHref(featured)}>
 									{featured.data.title}</a>{featured.data.externalUrl && <ExternalIcon />}
@@ -124,16 +124,14 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 <style>
 	/* ---------- Hero ---------- */
 	.hero {
-		margin-bottom: 76px;
-		font-size: 19.5px;
+		margin-bottom: 64px;
+		font-size: var(--text-body);
 	}
 	.hero p {
 		line-height: 1.65;
 		color: hsl(var(--theme-text));
-		margin: 0 0 22px;
-		max-width: 60ch;
+		margin: 0 0 16px;
 		text-wrap: pretty;
-		white-space: pre-line;
 	}
 
 	/* ---------- Writing timeline ---------- */
@@ -163,25 +161,29 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		border-radius: 3px;
 	}
 	.post.featured .post-stamp {
-		font-family: var(--font-mono);
-		font-size: 11px;
-		letter-spacing: 0.06em;
+		font-family: var(--font-sans);
+		font-size: var(--text-meta);
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
-		color: hsl(var(--theme-accent));
+		color: hsl(var(--theme-text-muted));
 		margin-bottom: 12px;
 	}
+	.post.featured .stamp-date {
+		display: none;
+	}
 	.post.featured .post-title {
-		font-size: 30px;
-		line-height: 1.14;
+		font-size: var(--title-l);
+		line-height: 1.2;
 		margin-bottom: 14px;
-		letter-spacing: -0.02em;
+		letter-spacing: -0.019em;
+		font-weight: var(--title-weight-large);
 	}
 	.post.featured .post-excerpt {
-		font-size: 18px;
+		font-size: var(--text-body);
 		line-height: 1.62;
 		color: hsl(var(--theme-text-muted));
 		margin: 0 0 14px;
-		max-width: 58ch;
+		max-width: 34rem;
 		word-wrap: break-word;
 		overflow-wrap: anywhere;
 		display: -webkit-box;
@@ -197,9 +199,9 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 	.post.featured .post-meta {
 		position: relative;
 		z-index: 2;
-		font-family: var(--font-mono);
-		font-size: 11.5px;
-		color: hsl(var(--theme-text) / 0.55);
+		font-family: var(--font-sans);
+		font-size: var(--text-meta);
+		color: hsl(var(--theme-text-muted));
 		font-variant-numeric: tabular-nums;
 		font-feature-settings: "tnum";
 	}
@@ -239,8 +241,8 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		grid-column: 2;
 		margin-top: 8px;
 		font-family: var(--font-sans);
-		font-size: 13.5px;
-		color: hsl(var(--theme-text) / 0.72);
+		font-size: var(--text-small);
+		color: hsl(var(--theme-text-muted));
 	}
 	.archive-link a {
 		display: inline-block;
@@ -278,11 +280,11 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		.hero {
 			margin-bottom: 56px;
 		}
-		.hero {
-			font-size: 18px;
-		}
 		.post.featured .post-rail {
 			display: none;
+		}
+		.post.featured .stamp-date {
+			display: inline;
 		}
 		.post.featured .post-body {
 			padding-bottom: 24px;
@@ -290,18 +292,13 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 			margin-bottom: 4px;
 		}
 		.post.featured .post-title {
-			font-size: 22px;
 			line-height: 1.2;
 			letter-spacing: -0.015em;
 			margin-bottom: 10px;
 		}
 		.post.featured .post-excerpt {
-			font-size: 15.5px;
 			line-height: 1.55;
 			margin: 0 0 10px;
-		}
-		.post.featured .post-meta {
-			font-size: 11px;
 		}
 		.archive-link {
 			margin-top: 0;
@@ -312,17 +309,8 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		.hero {
 			margin-bottom: 48px;
 		}
-		.hero {
-			font-size: 17px;
-		}
 		.writing {
 			margin-bottom: 64px;
-		}
-		.post.featured .post-title {
-			font-size: 17px;
-		}
-		.post.featured .post-excerpt {
-			font-size: 15px;
 		}
 	}
 </style>
