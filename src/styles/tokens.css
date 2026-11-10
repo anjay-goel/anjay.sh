@@ -1,0 +1,84 @@
+:root {
+	--font-sans: "IBM Plex Sans Variable", -apple-system, system-ui, sans-serif;
+	--font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;
+
+	--reading-width: 40rem;         /* article body & long prose blocks */
+	--rail-width: 110px;            /* left date column on timeline lists */
+	--rail-gap: 36px;               /* gap between rail and post body */
+	--preview-width: 34rem;
+
+	--text-meta: 0.8125rem;
+	--text-small: 0.9375rem;
+	--text-sub: 1rem;
+	--text-body: 1.125rem;
+	--title-s: 1.125rem;
+	--title-m: 1.25rem;
+	--title-l: 1.625rem;
+	--title-xl: clamp(1.875rem, 1.4rem + 2vw, 2.375rem);
+	--title-weight: 600;
+	--title-weight-large: 560;
+	--title-tracking-s: -0.011em;
+	--title-tracking-l: -0.019em;
+	--title-tracking-xl: -0.024em;
+
+	--radius-s: 3px;
+	--radius-m: 4px;
+	--fade-fast: 0.2s ease;
+	--fade-theme: 0.35s ease;
+}
+
+:root,
+:root[data-theme="light"] {
+	color-scheme: light;
+	--theme-bg: 0deg 0% 100%;             /* #ffffff */
+	--theme-text: 215deg 14% 13%;         /* #1d2026 */
+	--theme-text-muted: 215deg 8% 38%;    /* #59606a */
+	--theme-accent: 211deg 45% 36%;       /* #335a85 */
+
+	--paper: #f7f8fa;
+	--surface: #eff1f4;
+	--hairline: #dfe2e6;
+	--faint: #9aa0a8;
+	--accent-soft-strong: rgba(51, 90, 133, 0.18);
+
+	/* Callout accents — hues spread for distinguishability, kept muted for the theme */
+	--aside-note: 212deg 20% 46%;       /* dusty blue */
+	--aside-tip: 96deg 32% 33%;         /* green */
+	--aside-important: 284deg 26% 48%;  /* plum */
+	--aside-caution: 40deg 78% 32%;     /* amber */
+	--aside-warning: 7deg 66% 45%;      /* red */
+}
+
+:root[data-theme="dark"] {
+	color-scheme: dark;
+	--theme-bg: 220deg 8% 8%;            /* #131416 */
+	--theme-text: 215deg 16% 91%;         /* #e4e7ec */
+	--theme-text-muted: 215deg 9% 66%;     /* #a1a7b0 */
+	--theme-accent: 210deg 59% 76%;       /* #9fc3e6 */
+
+	--paper: #1b1c20;
+	--surface: #1f2125;
+	--hairline: #2b2d33;
+	--faint: #50545c;
+	--accent-soft-strong: rgba(159, 195, 230, 0.22);
+
+	--aside-note: 212deg 28% 68%;       /* dusty blue */
+	--aside-tip: 96deg 30% 62%;         /* green */
+	--aside-important: 284deg 34% 74%;  /* plum */
+	--aside-caution: 42deg 72% 62%;     /* amber */
+	--aside-warning: 9deg 68% 66%;      /* red */
+}
+
+@media (max-width: 720px) {
+	:root {
+		--title-l: 1.5rem;
+	}
+}
+@media (max-width: 420px) {
+	:root {
+		--text-body: 1.0625rem;
+		--title-s: 1.0625rem;
+		--title-m: 1.1875rem;
+		--title-l: 1.375rem;
+	}
+}

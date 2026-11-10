@@ -1,4 +1,5 @@
 ---
+import ShowcaseList from "@/components/ShowcaseList.astro";
 import { showcase } from "@/data/showcase";
 import PageLayout from "@/layouts/Base.astro";
 import { absoluteUrl } from "@/utils/path";
@@ -29,33 +30,20 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 			],
 		}}
 	/>
-	<section class="work" aria-labelledby="work-label">
-		<div class="section-label" id="work-label">Showcase</div>
-		<ul class="work-list">
-			{
-				showcase.map((item) => (
-					<li>
-						<a href={item.href} rel="noreferrer" target="_blank">
-							<div class="head">
-								<span class="name">{item.name}</span>
-								<span class="stack">{item.stack}</span>
-								{item.badge && <span class="badge">{item.badge}</span>}
-							</div>
-							<p>{item.desc}</p>
-						</a>
-					</li>
-				))
-			}
-		</ul>
+	<section class="showcase" aria-labelledby="showcase-title">
+		<header class="page-head">
+			<h1 class="page-title" id="showcase-title">Showcase</h1>
+		</header>
+		<ShowcaseList items={showcase} />
 	</section>
 </PageLayout>
 
 <style>
-	.work {
+	.showcase {
 		margin-bottom: 88px;
 	}
 	@media (max-width: 420px) {
-		.work {
+		.showcase {
 			margin-bottom: 56px;
 		}
 	}

@@ -1,0 +1,56 @@
+---
+import { siteConfig } from "@/site-config";
+import { absoluteUrl } from "@/utils/path";
+
+const comments = siteConfig.comments;
+
+// Custom giscus themes only in prod: the giscus.app iframe can't fetch CSS from localhost / private IPs.
+const giscusThemes = import.meta.env.PROD
+	? {
+			light: absoluteUrl("/giscus-light.css", Astro.site),
+			dark: absoluteUrl("/giscus-dark.css", Astro.site),
+		}
+	: { light: "noborder_light", dark: "noborder_dark" };
+---
+
+{comments && <div class="comments" id="comments"></div>}
+{comments && (
+	<script is:inline define:vars={{ comments, giscusThemes }}>
+		document.addEventListener("DOMContentLoaded", () => {
+			const mount = document.getElementById("comments");
+			if (!mount) return;
+			const theme = document.documentElement.getAttribute("data-theme");
+			const script = document.createElement("script");
+			script.src = "https://giscus.app/client.js";
+			script.setAttribute("data-repo", comments.repo);
+			script.setAttribute("data-repo-id", comments.repoId);
+			script.setAttribute("data-category", comments.category);
+			script.setAttribute("data-category-id", comments.categoryId);
+			script.setAttribute("data-mapping", "title");
+			script.setAttribute("data-strict", "0");
+			script.setAttribute("data-reactions-enabled", "1");
+			script.setAttribute("data-emit-metadata", "0");
+			script.setAttribute("data-input-position", "top");
+			script.setAttribute("data-theme", theme === "dark" ? giscusThemes.dark : giscusThemes.light);
+			script.setAttribute("data-lang", "en");
+			script.setAttribute("crossorigin", "anonymous");
+			script.async = true;
+			mount.appendChild(script);
+
+			document.addEventListener("theme-change", (e) => {
+				const iframe = document.querySelector("iframe.giscus-frame");
+				if (iframe && iframe.contentWindow) {
+					iframe.contentWindow.postMessage(
+						{ giscus: { setConfig: { theme: e.detail.theme === "dark" ? giscusThemes.dark : giscusThemes.light } } },
+						"https://giscus.app",
+					);
+				}
+			});
+		});
+	</script>
+)}
+
+<style>
+	/* Match article body width */
+	.comments { max-width: var(--reading-width); margin: 56px 0 32px; }
+</style>

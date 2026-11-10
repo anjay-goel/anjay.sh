@@ -8,17 +8,6 @@ coverImage:
   alt: 'timing the market'
 ---
 
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-        inlineMath: [['$','$']]
-      }
-    });
-  </script>
-  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-
-
 It's the start of the month, and you see the market falling by several percentage points. So, you decide to hold off on
 investing until the market conditions improve. What if it dips further, and I can get a better price? What if it
 crashes?

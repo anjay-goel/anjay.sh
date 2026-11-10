@@ -1,10 +1,8 @@
 ---
-import { getAllPosts, getUniqueTagsWithCount, sortMDByDate } from "@/data/post";
+import { getAllPosts, getTagHref, getUniqueTagsWithCount } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
-import { withBase } from "@/utils/path";
 
-const posts = sortMDByDate(await getAllPosts());
-const tags = getUniqueTagsWithCount(posts);
+const tags = getUniqueTagsWithCount(await getAllPosts());
 
 const meta = {
 	description: "Browse every topic written about on this site.",
@@ -13,13 +11,16 @@ const meta = {
 ---
 
 <PageLayout meta={meta}>
-	<section class="tags-index" aria-labelledby="tags-label">
-		<div class="section-label" id="tags-label">Tags · {tags.length}</div>
+	<section class="tags-index" aria-labelledby="tags-title">
+		<header class="page-head">
+			<h1 class="page-title" id="tags-title">Tags</h1>
+			<p class="page-count">{tags.length} {tags.length === 1 ? "tag" : "tags"}</p>
+		</header>
 		<ul class="tag-run">
 			{
 				tags.map(([tag, count]) => (
 					<li>
-						<a data-astro-prefetch href={withBase(`/tags/${encodeURIComponent(tag)}/`)}>
+						<a class="hit-area" data-astro-prefetch href={getTagHref(tag)}>
 							<span class="name">{tag}</span>
 							<span class="count">{count}</span>
 						</a>
@@ -42,23 +43,22 @@ const meta = {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 12px 24px;
-		font-family: var(--font-mono);
-		max-width: 60ch;
 	}
 	.tag-run a {
+		--hit-inset: -5px -8px;
 		display: inline-flex;
 		align-items: baseline;
 		gap: 5px;
 		text-decoration: none;
-		color: hsl(var(--theme-text) / 0.78);
-		font-size: 14.5px;
+		color: hsl(var(--theme-text));
+		font-size: var(--text-small);
 		letter-spacing: 0.01em;
-		transition: color 0.2s ease;
+		transition: color var(--fade-fast);
 	}
 	.tag-run .name::before {
 		content: "#";
 		color: var(--faint);
-		transition: color 0.2s ease;
+		transition: color var(--fade-fast);
 	}
 	.tag-run a:hover {
 		color: hsl(var(--theme-accent));
@@ -66,16 +66,10 @@ const meta = {
 	.tag-run a:hover .name::before {
 		color: hsl(var(--theme-accent));
 	}
-	.tag-run a:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
-		border-radius: 3px;
-	}
 	.tag-run .count {
-		font-size: 11px;
-		color: hsl(var(--theme-text) / 0.4);
+		font-size: var(--text-meta);
+		color: hsl(var(--theme-text-muted));
 		font-variant-numeric: tabular-nums;
-		font-feature-settings: "tnum";
 	}
 	.tag-run a:hover .count {
 		color: hsl(var(--theme-accent) / 0.7);

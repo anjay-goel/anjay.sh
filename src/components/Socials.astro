@@ -1,6 +1,5 @@
 ---
 import { siteConfig } from "@/site-config";
-import { withBase } from "@/utils/path";
 import { Icon } from "astro-icon/components";
 
 const profile = siteConfig.profile;
@@ -18,7 +17,7 @@ const profile = siteConfig.profile;
 		{profile?.email && (
 			<li><a aria-label="Email" href={`mailto:${profile.email}`}><Icon name="tabler:mail" aria-hidden="true" /></a></li>
 		)}
-		<li><a aria-label="RSS" href={withBase("/rss.xml")}><Icon name="tabler:rss" aria-hidden="true" /></a></li>
+		<li><a aria-label="RSS" href="/rss.xml"><Icon name="tabler:rss" aria-hidden="true" /></a></li>
 	</ul>
 </div>
 
@@ -27,7 +26,8 @@ const profile = siteConfig.profile;
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		column-gap: 10px;
+		column-gap: 8px;
+		font-size: var(--text-small);
 		line-height: 1.65;
 		color: hsl(var(--theme-text-muted));
 	}
@@ -43,11 +43,11 @@ const profile = siteConfig.profile;
 		display: inline-flex;
 		padding: 6px;
 		color: hsl(var(--theme-text-muted));
-		transition: color 0.2s ease;
+		transition: color var(--fade-fast);
 	}
 	.socials a :global(svg) {
-		width: 22px;
-		height: 22px;
+		width: 20px;
+		height: 20px;
 	}
 	.socials a :global(svg *) {
 		stroke-width: 1.5;
@@ -55,9 +55,9 @@ const profile = siteConfig.profile;
 	.socials a:hover {
 		color: hsl(var(--theme-accent));
 	}
-	.socials a:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
-		border-radius: 3px;
+	@media (prefers-reduced-motion: no-preference) {
+		.socials a:active {
+			opacity: 0.7;
+		}
 	}
 </style>

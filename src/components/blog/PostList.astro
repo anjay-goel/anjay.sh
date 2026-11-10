@@ -2,41 +2,49 @@
 import type { CollectionEntry } from "astro:content";
 import ExternalIcon from "@/components/blog/ExternalIcon.astro";
 import { getPostHref, getPostSortDate } from "@/data/post";
-import { formatRailDate } from "@/utils/date";
+import { formatRailDate, formatRailDay, formatRailYear } from "@/utils/date";
 
 interface Props {
 	posts: CollectionEntry<"post">[];
-	/** Seeds the `--i` stagger-animation index (e.g. when rows follow a featured post). */
-	startIndex?: number;
 	/** Heading tag for each post title. */
 	headingLevel?: "h2" | "h3";
+	groupByYear?: boolean;
 }
 
-const { posts, startIndex = 0, headingLevel = "h2" } = Astro.props;
+const { posts, headingLevel = "h2", groupByYear = false } = Astro.props;
 const Heading = headingLevel;
+const formatDate = groupByYear ? formatRailDay : formatRailDate;
+const rows = posts.map((post) => {
+	const date = getPostSortDate(post);
+	return { post, date, year: formatRailYear(date) };
+});
+const startsYear = (idx: number) => groupByYear && rows[idx]?.year !== rows[idx - 1]?.year;
 ---
 
 {
-	posts.map((p, idx) => (
-		<a
-			class="post"
-			data-astro-prefetch
-			href={getPostHref(p)}
-			style={`--i: ${startIndex + idx}`}
-		>
-			<div class="post-rail">
-				<time class="post-date" datetime={getPostSortDate(p).toISOString()}>
-					{formatRailDate(getPostSortDate(p))}
-				</time>
-				<span class="post-dot" aria-hidden="true" />
-			</div>
-			<div class="post-body">
-				<Heading class="post-title">
-					{p.data.title}
-					{p.data.externalUrl && <ExternalIcon />}
-				</Heading>
-				<p class="post-preview">{p.data.description}</p>
-			</div>
-		</a>
+	rows.map(({ post, date, year }, idx) => (
+		<>
+			{startsYear(idx) && <h2 class="timeline-year">{year}</h2>}
+			<a
+				class="entry"
+				data-astro-prefetch
+				href={getPostHref(post)}
+				style={`--i: ${idx}`}
+			>
+				<div class="entry-rail">
+					<time class="entry-date" datetime={date.toISOString()}>
+						{formatDate(date)}
+					</time>
+					<span class="entry-dot" aria-hidden="true" />
+				</div>
+				<div class="entry-body">
+					<Heading class="entry-title">
+						{post.data.title}
+						{post.data.externalUrl && <ExternalIcon />}
+					</Heading>
+					<p class="entry-preview">{post.data.description}</p>
+				</div>
+			</a>
+		</>
 	))
 }

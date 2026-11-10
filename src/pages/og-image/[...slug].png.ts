@@ -1,21 +1,18 @@
+import PlexSansRegular from "@/assets/fonts/ibmplexsans-regular.ttf";
+import PlexSansSemiBold from "@/assets/fonts/ibmplexsans-semibold.ttf";
 import JetBrainsMono from "@/assets/fonts/jetbrainsmono-regular.ttf";
-import NewsreaderItalic from "@/assets/fonts/newsreader-italic.ttf";
-import NewsreaderRegular from "@/assets/fonts/newsreader-regular.ttf";
-import NewsreaderSemiBold from "@/assets/fonts/newsreader-semibold.ttf";
-import { getAllPosts } from "@/data/post";
-import { siteConfig } from "@/site-config";
+import { getAllPosts, getReadingTime } from "@/data/post";
+import { authorName, siteConfig } from "@/site-config";
 import { formatBylineDate, formatEyebrowDate } from "@/utils/date";
 import { Resvg } from "@resvg/resvg-js";
 import type { APIContext, InferGetStaticPropsType } from "astro";
-import { render } from "astro:content";
 import satori, { type SatoriOptions } from "satori";
 import { html } from "satori-html";
 
 const ogOptions: SatoriOptions = {
 	fonts: [
-		{ data: Buffer.from(NewsreaderRegular), name: "Newsreader", style: "normal", weight: 400 },
-		{ data: Buffer.from(NewsreaderSemiBold), name: "Newsreader", style: "normal", weight: 600 },
-		{ data: Buffer.from(NewsreaderItalic), name: "Newsreader", style: "italic", weight: 400 },
+		{ data: Buffer.from(PlexSansRegular), name: "IBM Plex Sans", style: "normal", weight: 400 },
+		{ data: Buffer.from(PlexSansSemiBold), name: "IBM Plex Sans", style: "normal", weight: 600 },
 		{ data: Buffer.from(JetBrainsMono), name: "JetBrains Mono", style: "normal", weight: 400 },
 	],
 	height: 630,
@@ -38,22 +35,22 @@ const markup = (props: {
 	tagsLine: string;
 	host: string;
 }) =>
-	html`<div tw="flex flex-col w-full h-full px-20 py-16" style="background-color: #1a1715; font-family: Newsreader;">
-		<p tw="text-2xl mb-10 tracking-widest uppercase" style="font-family: JetBrains Mono; color: #c89761;">
+	html`<div tw="flex flex-col w-full h-full px-20 py-16" style="background-color: #131416; font-family: IBM Plex Sans;">
+		<p tw="text-2xl mb-10" style="color: #9fc3e6;">
 			${props.eyebrow}
 		</p>
-		<h1 tw="${titleClass(props.title)}" style="color: #fbf6ec; font-weight: 600;">
+		<h1 tw="${titleClass(props.title)}" style="color: #e4e7ec; font-weight: 600;">
 			${props.title}
 		</h1>
-		<p tw="text-2xl mb-4" style="font-family: JetBrains Mono; color: #a89c8a;">
+		<p tw="text-2xl mb-4" style="color: #a1a7b0;">
 			${props.byline}
 		</p>
-		<p tw="text-xl tracking-wider uppercase" style="font-family: JetBrains Mono; color: #c89761;">
+		<p tw="text-xl" style="color: #7d838c;">
 			${props.tagsLine}
 		</p>
 		<div tw="flex flex-1"></div>
 		<div tw="flex justify-end w-full">
-			<p tw="text-lg tracking-wide" style="font-family: JetBrains Mono; color: #6b5e4f;">
+			<p tw="text-lg" style="font-family: JetBrains Mono; color: #6b717a;">
 				${props.host}
 			</p>
 		</div>
@@ -65,7 +62,6 @@ export async function GET(context: APIContext) {
 	const { pubDate, title, tags, readingTime } = context.props as Props;
 
 	const date = new Date(pubDate);
-	const authorName = siteConfig.profile?.name ?? siteConfig.author;
 	const bylineParts = [
 		authorName ? `By ${authorName}` : null,
 		formatBylineDate(date),
@@ -79,7 +75,7 @@ export async function GET(context: APIContext) {
 			eyebrow: `Posts${SEP}${formatEyebrowDate(date)}`,
 			title,
 			byline: bylineParts.join(SEP),
-			tagsLine: tags.join(SEP),
+			tagsLine: tags.map((tag) => `#${tag}`).join("   "),
 			host,
 		}),
 		ogOptions,
@@ -98,9 +94,7 @@ export async function getStaticPaths() {
 	const filtered = posts.filter(({ data }) => !data.ogImage);
 	const items = await Promise.all(
 		filtered.map(async (post) => {
-			const { remarkPluginFrontmatter } = await render(post);
-			const readingTime =
-				(remarkPluginFrontmatter as { minutesRead?: string })?.minutesRead ?? "";
+			const readingTime = await getReadingTime(post);
 			return {
 				params: { slug: post.id },
 				props: {

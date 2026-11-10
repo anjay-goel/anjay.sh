@@ -1,0 +1,125 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import { collectionsCopy } from "@/content/copy/collections";
+import { type CollectionDoc, collectionHref } from "@/data/collections";
+import { getTagHref } from "@/data/post";
+import { formatRailDate } from "@/utils/date";
+
+interface Props {
+	post: CollectionEntry<"post">;
+	readingTime: string;
+	collection?: CollectionDoc | undefined;
+}
+
+const { post, readingTime, collection } = Astro.props;
+const { draft, publishDate, tags, title, updatedDate } = post.data;
+const bylineDate = formatRailDate(publishDate);
+
+const crumbs = [
+	{ label: collectionsCopy.crumb, href: "/posts/" },
+	...(collection ? [{ label: collection.data.title, href: collectionHref(collection) }] : []),
+];
+---
+
+<div class="post-header">
+	<Breadcrumbs items={crumbs} />
+	{draft && <span class="draft-flag">(Draft)</span>}
+	<h1 class="post-title page-title">{title}</h1>
+	<p class="byline">
+		{bylineDate}{readingTime && <><span class="sep">·</span>{readingTime}</>}
+	</p>
+	{!!tags?.length && (
+		<div class="post-tags">
+			{tags.map((tag) => (
+				<a class="tag-link" data-pagefind-filter="tag" href={getTagHref(tag)}>{tag}</a>
+			))}
+		</div>
+	)}
+	{updatedDate && (
+		<div class="post-updated">
+			Updated <time datetime={updatedDate.toISOString()}>
+				{formatRailDate(updatedDate)}
+			</time>
+		</div>
+	)}
+</div>
+
+<style>
+	.post-header {
+		--crumbs-gap: 22px;
+	}
+
+	.draft-flag {
+		display: inline-block;
+		font-family: var(--font-mono);
+		font-size: var(--text-meta);
+		color: #c14a2b;
+		margin-bottom: 12px;
+		letter-spacing: 0.08em;
+	}
+
+	.post-title {
+		margin: 0 0 18px;
+		overflow-wrap: break-word;
+		text-wrap: pretty;
+	}
+
+	.byline {
+		font-size: var(--text-small);
+		color: hsl(var(--theme-text-muted));
+		margin: 0 0 14px;
+		line-height: 1.5;
+		font-variant-numeric: tabular-nums;
+	}
+	.byline .sep {
+		color: var(--faint);
+		margin: 0 6px;
+	}
+
+	.post-tags {
+		display: flex;
+		flex-wrap: wrap;
+		column-gap: 14px;
+		font-size: var(--text-meta);
+		color: hsl(var(--theme-text-muted));
+		margin-bottom: 32px;
+		word-break: break-word;
+	}
+	.tag-link {
+		padding: 4px 0;
+		margin: -4px 0;
+		color: inherit;
+		text-decoration: none;
+		transition: color var(--fade-fast);
+	}
+	.tag-link::before {
+		content: "#";
+		color: var(--faint);
+		transition: color var(--fade-fast);
+	}
+	.tag-link:hover,
+	.tag-link:hover::before {
+		color: hsl(var(--theme-accent));
+	}
+	.tag-link:focus-visible {
+		outline-offset: 2px;
+	}
+
+	.post-updated {
+		font-size: var(--text-meta);
+		color: hsl(var(--theme-text-muted));
+		margin: -16px 0 32px;
+	}
+
+	@media (max-width: 720px) {
+		.post-title {
+			line-height: 1.15;
+		}
+	}
+	@media (max-width: 420px) {
+		.post-header {
+			--crumbs-gap: 18px;
+		}
+	}
+</style>

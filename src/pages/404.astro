@@ -1,11 +1,10 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
 import { menuLinks } from "@/site-config";
-import { withBase } from "@/utils/path";
 
 const dirs = menuLinks
 	.filter((link) => link.path !== "/")
-	.map((link) => ({ href: withBase(link.path), name: `${link.path.replaceAll("/", "")}/` }));
+	.map((link) => ({ href: link.path, name: `${link.path.replaceAll("/", "")}/` }));
 
 const missingPath = "this-page";
 
@@ -34,7 +33,7 @@ const meta = {
 			{
 				dirs.map((dir) => (
 					<li>
-						<a href={dir.href} data-astro-prefetch>
+						<a class="link--accent hit-area" href={dir.href} data-astro-prefetch>
 							{dir.name}
 						</a>
 					</li>
@@ -55,7 +54,7 @@ const meta = {
 	.not-found {
 		padding: 24px 0 80px;
 		font-family: var(--font-mono);
-		font-size: 15px;
+		font-size: var(--text-sub);
 		line-height: 1.7;
 		color: hsl(var(--theme-text));
 	}
@@ -64,7 +63,7 @@ const meta = {
 		overflow-wrap: anywhere;
 	}
 	.prompt {
-		color: hsl(var(--theme-text) / 0.55);
+		color: hsl(var(--theme-text-muted));
 	}
 	.error {
 		color: hsl(var(--theme-text-muted));
@@ -95,25 +94,12 @@ const meta = {
 		list-style: none;
 	}
 	.dirs a {
-		color: hsl(var(--theme-accent));
-		text-decoration: underline;
-		text-decoration-color: hsl(var(--theme-accent) / 0.4);
-		text-decoration-thickness: 1px;
-		text-underline-offset: 3px;
-		transition: text-decoration-color 0.2s ease;
-	}
-	.dirs a:hover {
-		text-decoration-color: hsl(var(--theme-accent));
-	}
-	.dirs a:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
-		border-radius: 3px;
+		--hit-inset: -4px -8px;
 	}
 
 	@media (max-width: 720px) {
 		.not-found {
-			font-size: 13.5px;
+			font-size: var(--text-small);
 		}
 		.code {
 			margin: 28px 0 32px;

@@ -1,0 +1,157 @@
+---
+import type { MarkdownHeading } from "astro";
+
+interface Props {
+	headings: MarkdownHeading[];
+}
+
+interface Section extends MarkdownHeading {
+	children: MarkdownHeading[];
+}
+
+const MIN_ENTRIES = 2;
+
+const entries = Astro.props.headings.filter(({ depth }) => depth === 2 || depth === 3);
+const sections: Section[] = [];
+for (const heading of entries) {
+	const parent = sections.at(-1);
+	if (heading.depth === 3 && parent?.depth === 2) parent.children.push(heading);
+	else sections.push({ ...heading, children: [] });
+}
+---
+
+{entries.length >= MIN_ENTRIES && (
+	<nav class="post-outline" aria-label="On this page" data-pagefind-ignore>
+		<ol role="list">
+			{sections.map((section) => (
+				<li>
+					<a href={`#${section.slug}`} title={section.text}>{section.text}</a>
+					{section.children.length > 0 && (
+						<ol role="list">
+							{section.children.map((child) => (
+								<li><a href={`#${child.slug}`} title={child.text}>{child.text}</a></li>
+							))}
+						</ol>
+					)}
+				</li>
+			))}
+		</ol>
+	</nav>
+)}
+
+<style>
+	.post-outline {
+		--outline-width: 12.5rem;
+		--outline-gap: 2.5rem;
+		--outline-top: 2rem;
+		--outline-ring-width: 2px;
+		--outline-ring-offset: 3px;
+		--outline-indent: 0.875rem;
+		--outline-rail-width: 1px;
+		--outline-marker-width: 3px;
+		--outline-marker-height: 1.25em;
+		--outline-rail-inset: calc((var(--outline-marker-width) - var(--outline-rail-width)) / 2);
+		display: none;
+	}
+
+	@media (min-width: 1200px) {
+		:global(body:has(.post-outline)) {
+			overflow-x: clip;
+		}
+		.post-outline {
+			display: block;
+			float: right;
+			width: var(--outline-width);
+			margin-right: calc(-1 * (var(--outline-width) + var(--outline-gap)));
+			padding: calc(var(--outline-ring-width) + var(--outline-ring-offset));
+			position: sticky;
+			top: var(--outline-top);
+			max-height: calc(100vh - 2 * var(--outline-top));
+			overflow-y: auto;
+			overscroll-behavior: contain;
+			scrollbar-width: thin;
+			scrollbar-color: var(--faint) transparent;
+			font-size: var(--text-meta);
+			line-height: 1.4;
+		}
+	}
+
+	.post-outline ol {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.post-outline > ol {
+		background: linear-gradient(var(--hairline), var(--hairline)) no-repeat var(--outline-rail-inset) 0 /
+			var(--outline-rail-width) 100%;
+	}
+	.post-outline a {
+		display: block;
+		padding-block: 0.25rem;
+		padding-inline-start: var(--outline-indent);
+		color: hsl(var(--theme-text-muted));
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.post-outline ol ol a {
+		padding-inline-start: calc(2 * var(--outline-indent));
+	}
+	.post-outline a[aria-current] {
+		color: hsl(var(--theme-text));
+		font-weight: 500;
+		background: linear-gradient(hsl(var(--theme-text)), hsl(var(--theme-text))) no-repeat left center /
+			var(--outline-marker-width) var(--outline-marker-height);
+	}
+	.post-outline a:hover {
+		color: hsl(var(--theme-accent));
+	}
+	.post-outline a:focus-visible {
+		outline: var(--outline-ring-width) solid hsl(var(--theme-accent));
+		outline-offset: var(--outline-ring-offset);
+		border-radius: var(--radius-s);
+	}
+</style>
+
+<script>
+	const LINE_SLACK_PX = 1;
+	const REST_OF_PAGE = "1000000px";
+
+	const outline = document.querySelector<HTMLElement>(".post-outline");
+	if (outline) {
+		const links = [...outline.querySelectorAll<HTMLAnchorElement>("a")];
+		const linkByHeading = new Map<Element, HTMLAnchorElement>();
+		for (const link of links) {
+			const heading = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+			if (heading) linkByHeading.set(heading, link);
+		}
+
+		const passed = new Set<HTMLAnchorElement>();
+		let current: HTMLAnchorElement | undefined;
+		const setCurrent = (next: HTMLAnchorElement | undefined) => {
+			if (next === current) return;
+			current?.removeAttribute("aria-current");
+			next?.setAttribute("aria-current", "location");
+			current = next;
+			outline.scrollTop = next ? next.offsetTop - outline.clientHeight / 2 : 0;
+		};
+
+		const [firstHeading] = linkByHeading.keys();
+		if (firstHeading) {
+			const readingLine = parseFloat(getComputedStyle(firstHeading).scrollMarginTop) + LINE_SLACK_PX;
+			const observer = new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						const link = linkByHeading.get(entry.target);
+						if (!link) continue;
+						if (entry.intersectionRatio < 1) passed.add(link);
+						else passed.delete(link);
+					}
+					setCurrent(links.filter((link) => passed.has(link)).at(-1));
+				},
+				{ rootMargin: `-${readingLine}px 0px ${REST_OF_PAGE} 0px`, threshold: 1 },
+			);
+			for (const heading of linkByHeading.keys()) observer.observe(heading);
+		}
+	}
+</script>

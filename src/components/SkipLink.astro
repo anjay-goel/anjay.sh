@@ -1,3 +1,27 @@
-<a class="sr-only focus:not-sr-only focus:fixed focus:start-1 focus:top-1.5" href="#main"
+<a class="skip-link sr-only" href="#main"
 	>skip to content
 </a>
+
+<style>
+	.skip-link:focus {
+		position: fixed;
+		inset-inline-start: 0.5rem;
+		top: 0.5rem;
+		z-index: 200;
+		width: auto;
+		height: auto;
+		margin: 0;
+		overflow: visible;
+		clip-path: none;
+		white-space: normal;
+		padding: 9px 14px;
+		border-radius: var(--radius-m);
+		background: hsl(var(--theme-bg));
+		color: hsl(var(--theme-text));
+		font-size: var(--text-small);
+		font-weight: 500;
+		line-height: 1.4;
+		outline: 2px solid hsl(var(--theme-accent));
+		outline-offset: 0;
+	}
+</style>

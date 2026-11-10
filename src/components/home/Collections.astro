@@ -1,42 +1,52 @@
 ---
-import type { CollectionEntry } from "astro:content";
+import { Icon } from "astro-icon/components";
 import CollectionCover from "@/components/art/CollectionCover.astro";
 import { collectionsCopy } from "@/content/copy/collections";
 import {
 	type CollectionDoc,
 	collectionCountLabel,
 	collectionHref,
-	orderCollectionPosts,
+	previewCollectionPosts,
 } from "@/data/collections";
-import { getPostHref } from "@/data/post";
-import { toRoman } from "@/utils/roman";
+import { getAllPosts, getPostHref } from "@/data/post";
 
 interface Props {
 	collections: CollectionDoc[];
-	posts: CollectionEntry<"post">[];
 }
 
-const { collections, posts } = Astro.props;
-const CARD_ITEMS = 3;
+const { collections } = Astro.props;
+const posts = await getAllPosts();
 
-const partTitle = (title: string, collection: CollectionDoc) => {
-	const i = title.indexOf(": ");
-	return title.startsWith(collection.data.title) && i > 0 ? title.slice(i + 2) : title;
+const COVER_HEIGHT = 132;
+const ART_HEIGHT = 100;
+const ART_WIDTH = 188;
+const SLIDE_POSTS = 3;
+
+const artHeight = (cover: ImageMetadata) =>
+	Math.round(Math.min(ART_HEIGHT, (ART_WIDTH * cover.height) / cover.width));
+
+const shortTitle = (title: string, collection: CollectionDoc) => {
+	const prefix = `${collection.data.title}, `;
+	return collection.data.kind === "series" && title.startsWith(prefix)
+		? title.slice(prefix.length)
+		: title;
 };
 
-const cards = collections.map((c) => {
-	const series = c.data.kind === "series";
-	const ordered = orderCollectionPosts(c, posts);
-	const items = ordered.slice(0, CARD_ITEMS).map((p, i) => ({
-		href: getPostHref(p),
-		title: series ? partTitle(p.data.title, c) : p.data.title,
-		marker: series ? toRoman(i + 1) : undefined,
-	}));
+const slides = collections.map((collection) => {
+	const shown = previewCollectionPosts(collection, posts, SLIDE_POSTS);
+	const ordered = collection.data.kind === "series";
 	return {
-		collection: c,
-		href: series && ordered[0] ? getPostHref(ordered[0]) : collectionHref(c),
-		count: collectionCountLabel(c),
-		items,
+		collection,
+		href: collectionHref(collection),
+		ordered,
+		listId: `collection-posts-${collection.id}`,
+		listLabel: ordered ? collectionsCopy.parts : collectionsCopy.recentPosts,
+		allLabel: collectionsCopy.all(collection.data.posts.length),
+		allName: collectionsCopy.allIn(collectionCountLabel(collection), collection.data.title),
+		items: shown.map((post) => ({
+			href: getPostHref(post),
+			title: shortTitle(post.data.title, collection),
+		})),
 	};
 });
 ---
@@ -47,10 +57,11 @@ const cards = collections.map((c) => {
 		<div class="carousel-controls">
 			<button
 				type="button"
-				class="carousel-btn"
+				class="carousel-btn icon-btn hit-area"
 				aria-label={collectionsCopy.previous}
-				data-carousel-prev
+				aria-controls="collections-track"
 				aria-disabled="true"
+				data-carousel-prev
 			>
 				<svg
 					viewBox="0 0 24 24"
@@ -61,13 +72,14 @@ const cards = collections.map((c) => {
 					stroke-width="1.75"
 					stroke-linecap="round"
 					stroke-linejoin="round"
-					aria-hidden="true"><path d="M15 6l-6 6l6 6"></path></svg
+					aria-hidden="true"><path d="M14.5 6l-6 6l6 6"></path></svg
 				>
 			</button>
 			<button
 				type="button"
-				class="carousel-btn"
+				class="carousel-btn icon-btn hit-area"
 				aria-label={collectionsCopy.next}
+				aria-controls="collections-track"
 				data-carousel-next
 			>
 				<svg
@@ -79,52 +91,57 @@ const cards = collections.map((c) => {
 					stroke-width="1.75"
 					stroke-linecap="round"
 					stroke-linejoin="round"
-					aria-hidden="true"><path d="M9 6l6 6l-6 6"></path></svg
+					aria-hidden="true"><path d="M9.5 6l6 6l-6 6"></path></svg
 				>
 			</button>
 		</div>
 	</div>
 
-	<ul class="track" role="list" data-carousel-track>
+	<ul
+		class="track"
+		id="collections-track"
+		role="list"
+		style={`--cover-height: ${COVER_HEIGHT}px`}
+		data-carousel-track
+	>
 		{
-			cards.map((card) => (
-				<li class="slide">
-					<article class="card">
-						<div class="card-cover" aria-hidden="true">
-							<CollectionCover name={card.collection.data.cover} />
-						</div>
-						<div class="card-body">
-							<h3 class="card-title">
-								<a href={collectionHref(card.collection)} data-astro-prefetch>
-									{card.collection.data.title}
-								</a>
-							</h3>
-							<p class="card-count">{card.count}</p>
-							<p class="card-desc">
-								{card.collection.data.shortDescription ?? card.collection.data.description}
-							</p>
-							<ol class="card-items" role="list">
-								{card.items.map((item) => (
-									<li>
-										<a class="card-item" href={item.href} data-astro-prefetch>
-											{item.marker && (
-												<span class="card-item-marker">
-													<span class="sr-only">{collectionsCopy.part(item.marker)}</span>
-													<span aria-hidden="true">{item.marker}</span>
-												</span>
-											)}
-											<span class="card-item-title">{item.title}</span>
-										</a>
-									</li>
-								))}
-							</ol>
-							<a class="card-cta" href={card.href} data-astro-prefetch>
-								{card.collection.data.cta ?? card.collection.data.title} →
+			slides.map((slide) => {
+				const PostsList = slide.ordered ? "ol" : "ul";
+				return (
+					<li class="slide">
+						<a class="slide-art" href={slide.href} tabindex="-1" aria-hidden="true">
+							<CollectionCover
+								src={slide.collection.data.cover}
+								height={artHeight(slide.collection.data.cover)}
+							/>
+						</a>
+						<h3 class="slide-title">
+							<a href={slide.href} data-astro-prefetch>
+								{slide.collection.data.title}
+							</a>
+						</h3>
+						<p class="slide-desc">
+							{slide.collection.data.shortDescription ?? slide.collection.data.description}
+						</p>
+						<div class="slide-list-head meta-label">
+							<span id={slide.listId}>{slide.listLabel}</span>
+							<a class="slide-all" href={slide.href} aria-label={slide.allName} data-astro-prefetch>
+								{slide.allLabel}
+								<Icon name="tabler:arrow-right" aria-hidden="true" />
 							</a>
 						</div>
-					</article>
-				</li>
-			))
+						<PostsList class="slide-posts" role="list" aria-labelledby={slide.listId}>
+							{slide.items.map((item) => (
+								<li>
+									<a href={item.href} title={item.title} data-astro-prefetch>
+										<span>{item.title}</span>
+									</a>
+								</li>
+							))}
+						</PostsList>
+					</li>
+				);
+			})
 		}
 	</ul>
 </section>
@@ -136,28 +153,52 @@ const cards = collections.map((c) => {
 		const next = document.querySelector<HTMLButtonElement>("[data-carousel-next]");
 		if (!track || !prev || !next) return;
 
-		const update = () => {
-			const max = track.scrollWidth - track.clientWidth;
-			const fits = max < 24;
-			prev.setAttribute("aria-disabled", String(fits || track.scrollLeft <= 1));
-			next.setAttribute("aria-disabled", String(fits || track.scrollLeft >= max - 1));
-		};
+		const slides = Array.from(track.children) as HTMLElement[];
+		const first = slides[0];
+		const last = slides[slides.length - 1];
+		if (!first || !last) return;
 
-		const step = () => {
-			const slide = track.querySelector<HTMLElement>("li");
-			const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-			return slide ? slide.offsetWidth + gap : track.clientWidth;
+		const end = () =>
+			Math.max(
+				0,
+				Math.min(track.scrollWidth - track.clientWidth, last.offsetLeft - first.offsetLeft),
+			);
+		const step = () => (slides[1] ? slides[1].offsetLeft - first.offsetLeft : track.clientWidth);
+
+		const update = () => {
+			const atStart = track.scrollLeft <= 1;
+			const atEnd = track.scrollLeft >= end() - 1;
+			prev.setAttribute("aria-disabled", String(atStart));
+			next.setAttribute("aria-disabled", String(atEnd));
+			track.toggleAttribute("data-scrolled", !atStart);
+			track.toggleAttribute("data-at-end", atEnd);
 		};
 
 		const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+		let target: number | null = null;
+		let settle = 0;
+
 		const bind = (button: HTMLButtonElement, dir: number) =>
 			button.addEventListener("click", () => {
 				if (button.getAttribute("aria-disabled") === "true") return;
-				track.scrollBy({ left: dir * step(), behavior: reduced.matches ? "auto" : "smooth" });
+				const size = step();
+				const from = target ?? track.scrollLeft;
+				target = Math.max(0, Math.min(end(), (Math.round(from / size) + dir) * size));
+				track.scrollTo({ left: target, behavior: reduced.matches ? "auto" : "smooth" });
 			});
 
 		bind(prev, -1);
 		bind(next, 1);
+
+		track.addEventListener("focusin", (event) => {
+			const link = event.target as HTMLElement;
+			const slide = slides.find((s) => s.contains(link));
+			if (!slide || !link.matches(":focus-visible")) return;
+			const box = track.getBoundingClientRect();
+			const rect = slide.getBoundingClientRect();
+			if (rect.left >= box.left - 1 && rect.right <= box.right + 1) return;
+			track.scrollTo({ left: Math.min(end(), slide.offsetLeft - first.offsetLeft) });
+		});
 
 		let frame = 0;
 		track.addEventListener(
@@ -165,6 +206,10 @@ const cards = collections.map((c) => {
 			() => {
 				cancelAnimationFrame(frame);
 				frame = requestAnimationFrame(update);
+				window.clearTimeout(settle);
+				settle = window.setTimeout(() => {
+					target = null;
+				}, 150);
 			},
 			{ passive: true },
 		);
@@ -177,6 +222,7 @@ const cards = collections.map((c) => {
 
 <style>
 	.collections {
+		display: flow-root;
 		margin-bottom: 84px;
 	}
 	.collections-head {
@@ -184,214 +230,194 @@ const cards = collections.map((c) => {
 		align-items: center;
 		justify-content: space-between;
 		gap: 16px;
-		margin-bottom: 24px;
+		margin-bottom: 28px;
 	}
 	.collections-head .section-label {
 		margin-bottom: 0;
 	}
 	.carousel-controls {
 		display: flex;
-		gap: 6px;
+		gap: 8px;
+		margin-block: -7px;
 	}
 	.carousel-btn {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 32px;
-		height: 32px;
-		padding: 0;
-		border: 1px solid var(--hairline);
-		border-radius: 50%;
-		background: transparent;
-		color: hsl(var(--theme-text-muted));
-		cursor: pointer;
+		--hit-inset: -6px -4px;
 		transition:
-			color 0.2s ease,
-			border-color 0.2s ease;
-	}
-	.carousel-btn:hover:not([aria-disabled="true"]) {
-		border-color: hsl(var(--theme-accent));
-		color: hsl(var(--theme-accent));
+			color var(--fade-fast),
+			border-color var(--fade-fast),
+			opacity var(--fade-fast);
 	}
 	.carousel-btn[aria-disabled="true"] {
-		color: var(--faint);
+		border-color: var(--hairline);
+		color: hsl(var(--theme-text-muted));
+		opacity: 0.4;
 		cursor: default;
 	}
-	.carousel-btn:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 2px;
+	@media (prefers-reduced-motion: no-preference) {
+		.carousel-btn {
+			transition:
+				color var(--fade-fast),
+				border-color var(--fade-fast),
+				opacity var(--fade-fast),
+				transform 0.18s ease;
+		}
+		.carousel-btn:not([aria-disabled="true"]):active {
+			transform: scale(0.96);
+		}
 	}
+
 	.track {
+		--slide-gap: 56px;
+		--slide-peek: 24px;
+		--bleed-start: 8px;
+		--bleed-end: 16px;
+		--fade-start: 0px;
+		--fade-end: calc(var(--slide-peek) + var(--bleed-end));
 		display: flex;
-		gap: 18px;
-		margin: -4px 0 0;
-		padding: 4px 0 8px;
+		gap: var(--slide-gap);
+		margin: -4px calc(-1 * var(--bleed-end)) -6px calc(-1 * var(--bleed-start));
+		padding: 4px var(--bleed-end) 6px var(--bleed-start);
 		list-style: none;
 		overflow-x: auto;
+		overflow-y: hidden;
 		scroll-snap-type: x mandatory;
+		scroll-padding-inline: var(--bleed-start) var(--bleed-end);
 		scrollbar-width: none;
+		mask-image: linear-gradient(
+			to right,
+			transparent,
+			#000 var(--fade-start),
+			#000 calc(100% - var(--fade-end)),
+			transparent
+		);
+	}
+	.track[data-scrolled] {
+		--fade-start: var(--bleed-start);
+	}
+	.track[data-at-end] {
+		--fade-end: 0px;
+	}
+	.track:has(a:focus-visible) {
+		--fade-start: 0px;
 	}
 	.track::-webkit-scrollbar {
 		display: none;
 	}
+	.track::after {
+		content: "";
+		flex: 0 0 var(--slide-peek);
+	}
 	.slide {
-		display: flex;
-		flex: 0 0 320px;
+		position: relative;
+		flex: 0 0 calc((100% - 2 * var(--slide-gap) - var(--slide-peek)) / 2);
+		min-width: 0;
 		scroll-snap-align: start;
 	}
-	.card {
-		--accent: hsl(var(--theme-accent));
-		--ink: hsl(var(--theme-text));
-		--soft: hsl(var(--theme-text) / 0.55);
-		--rule: var(--hairline);
-		--rule-strong: var(--faint);
-		--art-soft: var(--accent-soft);
-		--bar: var(--accent-soft-strong);
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		flex: 1;
-		min-width: 0;
-		border: 1px solid var(--hairline);
-		border-radius: 10px;
-		background: var(--paper);
-		overflow: hidden;
-		transition: border-color 0.2s ease;
-	}
-	.card:hover {
-		border-color: hsl(var(--theme-text) / 0.3);
-	}
-	.card-cover {
-		height: 120px;
-		padding: 12px 16px;
-		border-bottom: 1px solid var(--hairline);
-		background: hsl(var(--theme-text) / 0.04);
-	}
-	.card-body {
-		display: flex;
-		flex-direction: column;
-		flex: 1;
-		padding: 22px 24px 20px;
-	}
-	.card-title {
-		margin: 0;
-		font-family: var(--font-serif);
-		font-size: 21px;
-		font-weight: 600;
-		line-height: 1.2;
-		letter-spacing: -0.01em;
-	}
-	.card-title a {
-		color: inherit;
-		text-decoration: none;
-		transition: color 0.2s ease;
-	}
-	.card-title a::after {
+	.slide + .slide::before {
 		content: "";
 		position: absolute;
-		inset: 0;
-		z-index: 1;
+		inset-block: 0;
+		left: calc(var(--slide-gap) / -2);
+		width: 1px;
+		background: var(--hairline);
 	}
-	.card:hover .card-title a {
+	.slide a:focus-visible {
+		outline-offset: 2px;
+	}
+	.slide a:active {
+		opacity: 0.7;
+	}
+	.slide-art {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: var(--cover-height);
+		margin-bottom: 8px;
+		padding-inline: 16px;
+		border-radius: var(--radius-m);
+		isolation: isolate;
+		background-color: var(--surface);
+		transition: background-color var(--fade-theme);
+	}
+	.slide-title {
+		margin: 0;
+		font-size: var(--title-m);
+		font-weight: var(--title-weight);
+		line-height: 1.3;
+		letter-spacing: var(--title-tracking-s);
+	}
+	.slide-title a {
+		display: inline-block;
+		margin-inline: -4px;
+		padding: 3px 4px;
+		color: hsl(var(--theme-text));
+	}
+	.slide-title a:focus-visible {
+		outline-offset: 0;
+	}
+	.slide-title a:hover,
+	.slide-art:hover + .slide-title a,
+	.slide-posts a:hover,
+	.slide-all:hover {
 		color: hsl(var(--theme-accent));
 	}
-	.card-items,
-	.card-cta {
-		position: relative;
-		z-index: 2;
-	}
-	.card-title a:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
-		border-radius: 3px;
-	}
-	.card-count {
-		margin: 4px 0 10px;
-		font-family: var(--font-mono);
-		font-size: 11px;
-		font-weight: 400;
-		letter-spacing: 0;
-		color: hsl(var(--theme-text) / 0.55);
-	}
-	.card-desc {
+	.slide-desc {
 		display: -webkit-box;
-		margin: 0 0 18px;
-		font-size: 15px;
-		line-height: 1.5;
-		color: hsl(var(--theme-text) / 0.72);
-		overflow: hidden;
 		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 2;
-		line-clamp: 2;
+		-webkit-line-clamp: 3;
+		line-clamp: 3;
+		overflow: hidden;
+		min-height: 2.9em;
+		margin: 2px 0 0;
+		font-size: var(--text-small);
+		line-height: 1.45;
+		color: hsl(var(--theme-text-muted));
+		text-wrap: pretty;
 	}
-	.card-items {
+	.slide-list-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 12px;
+		margin-top: 14px;
+		padding-bottom: 6px;
+		line-height: 1.4;
+	}
+	.slide-all {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3em;
+		margin-block: -6px;
+		padding-block: 6px;
+		color: inherit;
+		font-variant-numeric: tabular-nums;
+	}
+	.slide-all :global(svg) {
+		width: 1em;
+		height: 1em;
+	}
+	.slide-posts {
 		margin: 0;
 		padding: 0;
 		list-style: none;
 	}
-	.card-item {
-		display: flex;
-		align-items: baseline;
-		gap: 12px;
-		padding: 11px 0;
-		border-top: 1px dashed hsl(var(--theme-text) / 0.18);
-		color: inherit;
-		text-decoration: none;
+	.slide-posts li {
+		border-top: 1px solid var(--hairline);
 	}
-	.card-items li:last-child .card-item {
-		border-bottom: 1px dashed hsl(var(--theme-text) / 0.18);
+	.slide-posts a {
+		display: block;
+		padding-block: 7px;
+		font-size: var(--text-small);
+		line-height: 1.3334;
+		color: hsl(var(--theme-text));
 	}
-	.card-item:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 2px;
-		border-radius: 3px;
-	}
-	.card-item-marker {
-		flex: 0 0 22px;
-		font-family: var(--font-mono);
-		font-size: 11px;
-		color: hsl(var(--theme-accent));
-	}
-	.card-item-title {
+	.slide-posts span {
 		display: -webkit-box;
-		flex: 1;
-		min-width: 0;
-		font-family: var(--font-sans);
-		font-size: 14.5px;
-		font-weight: 400;
-		line-height: 1.4;
-		overflow: hidden;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 2;
 		line-clamp: 2;
-		transition: color 0.2s ease;
-	}
-	.card-item:hover .card-item-title {
-		color: hsl(var(--theme-accent));
-	}
-	.card-cta {
-		align-self: flex-start;
-		margin-top: auto;
-		padding-top: 18px;
-		font-family: var(--font-sans);
-		font-size: 13.5px;
-		color: hsl(var(--theme-text-muted));
-		text-decoration: underline;
-		text-decoration-color: hsl(var(--theme-text) / 0.35);
-		text-decoration-thickness: 1px;
-		text-underline-offset: 3px;
-		transition:
-			color 0.2s ease,
-			text-decoration-color 0.2s ease;
-	}
-	.card-cta:hover {
-		color: hsl(var(--theme-accent));
-		text-decoration-color: hsl(var(--theme-accent));
-	}
-	.card-cta:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
-		border-radius: 3px;
+		overflow: hidden;
+		text-wrap: pretty;
 	}
 
 	@media (max-width: 720px) {
@@ -399,30 +425,25 @@ const cards = collections.map((c) => {
 			margin-bottom: 64px;
 		}
 		.track {
-			gap: 12px;
-			margin-inline: calc(-1 * max(22px, env(safe-area-inset-left)));
-			padding-inline: max(22px, env(safe-area-inset-left));
-			scroll-padding-inline: max(22px, env(safe-area-inset-left));
+			--slide-gap: calc(2 * var(--bleed-start) + 2px);
+			--bleed-start: max(22px, env(safe-area-inset-left));
+			--bleed-end: max(22px, env(safe-area-inset-right));
 		}
+	}
+
+	@media (max-width: 560px) {
 		.slide {
-			flex-basis: min(280px, calc(100vw - 72px));
-		}
-		.card-body {
-			padding: 18px 20px;
-		}
-		.card-title {
-			font-size: 20px;
+			flex-basis: calc(100% - var(--slide-gap) - var(--slide-peek));
 		}
 	}
 
 	@media (max-width: 420px) {
-		.carousel-controls {
-			display: none;
+		.collections-head {
+			margin-bottom: 26px;
 		}
 		.track {
-			margin-inline: calc(-1 * max(16px, env(safe-area-inset-left)));
-			padding-inline: max(16px, env(safe-area-inset-left));
-			scroll-padding-inline: max(16px, env(safe-area-inset-left));
+			--bleed-start: max(16px, env(safe-area-inset-left));
+			--bleed-end: max(16px, env(safe-area-inset-right));
 		}
 	}
 </style>

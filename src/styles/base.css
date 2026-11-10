@@ -1,0 +1,65 @@
+html {
+	scrollbar-gutter: stable;
+	scroll-behavior: smooth;
+}
+html,
+body {
+	margin: 0;
+	padding: 0;
+	overflow-x: hidden;
+}
+body {
+	background-color: hsl(var(--theme-bg));
+	color: hsl(var(--theme-text));
+	font-family: var(--font-sans);
+	font-size: var(--text-body);
+	line-height: 1.65;
+	font-weight: 400;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+	min-height: 100dvh;
+}
+html.theme-ready body {
+	transition: background-color var(--fade-theme), color var(--fade-theme);
+}
+a {
+	color: inherit;
+	text-decoration: none;
+	transition: color var(--fade-fast), border-color var(--fade-fast);
+}
+::selection {
+	background: var(--accent-soft-strong);
+	color: hsl(var(--theme-text));
+}
+:where(a, button, summary):focus-visible {
+	outline: 2px solid hsl(var(--theme-accent));
+	outline-offset: 3px;
+	border-radius: var(--radius-s);
+}
+
+/* Sticky footer: wrap fills viewport, main grows to push footer down */
+.wrap {
+	max-width: 704px;
+	margin: 0 auto;
+	padding: 36px max(32px, env(safe-area-inset-right))
+		max(80px, env(safe-area-inset-bottom)) max(32px, env(safe-area-inset-left));
+	min-height: 100dvh;
+	display: flex;
+	flex-direction: column;
+}
+.wrap > main { flex: 1 0 auto; }
+
+@media (max-width: 720px) {
+	.wrap {
+		padding: 18px max(22px, env(safe-area-inset-right))
+			max(56px, env(safe-area-inset-bottom)) max(22px, env(safe-area-inset-left));
+	}
+}
+
+@media (max-width: 420px) {
+	.wrap {
+		padding: 14px max(16px, env(safe-area-inset-right))
+			max(44px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+	}
+}

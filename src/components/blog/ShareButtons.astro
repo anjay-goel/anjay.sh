@@ -17,7 +17,7 @@ const linkedinHref = `https://www.linkedin.com/sharing/share-offsite/?url=${enco
 ---
 
 <div class="share">
-	<span class="share-label">Share</span>
+	<span class="share-label meta-label">Share</span>
 	<div class="share-buttons">
 		<a
 			class="share-btn"
@@ -107,14 +107,6 @@ const linkedinHref = `https://www.linkedin.com/sharing/share-offsite/?url=${enco
 		max-width: var(--reading-width);
 		margin: 48px 0 0;
 	}
-	.share-label {
-		font-family: var(--font-mono);
-		font-size: 11px;
-		font-weight: 500;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		color: hsl(var(--theme-text) / 0.72);
-	}
 	.share-buttons {
 		display: inline-flex;
 		flex-wrap: wrap;
@@ -124,29 +116,22 @@ const linkedinHref = `https://www.linkedin.com/sharing/share-offsite/?url=${enco
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
-		font-family: var(--font-mono);
-		font-size: 11px;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-		color: hsl(var(--theme-accent));
-		background: var(--accent-soft);
+		font-size: var(--text-meta);
+		color: hsl(var(--theme-text-muted));
+		background: transparent;
 		padding: 4px 10px;
-		border: 1px solid transparent;
+		border: 1px solid var(--hairline);
 		border-radius: 999px;
 		cursor: pointer;
 		text-decoration: none;
 		line-height: 1.4;
-		transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+		transition: background-color var(--fade-fast), color var(--fade-fast), border-color var(--fade-fast);
 	}
 	.share-btn:hover,
 	.share-btn:focus-visible {
 		color: hsl(var(--theme-bg));
 		background: hsl(var(--theme-accent));
 		border-color: hsl(var(--theme-accent));
-	}
-	.share-btn:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
 	}
 	.share-btn svg {
 		display: inline-block;
@@ -158,30 +143,30 @@ const linkedinHref = `https://www.linkedin.com/sharing/share-offsite/?url=${enco
 		border-color: hsl(var(--theme-accent));
 	}
 
+	@media (prefers-reduced-motion: no-preference) {
+		.share-btn:active {
+			transform: scale(0.96);
+		}
+	}
+
 	@media (max-width: 420px) {
 		.share { gap: 10px; }
-		.share-btn { padding: 4px 8px; font-size: 10.5px; }
+		.share-btn { padding: 4px 8px; }
 	}
 </style>
 
 <script>
+	import { copyText } from "../../scripts/copy";
+
+	const COPIED_MS = 1500;
+
 	document.querySelectorAll<HTMLButtonElement>("[data-share-copy]").forEach((btn) => {
 		const label = btn.querySelector<HTMLElement>(".share-copy-label");
 		const original = label?.textContent ?? "Copy link";
 		const originalAria = btn.getAttribute("aria-label") ?? "Copy link";
 
 		btn.addEventListener("click", async () => {
-			const url = btn.dataset.url ?? window.location.href;
-			try {
-				await navigator.clipboard.writeText(url);
-			} catch {
-				const input = document.createElement("input");
-				input.value = url;
-				document.body.appendChild(input);
-				input.select();
-				try { document.execCommand("copy"); } catch {}
-				input.remove();
-			}
+			await copyText(btn.dataset.url ?? window.location.href);
 			btn.dataset.copied = "true";
 			btn.setAttribute("aria-label", "Copied");
 			if (label) label.textContent = "Copied!";
@@ -189,7 +174,7 @@ const linkedinHref = `https://www.linkedin.com/sharing/share-offsite/?url=${enco
 				delete btn.dataset.copied;
 				btn.setAttribute("aria-label", originalAria);
 				if (label) label.textContent = original;
-			}, 1500);
+			}, COPIED_MS);
 		});
 	});
 </script>

@@ -5,7 +5,7 @@ description: Ground-up explanations of a few systems we rely on every day, with 
 shortDescription: Ground-up explanations of a few systems we rely on every day.
 cta: All deep dives
 order: 2
-cover: stack
+cover: ../../assets/covers/deep-dives.png
 posts:
   - non-blocking-io
   - developer-guide-to-domains-and-dns

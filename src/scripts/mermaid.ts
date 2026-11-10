@@ -5,22 +5,35 @@ if (diagrams.length) {
 	const sources = new Map(diagrams.map((node) => [node, node.textContent ?? ""]));
 	let renderId = 0;
 	let pending = Promise.resolve();
+	let queued = false;
+
+	function readPalette() {
+		const probe = document.body.appendChild(document.createElement("span"));
+		const resolve = (color: string) => {
+			probe.style.color = color;
+			return getComputedStyle(probe).color;
+		};
+		const palette = {
+			bg: resolve("hsl(var(--theme-bg))"),
+			paper: resolve("var(--paper)"),
+			border: resolve("var(--faint)"),
+			line: resolve("hsl(var(--theme-text-muted))"),
+			text: resolve("hsl(var(--theme-text))"),
+		};
+		probe.remove();
+		return palette;
+	}
 
 	function renderDiagrams() {
+		if (queued) return;
+		queued = true;
 		pending = pending
 			.then(async () => {
+				queued = false;
 				const { default: mermaid } = await import("mermaid");
 				await document.fonts.ready;
 				const dark = document.documentElement.dataset.theme === "dark";
-				const palette = dark
-					? { bg: "#151615", paper: "#1c1d1c", border: "#55534d", line: "#c2beb5", text: "#ebe7de" }
-					: {
-							bg: "#f8f6f0",
-							paper: "#fcfbf7",
-							border: "#a9a498",
-							line: "#45433d",
-							text: "#1d1c19",
-						};
+				const palette = readPalette();
 				mermaid.initialize({
 					startOnLoad: false,
 					layout: "dagre",
@@ -28,7 +41,7 @@ if (diagrams.length) {
 					securityLevel: "strict",
 					suppressErrorRendering: true,
 					theme: "base",
-					fontFamily: "Inter Variable, sans-serif",
+					fontFamily: "IBM Plex Sans Variable, sans-serif",
 					themeVariables: {
 						darkMode: dark,
 						background: palette.bg,

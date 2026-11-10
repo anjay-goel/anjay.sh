@@ -46,16 +46,17 @@ const page = defineCollection({
 
 const collection = defineCollection({
 	loader: glob({ pattern: "**/*.md", base: "./src/content/collections" }),
-	schema: z.object({
-		title: z.string(),
-		kind: z.enum(["collection", "series"]),
-		description: z.string(),
-		shortDescription: z.string().optional(),
-		cta: z.string().optional(),
-		order: z.number(),
-		cover: z.enum(["surge", "stack", "sip", "container"]),
-		posts: z.array(reference("post")).min(1),
-	}),
+	schema: ({ image }) =>
+		z.object({
+			title: z.string(),
+			kind: z.enum(["collection", "series"]),
+			description: z.string(),
+			shortDescription: z.string().optional(),
+			cta: z.string().optional(),
+			order: z.number(),
+			cover: image(),
+			posts: z.array(reference("post")).min(1),
+		}),
 });
 
 export const collections = { post, page, collections: collection };

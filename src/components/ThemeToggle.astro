@@ -1,61 +1,161 @@
-<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">
-	<span class="icon" aria-hidden="true"></span>
-	<span class="label"></span>
+<button class="theme-toggle icon-btn hit-area" id="theme-toggle" type="button" aria-label="Switch theme">
+	<svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none">
+		<mask id="theme-toggle-cut">
+			<rect width="24" height="24" fill="white"></rect>
+			<circle class="cut" cx="30" cy="7" r="7.5" fill="black"></circle>
+		</mask>
+		<g mask="url(#theme-toggle-cut)">
+			<circle class="core" cx="12" cy="12" r="5" fill="currentColor"></circle>
+		</g>
+		<path
+			class="rays"
+			d="M12 1.75v2.5M12 19.75v2.5M1.75 12h2.5M19.75 12h2.5M4.75 4.75l1.77 1.77M17.48 17.48l1.77 1.77M4.75 19.25l1.77-1.77M17.48 6.52l1.77-1.77"
+			stroke="currentColor"
+			stroke-width="1.75"
+			stroke-linecap="round"
+		></path>
+	</svg>
 </button>
 
 <style is:global>
+	@property --theme-reveal {
+		syntax: "<length>";
+		inherits: true;
+		initial-value: 0px;
+	}
+
 	.theme-toggle {
-		display: inline-block;
-		padding: 6px 12px;
-		border-radius: 999px;
-		background: var(--accent-soft);
-		color: hsl(var(--theme-text-muted));
-		border: 1px solid transparent;
-		font-family: var(--font-sans);
-		font-size: 12px;
-		font-weight: 500;
-		line-height: 1.4;
-		cursor: pointer;
-		transition: background 0.2s ease, color 0.2s ease;
+		--hit-inset: -6px;
 	}
-	.theme-toggle:hover {
-		background: var(--accent-soft-strong);
-		color: hsl(var(--theme-accent));
-	}
-	.theme-toggle:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
+	@media (prefers-reduced-motion: no-preference) {
+		.theme-toggle:active {
+			transform: scale(0.96);
+		}
 	}
 
-	.theme-toggle .icon {
-		display: inline-block;
-		width: 1em;
-		font-size: 13px;
-		margin-right: 6px;
-		text-align: center;
-		transform: translateY(-1px);
+	.theme-toggle svg {
+		display: block;
+		overflow: visible;
 	}
-	.theme-toggle .icon::before { content: "☾"; }
-	[data-theme="dark"] .theme-toggle .icon::before { content: "☀"; }
+	.theme-toggle .core,
+	.theme-toggle .rays {
+		transform-box: view-box;
+		transform-origin: 12px 12px;
+	}
+	.theme-toggle .core {
+		transform: scale(1.7);
+	}
+	.theme-toggle .cut {
+		transform: translate(-12.5px, 0);
+	}
+	.theme-toggle .rays {
+		opacity: 0;
+		transform: rotate(-45deg) scale(0.6);
+	}
+	[data-theme="dark"] .theme-toggle .core {
+		transform: scale(1);
+	}
+	[data-theme="dark"] .theme-toggle .cut {
+		transform: translate(0, 0);
+	}
+	[data-theme="dark"] .theme-toggle .rays {
+		opacity: 1;
+		transform: rotate(0deg) scale(1);
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		html.theme-ready .theme-toggle .core,
+		html.theme-ready .theme-toggle .cut,
+		html.theme-ready .theme-toggle .rays {
+			transition:
+				transform 0.65s cubic-bezier(0.45, 0, 0.25, 1),
+				opacity 0.45s cubic-bezier(0.45, 0, 0.25, 1);
+		}
+	}
 
-	.theme-toggle .label {
-		display: inline-block;
-		min-width: 2.6em;
-		text-align: left;
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		animation: none;
+		mix-blend-mode: normal;
 	}
-	.theme-toggle .label::before { content: "Dark"; }
-	[data-theme="dark"] .theme-toggle .label::before { content: "Light"; }
+	html.theme-switching::view-transition-new(root) {
+		-webkit-mask-image: radial-gradient(
+			circle at var(--theme-reveal-x, 100%) var(--theme-reveal-y, 0%),
+			#000 calc(var(--theme-reveal) - 140px),
+			transparent var(--theme-reveal)
+		);
+		mask-image: radial-gradient(
+			circle at var(--theme-reveal-x, 100%) var(--theme-reveal-y, 0%),
+			#000 calc(var(--theme-reveal) - 140px),
+			transparent var(--theme-reveal)
+		);
+	}
+	html.theme-switching *:not(.theme-toggle *),
+	html.theme-switching *:not(.theme-toggle *)::before,
+	html.theme-switching *:not(.theme-toggle *)::after {
+		transition: none !important;
+	}
 </style>
 
 <script>
 	const r = document.documentElement;
 	const btn = document.getElementById("theme-toggle") as HTMLButtonElement | null;
+	const label = () => {
+		const text = r.dataset.theme === "dark" ? "Switch to light theme" : "Switch to dark theme";
+		btn?.setAttribute("aria-label", text);
+		btn?.setAttribute("title", text);
+	};
 	if (btn) {
+		const REVEAL_MS = 700;
+		let requested = r.dataset.theme === "dark" ? "dark" : "light";
+		let quietUntil = 0;
+		let reveal: ViewTransition | undefined;
+		const apply = () => {
+			try { localStorage.setItem("theme", requested); } catch {}
+			document.dispatchEvent(new CustomEvent("theme-change", { detail: { theme: requested } }));
+		};
+		label();
+		document.addEventListener("theme-change", (e) => {
+			requested = (e as CustomEvent<{ theme: string }>).detail.theme;
+			label();
+		});
 		btn.addEventListener("click", () => {
-			const next = r.dataset.theme === "dark" ? "light" : "dark";
-			r.dataset.theme = next;
-			try { localStorage.setItem("theme", next); } catch {}
-			document.dispatchEvent(new CustomEvent("theme-change", { detail: { theme: next } }));
+			requested = requested === "dark" ? "light" : "dark";
+			const now = performance.now();
+			const rapid = now < quietUntil;
+			quietUntil = now + REVEAL_MS;
+			const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+			if (rapid || reveal || reduce || typeof document.startViewTransition !== "function") {
+				apply();
+				return;
+			}
+			const b = btn.getBoundingClientRect();
+			const x = b.left + b.width / 2;
+			const y = b.top + b.height / 2;
+			const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+			r.style.setProperty("--theme-reveal-x", `${x}px`);
+			r.style.setProperty("--theme-reveal-y", `${y}px`);
+			r.classList.add("theme-switching");
+			const transition = document.startViewTransition(apply);
+			reveal = transition;
+			transition.ready
+				.then(() => {
+					r.animate(
+						{ "--theme-reveal": ["0px", `${radius + 140}px`] },
+						{
+							duration: REVEAL_MS,
+							easing: "cubic-bezier(0.45, 0, 0.25, 1)",
+							fill: "both",
+							pseudoElement: "::view-transition-new(root)",
+						},
+					);
+				})
+				.catch(() => {});
+			transition.finished.finally(() => {
+				reveal = undefined;
+				r.classList.remove("theme-switching");
+				r.style.removeProperty("--theme-reveal-x");
+				r.style.removeProperty("--theme-reveal-y");
+			});
 		});
 	}
 </script>

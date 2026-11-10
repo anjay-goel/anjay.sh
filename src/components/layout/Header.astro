@@ -2,7 +2,6 @@
 import { headerCopy } from "@/content/copy/header";
 import { showcase } from "@/data/showcase";
 import { menuLinks } from "@/site-config";
-import { withBase } from "@/utils/path";
 import ThemeToggle from "../ThemeToggle.astro";
 
 const url = new URL(Astro.request.url);
@@ -13,31 +12,18 @@ const visibleMenuLinks = menuLinks.filter((link) => {
 	return true;
 });
 
-const isActive = (path: string) => {
-	const target = withBase(path);
-	if (path === "/") return url.pathname === target;
-	return url.pathname === target || url.pathname.startsWith(target);
-};
-
-const navIcons: Record<string, string> = {
-	"/": '<path d="M2.5 6.5 8 2l5.5 4.5V13a1 1 0 0 1-1 1h-2.5v-4h-4v4H3.5a1 1 0 0 1-1-1Z"/>',
-	"/posts/":
-		'<path d="M3 2.5h7l3 3V13a.5.5 0 0 1-.5.5h-9.5a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5Z"/><path d="M10 2.5V5.5h3"/><path d="M5.5 8.5h5"/><path d="M5.5 11h3.5"/>',
-	"/showcase/":
-		'<rect x="2" y="4.5" width="12" height="8.5" rx="1"/><path d="M5.5 4.5V3a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v1.5"/>',
-	"/about/":
-		'<circle cx="8" cy="6" r="2.5"/><path d="M3 13c.6-2.4 2.6-3.5 5-3.5s4.4 1.1 5 3.5"/>',
-};
+const isActive = (path: string) =>
+	path === "/" ? url.pathname === path : url.pathname.startsWith(path);
 ---
 
-<header class="site-header" id="main-header">
+<header class="site-header">
 	<script is:inline>
 		try {
 			if (sessionStorage.getItem("landed")) document.documentElement.dataset.landed = "";
 			else sessionStorage.setItem("landed", "1");
 		} catch {}
 	</script>
-	<a href={withBase("/")} class="wordmark" aria-label={logo.label}>
+	<a href="/" class="wordmark hit-area" aria-label={logo.label}>
 		<span class="wordmark-prefix">{logo.prefix}</span>{logo.name}<span class="wordmark-suffix">{logo.suffix}</span><span class="wordmark-cursor" aria-hidden="true"></span>
 	</a>
 	<div class="header-right">
@@ -48,19 +34,9 @@ const navIcons: Record<string, string> = {
 						aria-current={isActive(link.path) ? "page" : false}
 						class:list={[{ active: isActive(link.path) }]}
 						data-astro-prefetch
-						href={withBase(link.path)}
+						href={link.path}
 					>
-						<svg
-							aria-hidden="true"
-							viewBox="0 0 16 16"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="1.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							set:html={navIcons[link.path] ?? ""}
-						/>
-						<span>{link.title}</span>
+						{link.title}
 					</a>
 				))
 			}
@@ -75,7 +51,7 @@ const navIcons: Record<string, string> = {
 		align-items: baseline;
 		justify-content: space-between;
 		gap: 24px;
-		margin-bottom: 72px;
+		margin-bottom: 56px;
 	}
 	.wordmark {
 		display: inline-flex;
@@ -86,10 +62,10 @@ const navIcons: Record<string, string> = {
 		line-height: 1.5;
 		color: hsl(var(--theme-text));
 		white-space: nowrap;
-		transition: color 0.2s ease, border-color 0.2s ease;
+		transition: color var(--fade-fast), border-color var(--fade-fast);
 	}
 	.wordmark-prefix {
-		color: hsl(var(--theme-text) / 0.55);
+		color: hsl(var(--theme-text-muted));
 	}
 	.wordmark-suffix {
 		color: hsl(var(--theme-accent));
@@ -116,22 +92,29 @@ const navIcons: Record<string, string> = {
 	}
 	.header-right {
 		display: flex;
-		align-items: baseline;
+		align-items: center;
 		gap: 22px;
+	}
+	@media (min-width: 721px) {
+		.header-right > :global(.theme-toggle) {
+			--optical-rise: 1.5px;
+			position: relative;
+			top: calc(-1 * var(--optical-rise));
+		}
 	}
 	.nav {
 		display: flex;
 		align-items: baseline;
 		gap: 22px;
-		font-family: var(--font-sans);
-		font-size: 13.5px;
-		color: hsl(var(--theme-text) / 0.72);
+		font-size: var(--text-small);
+		font-weight: 500;
+		color: hsl(var(--theme-text-muted));
 	}
 	.nav a {
 		display: inline-block;
 		position: relative;
 		padding-bottom: 3px;
-		transition: color 0.2s ease;
+		transition: color var(--fade-fast);
 	}
 	/* Indicator overhangs the text slightly so the underline isn't abrupt. */
 	.nav a::after {
@@ -142,14 +125,6 @@ const navIcons: Record<string, string> = {
 		bottom: 0;
 		height: 1px;
 		background: transparent;
-	}
-	.nav a svg {
-		display: inline-block;
-		width: 14px;
-		height: 14px;
-		stroke: currentColor;
-		vertical-align: -2px;
-		margin-right: 6px;
 	}
 	.nav a:hover {
 		color: hsl(var(--theme-accent));
@@ -173,13 +148,11 @@ const navIcons: Record<string, string> = {
 			column-gap: 14px;
 			row-gap: 14px;
 		}
-		.wordmark { grid-area: wordmark; }
+		.wordmark { grid-area: wordmark; justify-self: start; }
 		.header-right { display: contents; }
-		.theme-toggle { grid-area: theme; justify-self: end; }
 		.nav {
 			grid-area: nav;
 			gap: 22px;
-			font-size: 13px;
 			flex-wrap: wrap;
 			justify-content: flex-start;
 		}
@@ -187,9 +160,9 @@ const navIcons: Record<string, string> = {
 			/* Add top tap padding; desktop rule keeps the indicator space below. */
 			padding-top: 6px;
 		}
-		.nav a svg {
-			width: 13px;
-			height: 13px;
+		.nav a::after {
+			left: 0;
+			right: 0;
 		}
 	}
 
@@ -208,10 +181,6 @@ const navIcons: Record<string, string> = {
 		}
 		.nav {
 			gap: 18px;
-			font-size: 12.5px;
-		}
-		.nav a svg {
-			display: none;
 		}
 	}
 </style>

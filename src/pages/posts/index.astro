@@ -1,0 +1,38 @@
+---
+import PostList from "@/components/blog/PostList.astro";
+import { getSortedPosts } from "@/data/post";
+import PageLayout from "@/layouts/Base.astro";
+
+const posts = await getSortedPosts();
+
+const meta = {
+	description: "Read my collection of posts and the things that interest me",
+	title: "Posts",
+};
+
+const totalCount = posts.length;
+---
+
+<PageLayout meta={meta}>
+	<section class="writing" aria-labelledby="writing-title">
+		<header class="page-head">
+			<h1 class="page-title" id="writing-title">Writing</h1>
+			<p class="page-count">{totalCount} {totalCount === 1 ? "post" : "posts"}</p>
+		</header>
+		<div class="timeline">
+			<PostList posts={posts} headingLevel="h3" groupByYear />
+		</div>
+	</section>
+</PageLayout>
+
+<style>
+	.writing {
+		margin-bottom: 96px;
+	}
+
+	@media (max-width: 420px) {
+		.writing {
+			margin-bottom: 64px;
+		}
+	}
+</style>

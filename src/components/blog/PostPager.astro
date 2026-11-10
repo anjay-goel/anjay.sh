@@ -1,0 +1,89 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getPostHref } from "@/data/post";
+
+interface Props {
+	older: CollectionEntry<"post"> | undefined;
+	newer: CollectionEntry<"post"> | undefined;
+}
+
+const { older, newer } = Astro.props;
+---
+
+{(older || newer) && (
+	<nav class="post-pager" aria-label="More posts">
+		{older && (
+			<a class="pager-link prev" data-astro-prefetch href={getPostHref(older)}>
+				<span class="pager-eyebrow meta-label">Older</span>
+				<span class="pager-title">{older.data.title}</span>
+			</a>
+		)}
+		{newer && (
+			<a class="pager-link next" data-astro-prefetch href={getPostHref(newer)}>
+				<span class="pager-eyebrow meta-label">Newer</span>
+				<span class="pager-title">{newer.data.title}</span>
+			</a>
+		)}
+	</nav>
+)}
+
+<style>
+	/* Prev/Next post navigation */
+	.post-pager {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		column-gap: 32px;
+		row-gap: 28px;
+		margin: 0 0 56px;
+	}
+	.pager-link {
+		display: block;
+		text-decoration: none;
+		min-width: 0;
+		transition: transform 0.25s ease;
+	}
+	.pager-link.next {
+		text-align: right;
+	}
+	.pager-link.prev:hover { transform: translateX(-2px); }
+	.pager-link.next:hover { transform: translateX(2px); }
+	.pager-eyebrow {
+		display: block;
+		margin-bottom: 8px;
+	}
+	.pager-link.prev .pager-eyebrow::before { content: "← "; }
+	.pager-link.next .pager-eyebrow::after { content: " →"; }
+	.pager-title {
+		display: block;
+		font-size: var(--title-s);
+		line-height: 1.35;
+		font-weight: var(--title-weight);
+		letter-spacing: var(--title-tracking-s);
+		color: hsl(var(--theme-text));
+		text-wrap: balance;
+		overflow-wrap: anywhere;
+		transition: color var(--fade-fast);
+	}
+	.pager-link:hover .pager-title {
+		color: hsl(var(--theme-accent));
+	}
+	/* Lone prev/next spans full width, text on its natural side. */
+	.post-pager:has(.pager-link.prev:only-child) .pager-link.prev,
+	.post-pager:has(.pager-link.next:only-child) .pager-link.next {
+		grid-column: 1 / -1;
+	}
+	@media (max-width: 720px) {
+		.post-pager {
+			grid-template-columns: 1fr;
+			row-gap: 22px;
+			margin-bottom: 40px;
+		}
+		.pager-link.next {
+			order: 0;
+			text-align: left;
+		}
+		.pager-link.prev {
+			order: 1;
+		}
+	}
+</style>
