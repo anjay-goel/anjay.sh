@@ -5,7 +5,7 @@ description: Root-cause analyses of the most intriguing bugs I've shipped to pro
 shortDescription: RCAs of the most intriguing bugs I've shipped to production
 cta: Read the postmortems
 order: 1
-cover: surge
+cover: ../../assets/covers/postmortems.png
 posts:
   - the-bug-that-blamed-everyone-but-itself
   - debugging-in-the-dark

@@ -582,6 +582,33 @@ const giscusThemes = import.meta.env.PROD
 	.post-article .expressive-code {
 		margin: 28px 0;
 	}
+	.post-article > div:has(> .expressive-code) {
+		margin: 28px 0;
+		overflow: auto !important;
+	}
+	.post-article > div > .expressive-code {
+		margin: 0;
+	}
+	.post-article .expressive-code pre[data-language]::after {
+		content: attr(data-language);
+		position: absolute;
+		top: 12px;
+		right: 52px;
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		line-height: 1;
+		color: hsl(var(--theme-text-muted));
+		pointer-events: none;
+		user-select: none;
+	}
+	.post-article .expressive-code .is-terminal pre[data-language]::after {
+		right: 14px;
+	}
+	.post-article .expressive-code pre[data-language="plaintext"]::after,
+	.post-article .expressive-code pre[data-language="text"]::after,
+	.post-article .expressive-code pre[data-language="txt"]::after {
+		content: none;
+	}
 
 	.post-article ul {
 		margin: 0 0 28px;
@@ -793,6 +820,10 @@ const giscusThemes = import.meta.env.PROD
 		.post-article ul { padding-left: 0; }
 		.post-article ul li { padding-left: 18px; }
 		.post-article blockquote { padding-left: 16px; }
+		.post-article .heading-anchor {
+			left: -16px;
+			padding-left: calc(16px - 0.85em);
+		}
 	}
 
 	.post-article a:focus-visible {

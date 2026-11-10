@@ -13,7 +13,7 @@ if (diagrams.length) {
 				await document.fonts.ready;
 				const dark = document.documentElement.dataset.theme === "dark";
 				const palette = dark
-					? { bg: "#151615", paper: "#1c1d1c", border: "#55534d", line: "#c2beb5", text: "#ebe7de" }
+					? { bg: "#131416", paper: "#1b1c20", border: "#50545c", line: "#a1a7b0", text: "#e4e7ec" }
 					: {
 							bg: "#ffffff",
 							paper: "#f7f8fa",

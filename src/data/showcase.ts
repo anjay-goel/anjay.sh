@@ -3,13 +3,15 @@ export interface ShowcaseItem {
 	href: string;
 	stack: string;
 	badge?: string;
+	icon?: string;
 	desc: string;
 }
 
 export const showcase: ShowcaseItem[] = [
 	{
-		name: "frameo.ai",
-		href: "https://frameo.ai",
+		name: "Manto.AI",
+		href: "https://manto.ai",
+		icon: "/showcase/manto.svg",
 		stack: "Gen AI · Media",
 		badge: "Building now",
 		desc: "A Gen-AI powered video production platform for short films, micro-dramas, ads, anything you can imagine.",

@@ -5,7 +5,7 @@ description: Containers from scratch, to convince myself that it's really just a
 shortDescription: "Containers from scratch, to convince myself that it's really just a fancy process"
 cta: Start with Part I
 order: 4
-cover: container
+cover: ../../assets/covers/anatomy-of-containers.png
 posts:
   - anatomy-of-containers-i
   - anatomy-of-containers-ii

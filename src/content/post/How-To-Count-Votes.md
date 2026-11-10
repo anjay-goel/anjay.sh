@@ -11,16 +11,6 @@ slug: How-To-Count-Votes
 
 <!--end_excerpt-->
 
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-        inlineMath: [['$','$']]
-      }
-    });
-  </script>
-  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-
 Voting is ubiquitous, be it as crucial as choosing a country's head of government, head of a student body, or answering
 something as trivial as "What movie should we watch?". It arises naturally from the need to aggregate the varying
 individual preferences into a singular outcome. Yet, rarely will you think about the voting system that chooses this

@@ -56,6 +56,8 @@
 
 		/* Concrete-color palette tokens (see file header for rationale) */
 		--paper: #f7f8fa;
+		--surface: #f7f8fa;
+		--surface-raised: #ffffff;
 		--hairline: #dfe2e6;
 		--faint: #9aa0a8;
 		--accent-soft: rgba(51, 90, 133, 0.1);
@@ -71,17 +73,19 @@
 
 	:root[data-theme="dark"] {
 		color-scheme: dark;
-		--theme-bg: 120deg 2% 8%;            /* #151615 */
-		--theme-text: 42deg 25% 90%;          /* #ebe7de */
-		--theme-text-muted: 42deg 6% 67%;      /* #b0ada6 */
+		--theme-bg: 220deg 8% 8%;            /* #131416 */
+		--theme-text: 215deg 16% 91%;         /* #e4e7ec */
+		--theme-text-muted: 215deg 9% 66%;     /* #a1a7b0 */
 		--theme-accent: 210deg 59% 76%;       /* #9fc3e6 */
-		--theme-accent-2: 42deg 25% 90%;      /* same as ink */
+		--theme-accent-2: 215deg 16% 91%;     /* same as ink */
 		--theme-link: 191deg 46% 73%;         /* #9ccfda */
 		--theme-quote: 210deg 59% 76%;        /* same as accent */
 
-		--paper: #1c1d1c;
-		--hairline: #2e2f2d;
-		--faint: #55534d;
+		--paper: #1b1c20;
+		--surface: #1b1c20;
+		--surface-raised: #232428;
+		--hairline: #2b2d33;
+		--faint: #50545c;
 		--accent-soft: rgba(159, 195, 230, 0.12);
 		--accent-soft-strong: rgba(159, 195, 230, 0.22);
 
@@ -330,6 +334,13 @@ ul.work-list .name {
 	word-wrap: break-word;
 	overflow-wrap: anywhere;
 	line-height: 1.35;
+}
+ul.work-list .name-icon {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	margin-right: 0.4em;
+	vertical-align: -0.12em;
 }
 ul.work-list a:hover .name,
 ul.work-list a:focus-visible .name {

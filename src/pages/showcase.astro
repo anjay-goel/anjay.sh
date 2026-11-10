@@ -1,7 +1,7 @@
 ---
 import { showcase } from "@/data/showcase";
 import PageLayout from "@/layouts/Base.astro";
-import { absoluteUrl } from "@/utils/path";
+import { absoluteUrl, withBase } from "@/utils/path";
 import { Schema } from "astro-seo-schema";
 
 const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
@@ -37,7 +37,7 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 					<li>
 						<a href={item.href} rel="noreferrer" target="_blank">
 							<div class="head">
-								<span class="name">{item.name}</span>
+								<span class="name">{item.icon && <img class="name-icon" src={withBase(item.icon)} alt="" width="18" height="18" />}{item.name}</span>
 								<span class="stack">{item.stack}</span>
 								{item.badge && <span class="badge">{item.badge}</span>}
 							</div>

@@ -1,24 +1,23 @@
 ---
-import { type CoverKey, coverArt } from "./cover-art";
+import { Image } from "astro:assets";
 
 interface Props {
-	name: CoverKey;
+	src: ImageMetadata;
 }
 
-const { name } = Astro.props;
-const art = coverArt[name];
+const { src } = Astro.props;
 ---
 
-<svg
+<Image
 	class="cover-art"
-	viewBox={art.viewBox}
-	preserveAspectRatio="xMidYMid meet"
-	fill="none"
-	width="100%"
-	height="100%"
-	aria-hidden="true"
-	focusable="false"
-	set:html={art.body}
+	src={src}
+	alt=""
+	width={286}
+	height={110}
+	densities={[1, 2]}
+	format="webp"
+	loading="lazy"
+	decoding="async"
 />
 
 <style>
@@ -26,11 +25,11 @@ const art = coverArt[name];
 		display: block;
 		width: 100%;
 		height: 100%;
+		object-fit: contain;
+		mix-blend-mode: multiply;
 	}
-	.cover-art :global(text[font-family="monospace"]) {
-		font-family: var(--font-mono);
-	}
-	.cover-art :global(text[font-family="sans-serif"]) {
-		font-family: var(--font-sans);
+	:global([data-theme="dark"]) .cover-art {
+		filter: invert(1) hue-rotate(180deg);
+		mix-blend-mode: screen;
 	}
 </style>
