@@ -1,13 +1,11 @@
 import JetBrainsMono from "@/assets/fonts/jetbrainsmono-regular.ttf";
-import NewsreaderItalic from "@/assets/fonts/newsreader-italic.ttf";
 import NewsreaderRegular from "@/assets/fonts/newsreader-regular.ttf";
 import NewsreaderSemiBold from "@/assets/fonts/newsreader-semibold.ttf";
-import { getAllPosts } from "@/data/post";
-import { siteConfig } from "@/site-config";
+import { getAllPosts, getReadingTime } from "@/data/post";
+import { authorName, siteConfig } from "@/site-config";
 import { formatBylineDate, formatEyebrowDate } from "@/utils/date";
 import { Resvg } from "@resvg/resvg-js";
 import type { APIContext, InferGetStaticPropsType } from "astro";
-import { render } from "astro:content";
 import satori, { type SatoriOptions } from "satori";
 import { html } from "satori-html";
 
@@ -15,7 +13,6 @@ const ogOptions: SatoriOptions = {
 	fonts: [
 		{ data: Buffer.from(NewsreaderRegular), name: "Newsreader", style: "normal", weight: 400 },
 		{ data: Buffer.from(NewsreaderSemiBold), name: "Newsreader", style: "normal", weight: 600 },
-		{ data: Buffer.from(NewsreaderItalic), name: "Newsreader", style: "italic", weight: 400 },
 		{ data: Buffer.from(JetBrainsMono), name: "JetBrains Mono", style: "normal", weight: 400 },
 	],
 	height: 630,
@@ -65,7 +62,6 @@ export async function GET(context: APIContext) {
 	const { pubDate, title, tags, readingTime } = context.props as Props;
 
 	const date = new Date(pubDate);
-	const authorName = siteConfig.profile?.name ?? siteConfig.author;
 	const bylineParts = [
 		authorName ? `By ${authorName}` : null,
 		formatBylineDate(date),
@@ -98,9 +94,7 @@ export async function getStaticPaths() {
 	const filtered = posts.filter(({ data }) => !data.ogImage);
 	const items = await Promise.all(
 		filtered.map(async (post) => {
-			const { remarkPluginFrontmatter } = await render(post);
-			const readingTime =
-				(remarkPluginFrontmatter as { minutesRead?: string })?.minutesRead ?? "";
+			const readingTime = await getReadingTime(post);
 			return {
 				params: { slug: post.id },
 				props: {

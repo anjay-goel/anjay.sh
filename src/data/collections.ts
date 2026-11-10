@@ -1,7 +1,6 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import { collectionsCopy } from "@/content/copy/collections";
 import { sortMDByDate } from "@/data/post";
-import { withBase } from "@/utils/path";
 
 export type CollectionDoc = CollectionEntry<"collections">;
 
@@ -11,7 +10,7 @@ export async function getCollections(): Promise<CollectionDoc[]> {
 }
 
 export function collectionHref(collection: CollectionDoc): string {
-	return withBase(`/collections/${collection.id}/`);
+	return `/collections/${collection.id}/`;
 }
 
 export function collectionCountLabel(collection: CollectionDoc): string {

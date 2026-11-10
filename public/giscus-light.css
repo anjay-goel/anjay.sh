@@ -34,8 +34,6 @@ main {
 	--color-prettylights-syntax-sublimelinter-gutter-mark: #8c959f;
 	--color-prettylights-syntax-constant-other-reference-link: #0a3069;
 
-	/* Lift the canvas slightly above the page background so the comments
-	   region reads as its own surface. */
 	--color-canvas-default: #ffffff;
 	--color-canvas-overlay: #ffffff;
 	--color-canvas-inset: #f1f3f5;
@@ -53,13 +51,11 @@ main {
 	--color-neutral-muted: rgba(51, 90, 133, 0.1);
 	--color-neutral-subtle: rgba(51, 90, 133, 0.06);
 
-	/* Accent — warm orange-brown */
 	--color-accent-fg: #335a85;
 	--color-accent-emphasis: #335a85;
 	--color-accent-muted: rgba(51, 90, 133, 0.4);
 	--color-accent-subtle: rgba(51, 90, 133, 0.1);
 
-	/* Buttons — sit on canvas, slight cream tint */
 	--color-btn-text: #1d2026;
 	--color-btn-bg: #ffffff;
 	--color-btn-border: #d5d9de;
@@ -137,7 +133,6 @@ main .gsc-comment > .gsc-replies {
 	border-color: var(--color-border-muted);
 }
 
-/* Body font to match the site */
 main, main input, main textarea, main button, main select {
 	font-family: "IBM Plex Sans", -apple-system, system-ui, sans-serif;
 }

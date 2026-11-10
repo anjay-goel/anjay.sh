@@ -2,8 +2,7 @@
 import { getEntry, render } from "astro:content";
 import Socials from "@/components/Socials.astro";
 import PageLayout from "@/layouts/Base.astro";
-import { siteConfig } from "@/site-config";
-import { absoluteUrl } from "@/utils/path";
+import { authorName, siteConfig } from "@/site-config";
 import { Schema } from "astro-seo-schema";
 
 const entry = await getEntry("page", "about");
@@ -11,7 +10,6 @@ if (!entry) throw new Error("Missing src/content/page/about.md");
 const { Content } = await render(entry);
 
 const profile = siteConfig.profile;
-const authorName = profile?.name ?? siteConfig.author;
 
 const meta = {
 	description: entry.data.description ?? `${authorName} — about me.`,
@@ -24,8 +22,6 @@ const personSameAs = [
 	profile?.twitter,
 	profile?.mastodon,
 ].filter((s): s is string => Boolean(s));
-
-const avatarUrl = profile?.avatar ? absoluteUrl(profile.avatar, Astro.site) : undefined;
 ---
 
 <PageLayout meta={meta}>
@@ -37,7 +33,6 @@ const avatarUrl = profile?.avatar ? absoluteUrl(profile.avatar, Astro.site) : un
 			mainEntity: {
 				"@type": "Person",
 				name: authorName,
-				...(avatarUrl ? { image: avatarUrl } : {}),
 				...(profile?.jobTitle ? { jobTitle: profile.jobTitle } : {}),
 				...(profile?.employer
 					? {
@@ -92,7 +87,6 @@ const avatarUrl = profile?.avatar ? absoluteUrl(profile.avatar, Astro.site) : un
 	.bio :global(ul li) {
 		margin-bottom: 6px;
 		text-wrap: pretty;
-		word-wrap: break-word;
 		overflow-wrap: anywhere;
 	}
 	.bio :global(ul li:last-child) {
@@ -105,27 +99,9 @@ const avatarUrl = profile?.avatar ? absoluteUrl(profile.avatar, Astro.site) : un
 	.bio :global(p:last-child) {
 		margin-bottom: 0;
 	}
-	.bio :global(a) {
-		color: hsl(var(--theme-text));
-		text-decoration: underline;
-		text-decoration-color: hsl(var(--theme-text) / 0.35);
-		text-decoration-thickness: 1px;
-		text-underline-offset: 3px;
-		transition: color 0.2s ease, text-decoration-color 0.2s ease;
-	}
-	.bio :global(a:hover) {
-		color: hsl(var(--theme-accent));
-		text-decoration-color: hsl(var(--theme-accent));
-	}
-	.bio :global(a:focus-visible) {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
-		border-radius: 3px;
-	}
-
-	@media (max-width: 720px) {
-		.bio {
-			line-height: 1.7;
+	@media (prefers-reduced-motion: no-preference) {
+		.bio :global(a:active) {
+			opacity: 0.7;
 		}
 	}
 </style>

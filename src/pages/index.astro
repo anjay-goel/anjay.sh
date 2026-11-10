@@ -1,24 +1,20 @@
 ---
-import ExternalIcon from "@/components/blog/ExternalIcon.astro";
 import PostList from "@/components/blog/PostList.astro";
 import Collections from "@/components/home/Collections.astro";
+import ShowcaseList from "@/components/ShowcaseList.astro";
 import Socials from "@/components/Socials.astro";
 import { getCollections } from "@/data/collections";
-import { getAllPosts, getPostHref, getPostSortDate, sortMDByDate } from "@/data/post";
+import { getSortedPosts } from "@/data/post";
 import { showcase } from "@/data/showcase";
 import PageLayout from "@/layouts/Base.astro";
 import { siteConfig } from "@/site-config";
-import { formatRailDate } from "@/utils/date";
-import { absoluteUrl, withBase } from "@/utils/path";
+import { absoluteUrl } from "@/utils/path";
 import { Icon } from "astro-icon/components";
 import { Schema } from "astro-seo-schema";
 
-const allPosts = await getAllPosts();
-const allPostsByDate = sortMDByDate(allPosts);
-const TIMELINE_LIMIT = 4;
-const timelinePosts = allPostsByDate.slice(0, TIMELINE_LIMIT);
-const featured = timelinePosts[0];
-const rest = timelinePosts.slice(1);
+const allPosts = await getSortedPosts();
+const TIMELINE_LIMIT = 5;
+const timelinePosts = allPosts.slice(0, TIMELINE_LIMIT);
 const archiveCount = allPosts.length;
 const collections = await getCollections();
 
@@ -53,6 +49,7 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 			],
 		}}
 	/>
+	<h1 class="sr-only">{siteConfig.title}</h1>
 	<section class="hero">
 		<p>{siteConfig.description}</p>
 		<Socials />
@@ -61,42 +58,15 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 	<section class="writing" aria-labelledby="writing-label">
 		<div class="section-label" id="writing-label">Writing</div>
 		<div class="timeline">
-			{
-				featured && (
-					<div class="post featured" style="--i: 0">
-						<div class="post-rail">
-							<time class="post-date" datetime={getPostSortDate(featured).toISOString()}>
-								{formatRailDate(getPostSortDate(featured))}
-							</time>
-							<span class="post-dot" aria-hidden="true" />
-						</div>
-						<div class="post-body">
-							<h2 class="post-title">
-								<a class="post-cardlink" data-astro-prefetch href={getPostHref(featured)}>
-									{featured.data.title}</a>{featured.data.externalUrl && <ExternalIcon />}
-							</h2>
-							<p class="post-excerpt">{featured.data.description}</p>
-							{!!featured.data.tags?.length && (
-								<div class="post-meta">
-									{featured.data.tags.map((t) => (
-										<a class="tag" href={withBase(`/tags/${encodeURIComponent(t)}/`)}>{t}</a>
-									))}
-								</div>
-							)}
-						</div>
-					</div>
-				)
-			}
+			<PostList posts={timelinePosts} />
 
-			<PostList posts={rest} startIndex={1} headingLevel="h3" />
-
-			<a class="post archive" data-astro-prefetch href={withBase("/posts/")} style={`--i: ${rest.length + 1}`}>
-				<div class="post-rail">
-					<span class="post-date">Archive</span>
-					<span class="post-dot" aria-hidden="true" />
+			<a class="entry archive" data-astro-prefetch href="/posts/" style={`--i: ${timelinePosts.length}`}>
+				<div class="entry-rail">
+					<span class="entry-date">Archive</span>
+					<span class="entry-dot" aria-hidden="true" />
 				</div>
-				<div class="post-body">
-					<span class="post-title">
+				<div class="entry-body">
+					<span class="entry-title">
 						All {archiveCount} posts<span class="archive-arrow"><Icon name="tabler:arrow-right" aria-hidden="true" /></span>
 					</span>
 				</div>
@@ -107,22 +77,9 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 	<Collections collections={collections} />
 
 	{showcase.length > 0 && (
-		<section class="work" aria-labelledby="work-label">
-			<div class="section-label" id="work-label">Showcase</div>
-			<ul class="work-list">
-				{showcase.map((item, idx) => (
-					<li style={`--i: ${idx + 1}`}>
-						<a href={item.href} rel="noreferrer" target="_blank">
-							<div class="head">
-								<span class="name">{item.icon && <img class="name-icon" src={withBase(item.icon)} alt="" width="18" height="18" />}{item.name}</span>
-								<span class="stack">{item.stack}</span>
-								{item.badge && <span class="badge">{item.badge}</span>}
-							</div>
-							<p>{item.desc}</p>
-						</a>
-					</li>
-				))}
-			</ul>
+		<section class="showcase" aria-labelledby="showcase-label">
+			<div class="section-label" id="showcase-label">Showcase</div>
+			<ShowcaseList items={showcase} clamp />
 		</section>
 	)}
 </PageLayout>
@@ -144,105 +101,10 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 	.writing {
 		margin-bottom: 84px;
 	}
-	/* ---------- Featured post ---------- */
-	.post.featured {
-		--post-gap: 53px;
-		--post-title-size: var(--title-l);
+	.entry.archive {
+		--entry-gap: 0px;
 	}
-	.post.featured .post-body {
-		position: relative;
-	}
-	/* Title is the post link; its ::after stretches over the whole card body so
-	   clicking anywhere opens the post, while the tag links sit above it. */
-	.post.featured .post-cardlink {
-		color: inherit;
-		text-decoration: none;
-	}
-	.post.featured .post-cardlink::after {
-		content: "";
-		position: absolute;
-		inset: 0;
-		z-index: 1;
-	}
-	.post.featured .post-cardlink:focus-visible {
-		outline: none;
-	}
-	.post.featured:has(.post-cardlink:focus-visible) {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 4px;
-		border-radius: 4px;
-	}
-	.post.featured .post-title {
-		font-size: var(--title-l);
-		line-height: 1.2;
-		margin-bottom: 14px;
-		letter-spacing: -0.019em;
-		font-weight: var(--title-weight-large);
-	}
-	.post.featured .post-excerpt {
-		font-size: var(--text-body);
-		line-height: 1.62;
-		color: hsl(var(--theme-text-muted));
-		margin: 0 0 14px;
-		max-width: 34rem;
-		word-wrap: break-word;
-		overflow-wrap: anywhere;
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 2;
-		line-clamp: 2;
-		overflow: hidden;
-	}
-	.writing :global(.post-preview) {
-		-webkit-line-clamp: 2;
-		line-clamp: 2;
-	}
-	.post.featured .post-meta {
-		position: relative;
-		z-index: 2;
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0 2px;
-		margin: -4px -6px;
-		font-family: var(--font-sans);
-		font-size: var(--text-meta);
-		color: hsl(var(--theme-text-muted));
-		font-variant-numeric: tabular-nums;
-		font-feature-settings: "tnum";
-	}
-	.post.featured .post-meta .tag {
-		padding: 4px 6px;
-		color: inherit;
-		text-decoration: none;
-		transition: color 0.2s ease;
-	}
-	.post.featured .post-meta .tag::before {
-		content: "#";
-		color: var(--faint);
-		transition: color 0.2s ease;
-	}
-	.post.featured .post-meta .tag:hover,
-	.post.featured .post-meta .tag:hover::before {
-		color: hsl(var(--theme-accent));
-	}
-	.post.featured .post-meta .tag:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: -4px;
-		border-radius: 3px;
-	}
-	.post.featured .post-dot {
-		--rail-dot-size: 11px;
-		border-color: hsl(var(--theme-text-muted));
-	}
-	.post.featured:hover .post-dot {
-		background: hsl(var(--theme-accent));
-		border-color: hsl(var(--theme-accent));
-	}
-
-	.post.archive {
-		--post-gap: 0px;
-	}
-	.post.archive .post-title {
+	.entry.archive .entry-title {
 		display: block;
 		margin: 0;
 	}
@@ -257,36 +119,15 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		height: 1em;
 	}
 
-	.work {
+	.showcase {
 		margin-bottom: 88px;
-	}
-	.work :global(.work-list p) {
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 3;
-		line-clamp: 3;
-		overflow: hidden;
 	}
 
 	@media (max-width: 720px) {
 		.hero {
 			margin-bottom: 56px;
 		}
-		.post.featured .post-body {
-			padding-bottom: 24px;
-			border-bottom: 1px solid var(--hairline);
-			margin-bottom: 4px;
-		}
-		.post.featured .post-title {
-			line-height: 1.2;
-			letter-spacing: -0.015em;
-			margin-bottom: 10px;
-		}
-		.post.featured .post-excerpt {
-			line-height: 1.55;
-			margin: 0 0 10px;
-		}
-		.post.archive {
+		.entry.archive {
 			padding-bottom: 0;
 		}
 	}

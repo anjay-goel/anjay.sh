@@ -57,7 +57,7 @@ const slides = collections.map((collection) => {
 		<div class="carousel-controls">
 			<button
 				type="button"
-				class="carousel-btn"
+				class="carousel-btn icon-btn hit-area"
 				aria-label={collectionsCopy.previous}
 				aria-controls="collections-track"
 				aria-disabled="true"
@@ -77,7 +77,7 @@ const slides = collections.map((collection) => {
 			</button>
 			<button
 				type="button"
-				class="carousel-btn"
+				class="carousel-btn icon-btn hit-area"
 				aria-label={collectionsCopy.next}
 				aria-controls="collections-track"
 				data-carousel-next
@@ -123,7 +123,7 @@ const slides = collections.map((collection) => {
 						<p class="slide-desc">
 							{slide.collection.data.shortDescription ?? slide.collection.data.description}
 						</p>
-						<div class="slide-list-head">
+						<div class="slide-list-head meta-label">
 							<span id={slide.listId}>{slide.listLabel}</span>
 							<a class="slide-all" href={slide.href} aria-label={slide.allName} data-astro-prefetch>
 								{slide.allLabel}
@@ -241,36 +241,11 @@ const slides = collections.map((collection) => {
 		margin-block: -7px;
 	}
 	.carousel-btn {
-		position: relative;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 34px;
-		height: 34px;
-		padding: 0;
-		border: 1px solid var(--hairline);
-		border-radius: 50%;
-		background: transparent;
-		color: hsl(var(--theme-text-muted));
-		cursor: pointer;
-		-webkit-tap-highlight-color: transparent;
+		--hit-inset: -6px -4px;
 		transition:
-			color 0.2s ease,
-			border-color 0.2s ease,
-			opacity 0.2s ease;
-	}
-	.carousel-btn::before {
-		content: "";
-		position: absolute;
-		inset: -6px -4px;
-	}
-	.carousel-btn:hover {
-		border-color: hsl(var(--theme-accent));
-		color: hsl(var(--theme-accent));
-	}
-	.carousel-btn:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
+			color var(--fade-fast),
+			border-color var(--fade-fast),
+			opacity var(--fade-fast);
 	}
 	.carousel-btn[aria-disabled="true"] {
 		border-color: var(--hairline);
@@ -281,9 +256,9 @@ const slides = collections.map((collection) => {
 	@media (prefers-reduced-motion: no-preference) {
 		.carousel-btn {
 			transition:
-				color 0.2s ease,
-				border-color 0.2s ease,
-				opacity 0.2s ease,
+				color var(--fade-fast),
+				border-color var(--fade-fast),
+				opacity var(--fade-fast),
 				transform 0.18s ease;
 		}
 		.carousel-btn:not([aria-disabled="true"]):active {
@@ -346,13 +321,8 @@ const slides = collections.map((collection) => {
 		width: 1px;
 		background: var(--hairline);
 	}
-	.slide a {
-		-webkit-tap-highlight-color: transparent;
-	}
 	.slide a:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
 		outline-offset: 2px;
-		border-radius: 3px;
 	}
 	.slide a:active {
 		opacity: 0.7;
@@ -364,18 +334,17 @@ const slides = collections.map((collection) => {
 		height: var(--cover-height);
 		margin-bottom: 8px;
 		padding-inline: 16px;
-		border-radius: 4px;
+		border-radius: var(--radius-m);
 		isolation: isolate;
 		background-color: var(--surface);
-		transition: background-color 0.35s ease;
+		transition: background-color var(--fade-theme);
 	}
 	.slide-title {
 		margin: 0;
-		font-family: var(--font-sans);
 		font-size: var(--title-m);
 		font-weight: var(--title-weight);
 		line-height: 1.3;
-		letter-spacing: -0.011em;
+		letter-spacing: var(--title-tracking-s);
 	}
 	.slide-title a {
 		display: inline-block;
@@ -412,10 +381,7 @@ const slides = collections.map((collection) => {
 		gap: 12px;
 		margin-top: 14px;
 		padding-bottom: 6px;
-		font-size: var(--text-meta);
-		font-weight: 500;
 		line-height: 1.4;
-		color: hsl(var(--theme-text-muted));
 	}
 	.slide-all {
 		display: inline-flex;
@@ -442,7 +408,6 @@ const slides = collections.map((collection) => {
 		display: block;
 		padding-block: 7px;
 		font-size: var(--text-small);
-		font-weight: 500;
 		line-height: 1.3334;
 		color: hsl(var(--theme-text));
 	}

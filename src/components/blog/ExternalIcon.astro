@@ -14,14 +14,14 @@ import { Icon } from "astro-icon/components";
 		line-height: 1;
 		vertical-align: -0.15em;
 		color: hsl(var(--theme-text-muted));
-		transition: color 0.2s ease;
+		transition: color var(--fade-fast);
 	}
 	.external-icon :global(svg) {
 		display: block;
 		width: 1em;
 		height: 1em;
 	}
-	:global(.post:hover) .external-icon {
+	:global(.entry:hover) .external-icon {
 		color: hsl(var(--theme-accent));
 	}
 </style>

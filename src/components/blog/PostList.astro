@@ -6,14 +6,12 @@ import { formatRailDate, formatRailDay, formatRailYear } from "@/utils/date";
 
 interface Props {
 	posts: CollectionEntry<"post">[];
-	/** Seeds the `--i` stagger-animation index (e.g. when rows follow a featured post). */
-	startIndex?: number;
 	/** Heading tag for each post title. */
 	headingLevel?: "h2" | "h3";
 	groupByYear?: boolean;
 }
 
-const { posts, startIndex = 0, headingLevel = "h2", groupByYear = false } = Astro.props;
+const { posts, headingLevel = "h2", groupByYear = false } = Astro.props;
 const Heading = headingLevel;
 const formatDate = groupByYear ? formatRailDay : formatRailDate;
 const rows = posts.map((post) => {
@@ -28,23 +26,23 @@ const startsYear = (idx: number) => groupByYear && rows[idx]?.year !== rows[idx 
 		<>
 			{startsYear(idx) && <h2 class="timeline-year">{year}</h2>}
 			<a
-				class="post"
+				class="entry"
 				data-astro-prefetch
 				href={getPostHref(post)}
-				style={`--i: ${startIndex + idx}`}
+				style={`--i: ${idx}`}
 			>
-				<div class="post-rail">
-					<time class="post-date" datetime={date.toISOString()}>
+				<div class="entry-rail">
+					<time class="entry-date" datetime={date.toISOString()}>
 						{formatDate(date)}
 					</time>
-					<span class="post-dot" aria-hidden="true" />
+					<span class="entry-dot" aria-hidden="true" />
 				</div>
-				<div class="post-body">
-					<Heading class="post-title">
+				<div class="entry-body">
+					<Heading class="entry-title">
 						{post.data.title}
 						{post.data.externalUrl && <ExternalIcon />}
 					</Heading>
-					<p class="post-preview">{post.data.description}</p>
+					<p class="entry-preview">{post.data.description}</p>
 				</div>
 			</a>
 		</>

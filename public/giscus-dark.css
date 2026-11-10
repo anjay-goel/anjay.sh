@@ -52,7 +52,6 @@ main {
 	--color-neutral-muted: rgba(159, 195, 230, 0.12);
 	--color-neutral-subtle: rgba(159, 195, 230, 0.06);
 
-	/* Accent — warm sand */
 	--color-accent-fg: #9fc3e6;
 	--color-accent-emphasis: #9fc3e6;
 	--color-accent-muted: rgba(159, 195, 230, 0.4);

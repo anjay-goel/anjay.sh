@@ -2,12 +2,12 @@
 import type { CollectionEntry } from "astro:content";
 import { render } from "astro:content";
 import type { GetStaticPaths } from "astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
 import PostList from "@/components/blog/PostList.astro";
 import { collectionsCopy } from "@/content/copy/collections";
 import { type CollectionDoc, getCollections, orderCollectionPosts } from "@/data/collections";
 import { getAllPosts, getPostHref } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
-import { withBase } from "@/utils/path";
 
 export const getStaticPaths = (async () => {
 	const collections = await getCollections();
@@ -36,11 +36,9 @@ const meta = {
 
 <PageLayout meta={meta}>
 	<section class="collection" aria-labelledby="collection-title">
-		<nav class="crumbs" aria-label="Breadcrumb">
-			<a data-astro-prefetch href={withBase("/posts/")}>{collectionsCopy.crumb}</a>
-			<span class="sep" aria-hidden="true">/</span>
-			<span class="current" aria-current="page">{collection.data.title}</span>
-		</nav>
+		<Breadcrumbs
+			items={[{ label: collectionsCopy.crumb, href: "/posts/" }, { label: collection.data.title }]}
+		/>
 		<header class="page-head">
 			<h1 class="page-title" id="collection-title">{collection.data.title}</h1>
 			<p class="collection-desc">{collection.data.description}</p>
@@ -53,7 +51,7 @@ const meta = {
 			}
 			{
 				startHref && (
-					<a class="collection-start" data-astro-prefetch href={startHref}>
+					<a class="collection-start link--accent" data-astro-prefetch href={startHref}>
 						{collection.data.cta ?? collection.data.title} →
 					</a>
 				)
@@ -68,43 +66,6 @@ const meta = {
 <style>
 	.collection {
 		margin-bottom: 96px;
-	}
-	.crumbs {
-		font-family: var(--font-sans);
-		font-size: var(--text-meta);
-		letter-spacing: 0.04em;
-		color: hsl(var(--theme-text-muted));
-		margin-bottom: 18px;
-	}
-	.crumbs a {
-		position: relative;
-		color: hsl(var(--theme-text-muted));
-		text-decoration: underline;
-		text-decoration-color: hsl(var(--theme-text) / 0.35);
-		text-decoration-thickness: 1px;
-		text-underline-offset: 3px;
-		transition:
-			color 0.2s ease,
-			text-decoration-color 0.2s ease;
-	}
-	.crumbs a::before {
-		content: "";
-		position: absolute;
-		inset: -8px -6px;
-	}
-	.crumbs a:hover {
-		color: hsl(var(--theme-accent));
-		text-decoration-color: hsl(var(--theme-accent));
-	}
-	.crumbs a:focus-visible,
-	.collection-start:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
-		border-radius: 3px;
-	}
-	.crumbs .sep {
-		color: var(--faint);
-		margin: 0 8px;
 	}
 	.collection-desc {
 		margin: 16px 0 0;
@@ -127,15 +88,6 @@ const meta = {
 		margin-top: 8px;
 		padding: 6px 0;
 		font-size: var(--text-small);
-		color: hsl(var(--theme-accent));
-		text-decoration: underline;
-		text-decoration-color: hsl(var(--theme-accent) / 0.4);
-		text-decoration-thickness: 1px;
-		text-underline-offset: 3px;
-		transition: text-decoration-color 0.2s ease;
-	}
-	.collection-start:hover {
-		text-decoration-color: hsl(var(--theme-accent));
 	}
 
 	@media (max-width: 420px) {

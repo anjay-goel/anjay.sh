@@ -2,7 +2,6 @@
 import { headerCopy } from "@/content/copy/header";
 import { showcase } from "@/data/showcase";
 import { menuLinks } from "@/site-config";
-import { withBase } from "@/utils/path";
 import ThemeToggle from "../ThemeToggle.astro";
 
 const url = new URL(Astro.request.url);
@@ -13,21 +12,18 @@ const visibleMenuLinks = menuLinks.filter((link) => {
 	return true;
 });
 
-const isActive = (path: string) => {
-	const target = withBase(path);
-	if (path === "/") return url.pathname === target;
-	return url.pathname === target || url.pathname.startsWith(target);
-};
+const isActive = (path: string) =>
+	path === "/" ? url.pathname === path : url.pathname.startsWith(path);
 ---
 
-<header class="site-header" id="main-header">
+<header class="site-header">
 	<script is:inline>
 		try {
 			if (sessionStorage.getItem("landed")) document.documentElement.dataset.landed = "";
 			else sessionStorage.setItem("landed", "1");
 		} catch {}
 	</script>
-	<a href={withBase("/")} class="wordmark" aria-label={logo.label}>
+	<a href="/" class="wordmark hit-area" aria-label={logo.label}>
 		<span class="wordmark-prefix">{logo.prefix}</span>{logo.name}<span class="wordmark-suffix">{logo.suffix}</span><span class="wordmark-cursor" aria-hidden="true"></span>
 	</a>
 	<div class="header-right">
@@ -38,7 +34,7 @@ const isActive = (path: string) => {
 						aria-current={isActive(link.path) ? "page" : false}
 						class:list={[{ active: isActive(link.path) }]}
 						data-astro-prefetch
-						href={withBase(link.path)}
+						href={link.path}
 					>
 						{link.title}
 					</a>
@@ -58,7 +54,6 @@ const isActive = (path: string) => {
 		margin-bottom: 56px;
 	}
 	.wordmark {
-		position: relative;
 		display: inline-flex;
 		align-items: center;
 		font-family: var(--font-mono);
@@ -67,12 +62,7 @@ const isActive = (path: string) => {
 		line-height: 1.5;
 		color: hsl(var(--theme-text));
 		white-space: nowrap;
-		transition: color 0.2s ease, border-color 0.2s ease;
-	}
-	.wordmark::before {
-		content: "";
-		position: absolute;
-		inset: -8px -6px;
+		transition: color var(--fade-fast), border-color var(--fade-fast);
 	}
 	.wordmark-prefix {
 		color: hsl(var(--theme-text-muted));
@@ -100,12 +90,6 @@ const isActive = (path: string) => {
 	.wordmark:hover {
 		color: hsl(var(--theme-accent));
 	}
-	.wordmark:focus-visible,
-	.nav a:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
-		border-radius: 3px;
-	}
 	.header-right {
 		display: flex;
 		align-items: center;
@@ -115,7 +99,6 @@ const isActive = (path: string) => {
 		display: flex;
 		align-items: baseline;
 		gap: 22px;
-		font-family: var(--font-sans);
 		font-size: var(--text-small);
 		font-weight: 500;
 		color: hsl(var(--theme-text-muted));
@@ -124,7 +107,7 @@ const isActive = (path: string) => {
 		display: inline-block;
 		position: relative;
 		padding-bottom: 3px;
-		transition: color 0.2s ease;
+		transition: color var(--fade-fast);
 	}
 	/* Indicator overhangs the text slightly so the underline isn't abrupt. */
 	.nav a::after {
@@ -160,7 +143,6 @@ const isActive = (path: string) => {
 		}
 		.wordmark { grid-area: wordmark; justify-self: start; }
 		.header-right { display: contents; }
-		.theme-toggle { grid-area: theme; justify-self: end; }
 		.nav {
 			grid-area: nav;
 			gap: 22px;

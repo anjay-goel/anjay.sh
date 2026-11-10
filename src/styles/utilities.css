@@ -1,0 +1,102 @@
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border-width: 0;
+}
+
+.hit-area {
+	position: relative;
+}
+.hit-area::before {
+	content: "";
+	position: absolute;
+	inset: var(--hit-inset, -8px -6px);
+}
+
+.link,
+.link--accent,
+.post-article a,
+.bio a {
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 3px;
+}
+.link,
+.post-article a,
+.bio a {
+	text-decoration-color: hsl(var(--theme-text) / 0.35);
+	transition: color var(--fade-fast), text-decoration-color var(--fade-fast);
+}
+.link:hover,
+.post-article a:hover,
+.bio a:hover {
+	color: hsl(var(--theme-accent));
+	text-decoration-color: hsl(var(--theme-accent));
+}
+.link--accent {
+	color: hsl(var(--theme-accent));
+	text-decoration-color: hsl(var(--theme-accent) / 0.4);
+	transition: text-decoration-color var(--fade-fast);
+}
+.link--accent:hover {
+	text-decoration-color: hsl(var(--theme-accent));
+}
+
+.icon-btn {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	padding: 0;
+	border: 1px solid var(--hairline);
+	border-radius: 50%;
+	background: transparent;
+	color: hsl(var(--theme-text-muted));
+	cursor: pointer;
+	transition: border-color var(--fade-fast), color var(--fade-fast);
+}
+.icon-btn:hover {
+	border-color: hsl(var(--theme-accent));
+	color: hsl(var(--theme-accent));
+}
+
+.meta-label,
+.section-label,
+.page-count {
+	font-size: var(--text-meta);
+	font-weight: 500;
+	color: hsl(var(--theme-text-muted));
+}
+.section-label {
+	margin-bottom: 28px;
+}
+
+.page-head {
+	margin-bottom: 44px;
+}
+.page-title {
+	margin: 0;
+	font-size: var(--title-xl);
+	font-weight: var(--title-weight-large);
+	line-height: 1.14;
+	letter-spacing: var(--title-tracking-xl);
+	text-wrap: balance;
+}
+.page-count {
+	margin: 8px 0 0;
+	font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 420px) {
+	.section-label {
+		margin-bottom: 26px;
+	}
+}

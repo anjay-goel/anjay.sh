@@ -1,20 +1,17 @@
 import fs from "node:fs";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-import tailwindcss from "@tailwindcss/vite";
 import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
 import robotsTxt from "astro-robots-txt";
 import webmanifest from "astro-webmanifest";
 import { unified } from "@astrojs/markdown-remark";
 import { defineConfig } from "astro/config";
-import { expressiveCodeOptions } from "./src/site.config";
-import { siteConfig } from "./src/site.config";
+import { expressiveCodeOptions, siteConfig } from "./src/site.config";
 import partytown from "@astrojs/partytown";
 
 import remarkDirective from "remark-directive";
 import remarkMath from "remark-math";
-import { rehypeBasePath } from "./src/plugins/rehype-base-path";
 import { remarkAdmonitions } from "./src/plugins/remark-admonitions";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time";
 import { rehypeTableScroll } from "./src/plugins/rehype-table-scroll";
@@ -26,18 +23,16 @@ import rehypeExternalLinks from "rehype-external-links";
 import rehypeKatex from "rehype-katex";
 import rehypeUnwrapImages from "rehype-unwrap-images";
 
-// Defaults to root; the deploy workflow sets BASE_PATH for subpath hosts
-// (GitHub Pages project sites). See "Base path" in the README.
-const BASE_PATH = process.env.BASE_PATH || "/";
-const START_URL = BASE_PATH.endsWith("/") ? BASE_PATH : `${BASE_PATH}/`;
 const postLastModified = getPostLastModified();
 const externalPostIds = getExternalPostIds();
 
+const postIdFromUrl = (url: string) => {
+	const id = new URL(url).pathname.match(/^\/posts\/(.+?)\/?$/)?.[1];
+	return id && decodeURIComponent(id);
+};
+
 export default defineConfig({
 	site: "https://anjay.sh",
-	image: {
-		domains: ["webmention.io"],
-	},
 	output: "static",
 	compressHTML: true,
 	build: {
@@ -53,14 +48,12 @@ export default defineConfig({
 			changefreq: "weekly",
 			priority: 0.7,
 			filter(page) {
-				const path = new URL(page).pathname.slice(START_URL.length);
-				const id = path.match(/^posts\/(.+?)\/?$/)?.[1];
-				return !(id && externalPostIds.has(decodeURIComponent(id)));
+				const id = postIdFromUrl(page);
+				return !(id && externalPostIds.has(id));
 			},
 			serialize(item) {
-				const path = new URL(item.url).pathname.slice(START_URL.length);
-				const id = path.match(/^posts\/(.+?)\/?$/)?.[1];
-				const lastmod = id && postLastModified.get(decodeURIComponent(id));
+				const id = postIdFromUrl(item.url);
+				const lastmod = id && postLastModified.get(id);
 				if (lastmod) item.lastmod = lastmod.toISOString();
 				return item;
 			},
@@ -90,7 +83,7 @@ export default defineConfig({
 					type: "image/png",
 				},
 			],
-			start_url: START_URL,
+			start_url: "/",
 			background_color: "#ffffff",
 			theme_color: "#ffffff",
 			display: "standalone",
@@ -109,7 +102,6 @@ export default defineConfig({
 			rehypePlugins: [
 				rehypeUnwrapImages,
 				rehypeTableScroll,
-				[rehypeBasePath, { base: BASE_PATH }],
 				// rehype-katex must run before rehype-external-links so the latter
 				// doesn't rewrite anchors inside katex's emitted DOM.
 				rehypeKatex,
@@ -143,7 +135,7 @@ export default defineConfig({
 			include: ["mermaid"],
 			exclude: ["@resvg/resvg-js"],
 		},
-		plugins: [tailwindcss(), rawFonts([".ttf", ".woff"])],
+		plugins: [rawFonts([".ttf"])],
 	},
 });
 

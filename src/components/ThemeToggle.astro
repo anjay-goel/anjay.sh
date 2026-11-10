@@ -1,4 +1,4 @@
-<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch theme">
+<button class="theme-toggle icon-btn hit-area" id="theme-toggle" type="button" aria-label="Switch theme">
 	<svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none">
 		<mask id="theme-toggle-cut">
 			<rect width="24" height="24" fill="white"></rect>
@@ -25,32 +25,12 @@
 	}
 
 	.theme-toggle {
-		position: relative;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 34px;
-		height: 34px;
-		padding: 0;
-		border-radius: 50%;
-		background: transparent;
-		color: hsl(var(--theme-text-muted));
-		border: 1px solid var(--hairline);
-		cursor: pointer;
-		transition: border-color 0.2s ease, color 0.2s ease;
+		--hit-inset: -6px;
 	}
-	.theme-toggle::before {
-		content: "";
-		position: absolute;
-		inset: -6px;
-	}
-	.theme-toggle:hover {
-		border-color: hsl(var(--theme-accent));
-		color: hsl(var(--theme-accent));
-	}
-	.theme-toggle:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
+	@media (prefers-reduced-motion: no-preference) {
+		.theme-toggle:active {
+			transform: scale(0.96);
+		}
 	}
 
 	.theme-toggle svg {
@@ -130,7 +110,6 @@
 		btn.addEventListener("click", () => {
 			const next = r.dataset.theme === "dark" ? "light" : "dark";
 			const apply = () => {
-				r.dataset.theme = next;
 				try { localStorage.setItem("theme", next); } catch {}
 				document.dispatchEvent(new CustomEvent("theme-change", { detail: { theme: next } }));
 			};

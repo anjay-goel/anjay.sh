@@ -6,21 +6,30 @@ if (diagrams.length) {
 	let renderId = 0;
 	let pending = Promise.resolve();
 
+	function readPalette() {
+		const probe = document.body.appendChild(document.createElement("span"));
+		const resolve = (color: string) => {
+			probe.style.color = color;
+			return getComputedStyle(probe).color;
+		};
+		const palette = {
+			bg: resolve("hsl(var(--theme-bg))"),
+			paper: resolve("var(--paper)"),
+			border: resolve("var(--faint)"),
+			line: resolve("hsl(var(--theme-text-muted))"),
+			text: resolve("hsl(var(--theme-text))"),
+		};
+		probe.remove();
+		return palette;
+	}
+
 	function renderDiagrams() {
 		pending = pending
 			.then(async () => {
 				const { default: mermaid } = await import("mermaid");
 				await document.fonts.ready;
 				const dark = document.documentElement.dataset.theme === "dark";
-				const palette = dark
-					? { bg: "#131416", paper: "#1b1c20", border: "#50545c", line: "#a1a7b0", text: "#e4e7ec" }
-					: {
-							bg: "#ffffff",
-							paper: "#f7f8fa",
-							border: "#9aa0a8",
-							line: "#59606a",
-							text: "#1d2026",
-						};
+				const palette = readPalette();
 				mermaid.initialize({
 					startOnLoad: false,
 					layout: "dagre",

@@ -1,29 +1,17 @@
 import { siteConfig } from "@/site-config";
 
-const timeZone = siteConfig.date.options.timeZone ?? "UTC";
+const { locale, options } = siteConfig.date;
+const timeZone = options.timeZone ?? "UTC";
 
-const dateFormat = new Intl.DateTimeFormat(siteConfig.date.locale, {
-	timeZone,
-	...siteConfig.date.options,
-});
+const railFormatter = new Intl.DateTimeFormat(locale, { ...options, timeZone });
 
-const railFormatter = new Intl.DateTimeFormat("en-US", {
-	day: "numeric",
-	month: "short",
-	year: "numeric",
+const railDayFormatter = new Intl.DateTimeFormat(locale, {
+	day: options.day,
+	month: options.month,
 	timeZone,
 });
 
-const railDayFormatter = new Intl.DateTimeFormat("en-US", {
-	day: "numeric",
-	month: "short",
-	timeZone,
-});
-
-const railYearFormatter = new Intl.DateTimeFormat("en-US", {
-	year: "numeric",
-	timeZone,
-});
+const railYearFormatter = new Intl.DateTimeFormat(locale, { year: options.year, timeZone });
 
 const bylineFormatter = new Intl.DateTimeFormat("en-GB", {
 	day: "numeric",
@@ -38,22 +26,6 @@ const eyebrowFormatter = new Intl.DateTimeFormat("en-US", {
 	timeZone,
 });
 
-export function getFormattedDate(
-	date: string | number | Date,
-	options?: Intl.DateTimeFormatOptions,
-): string {
-	if (typeof options !== "undefined") {
-		return new Date(date).toLocaleDateString(siteConfig.date.locale, {
-			timeZone,
-			...(siteConfig.date.options as Intl.DateTimeFormatOptions),
-			...options,
-		});
-	}
-
-	return dateFormat.format(new Date(date));
-}
-
-/** Short rail date: `5 Mar 2026`. */
 export function formatRailDate(date: Date): string {
 	return railFormatter.format(date);
 }
@@ -66,12 +38,10 @@ export function formatRailYear(date: Date): string {
 	return railYearFormatter.format(date);
 }
 
-/** Article byline date: `5 March 2026`. */
 export function formatBylineDate(date: Date): string {
 	return bylineFormatter.format(date);
 }
 
-/** Article eyebrow date: `March 2026`. */
 export function formatEyebrowDate(date: Date): string {
 	return eyebrowFormatter.format(date);
 }

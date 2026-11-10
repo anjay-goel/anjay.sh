@@ -68,7 +68,6 @@ for (const heading of entries) {
 			overscroll-behavior: contain;
 			scrollbar-width: thin;
 			scrollbar-color: var(--faint) transparent;
-			font-family: var(--font-sans);
 			font-size: var(--text-meta);
 			line-height: 1.4;
 		}
@@ -96,8 +95,8 @@ for (const heading of entries) {
 	}
 	.post-outline a[aria-current] {
 		color: hsl(var(--theme-text));
-		font-weight: 500;
-		box-shadow: inset var(--outline-marker-width) 0 0 hsl(var(--theme-text));
+		background: linear-gradient(hsl(var(--theme-text)), hsl(var(--theme-text))) no-repeat left center /
+			var(--outline-marker-width) 1em;
 	}
 	.post-outline a:hover {
 		color: hsl(var(--theme-accent));
@@ -105,7 +104,7 @@ for (const heading of entries) {
 	.post-outline a:focus-visible {
 		outline: var(--outline-ring-width) solid hsl(var(--theme-accent));
 		outline-offset: var(--outline-ring-offset);
-		border-radius: 3px;
+		border-radius: var(--radius-s);
 	}
 </style>
 

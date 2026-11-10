@@ -18,7 +18,6 @@ export const siteConfig: SiteConfig = {
 	ogLocale: "en_US",
 	sortPostsByUpdatedDate: false,
 	title: "Anjay Goel",
-	hideThemeCredit: true,
 	profile: {
 		name: "Anjay Goel",
 		email: "anjay.goel@gmail.com",
@@ -28,7 +27,6 @@ export const siteConfig: SiteConfig = {
 		employer: "Dashtoon",
 		employerUrl: "https://www.linkedin.com/company/dashtoon/",
 		alumni: "IIT Kharagpur",
-		avatar: "/avatar.png",
 	},
 	comments: {
 		repo: "anjay-goel/anjay.sh",
@@ -41,6 +39,8 @@ export const siteConfig: SiteConfig = {
 		goatcounterUrl: "https://anjaygoel.goatcounter.com/count",
 	},
 };
+
+export const authorName = siteConfig.profile?.name ?? siteConfig.author;
 
 export const menuLinks: { path: string; title: string }[] = [
 	{
@@ -61,21 +61,25 @@ export const menuLinks: { path: string; title: string }[] = [
 	},
 ];
 
+const codeSurface = { light: "#f6f7f9", dark: "#1b1c20" };
+const codeChrome = { light: "#eceef2", dark: "#101114" };
+
 export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
+	defaultProps: {
+		frame: "code",
+	},
 	styleOverrides: {
 		borderColor: "transparent",
 		borderRadius: "4px",
-		codeBackground: ({ theme }) => (theme.type === "light" ? "#f6f7f9" : "#1b1c20"),
+		codeBackground: ({ theme }) => codeSurface[theme.type],
 		codeFontFamily: "var(--font-mono)",
 		codeFontSize: "0.875rem",
 		codeLineHeight: "1.6",
 		codePaddingInline: "1rem",
 		frames: {
-			editorActiveTabBackground: ({ theme }) => (theme.type === "light" ? "#f6f7f9" : "#1b1c20"),
-			editorTabBarBackground: ({ theme }) => (theme.type === "light" ? "#eceef2" : "#101114"),
+			editorActiveTabBackground: ({ theme }) => codeSurface[theme.type],
+			editorTabBarBackground: ({ theme }) => codeChrome[theme.type],
 			frameBoxShadowCssValue: "none",
-			terminalBackground: ({ theme }) => (theme.type === "light" ? "#f6f7f9" : "#1b1c20"),
-			terminalTitlebarBackground: ({ theme }) => (theme.type === "light" ? "#eceef2" : "#101114"),
 		},
 		uiLineHeight: "inherit",
 	},
