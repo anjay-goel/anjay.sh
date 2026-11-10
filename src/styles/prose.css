@@ -114,7 +114,7 @@
 .post-article .expressive-code pre[data-language]::after {
 	content: attr(data-language);
 	position: absolute;
-	top: 12px;
+	top: 9px;
 	right: 14px;
 	z-index: 1;
 	font-family: var(--font-mono);
@@ -124,23 +124,10 @@
 	pointer-events: none;
 	-webkit-user-select: none;
 	user-select: none;
-	transition: opacity var(--fade-fast);
-}
-@media (hover: hover) {
-	.post-article .expressive-code .frame:not(.has-title):hover pre[data-language]::after,
-	.post-article .expressive-code .frame:not(.has-title):focus-within pre[data-language]::after {
-		opacity: 0;
-	}
-}
-@media (hover: none) {
-	.post-article .expressive-code .frame:not(.has-title) pre[data-language]::after {
-		right: 56px;
-	}
 }
 .post-article .expressive-code pre[data-language="plaintext"]::after,
-.post-article .expressive-code pre[data-language="text"]::after,
 .post-article .expressive-code pre[data-language="txt"]::after {
-	content: none;
+	content: "text";
 }
 .post-article .expressive-code pre[data-clipped]::before {
 	content: "";

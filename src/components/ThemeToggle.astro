@@ -105,16 +105,26 @@
 		btn?.setAttribute("title", text);
 	};
 	if (btn) {
+		const REVEAL_MS = 700;
+		let requested = r.dataset.theme === "dark" ? "dark" : "light";
+		let quietUntil = 0;
+		let reveal: ViewTransition | undefined;
+		const apply = () => {
+			try { localStorage.setItem("theme", requested); } catch {}
+			document.dispatchEvent(new CustomEvent("theme-change", { detail: { theme: requested } }));
+		};
 		label();
-		document.addEventListener("theme-change", label);
+		document.addEventListener("theme-change", (e) => {
+			requested = (e as CustomEvent<{ theme: string }>).detail.theme;
+			label();
+		});
 		btn.addEventListener("click", () => {
-			const next = r.dataset.theme === "dark" ? "light" : "dark";
-			const apply = () => {
-				try { localStorage.setItem("theme", next); } catch {}
-				document.dispatchEvent(new CustomEvent("theme-change", { detail: { theme: next } }));
-			};
+			requested = requested === "dark" ? "light" : "dark";
+			const now = performance.now();
+			const rapid = now < quietUntil;
+			quietUntil = now + REVEAL_MS;
 			const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-			if (reduce || typeof document.startViewTransition !== "function") {
+			if (rapid || reveal || reduce || typeof document.startViewTransition !== "function") {
 				apply();
 				return;
 			}
@@ -126,12 +136,13 @@
 			r.style.setProperty("--theme-reveal-y", `${y}px`);
 			r.classList.add("theme-switching");
 			const transition = document.startViewTransition(apply);
+			reveal = transition;
 			transition.ready
 				.then(() => {
 					r.animate(
 						{ "--theme-reveal": ["0px", `${radius + 140}px`] },
 						{
-							duration: 700,
+							duration: REVEAL_MS,
 							easing: "cubic-bezier(0.45, 0, 0.25, 1)",
 							fill: "both",
 							pseudoElement: "::view-transition-new(root)",
@@ -140,6 +151,7 @@
 				})
 				.catch(() => {});
 			transition.finished.finally(() => {
+				reveal = undefined;
 				r.classList.remove("theme-switching");
 				r.style.removeProperty("--theme-reveal-x");
 				r.style.removeProperty("--theme-reveal-y");

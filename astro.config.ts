@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-import expressiveCode from "astro-expressive-code";
+import expressiveCode, { pluginFramesTexts } from "astro-expressive-code";
 import icon from "astro-icon";
 import robotsTxt from "astro-robots-txt";
 import webmanifest from "astro-webmanifest";
@@ -30,6 +30,8 @@ const postIdFromUrl = (url: string) => {
 	const id = new URL(url).pathname.match(/^\/posts\/(.+?)\/?$/)?.[1];
 	return id && decodeURIComponent(id);
 };
+
+pluginFramesTexts.overrideTexts(undefined, { terminalWindowFallbackTitle: "Code" });
 
 export default defineConfig({
 	site: "https://anjay.sh",

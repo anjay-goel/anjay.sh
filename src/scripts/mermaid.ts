@@ -5,6 +5,7 @@ if (diagrams.length) {
 	const sources = new Map(diagrams.map((node) => [node, node.textContent ?? ""]));
 	let renderId = 0;
 	let pending = Promise.resolve();
+	let queued = false;
 
 	function readPalette() {
 		const probe = document.body.appendChild(document.createElement("span"));
@@ -24,8 +25,11 @@ if (diagrams.length) {
 	}
 
 	function renderDiagrams() {
+		if (queued) return;
+		queued = true;
 		pending = pending
 			.then(async () => {
+				queued = false;
 				const { default: mermaid } = await import("mermaid");
 				await document.fonts.ready;
 				const dark = document.documentElement.dataset.theme === "dark";

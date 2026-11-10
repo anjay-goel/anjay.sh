@@ -66,7 +66,10 @@ const codeChrome = { light: "#eceef2", dark: "#101114" };
 
 export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
 	defaultProps: {
-		frame: "code",
+		frame: "terminal",
+	},
+	frames: {
+		removeCommentsWhenCopyingTerminalFrames: false,
 	},
 	styleOverrides: {
 		borderColor: "transparent",
@@ -77,10 +80,13 @@ export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
 		codeLineHeight: "1.6",
 		codePaddingInline: "1rem",
 		frames: {
-			editorActiveTabBackground: ({ theme }) => codeSurface[theme.type],
-			editorTabBarBackground: ({ theme }) => codeChrome[theme.type],
 			frameBoxShadowCssValue: "none",
+			terminalBackground: ({ theme }) => codeSurface[theme.type],
+			terminalTitlebarBackground: ({ theme }) => codeChrome[theme.type],
+			terminalTitlebarDotsOpacity: "0",
 		},
+		uiFontFamily: "var(--font-mono)",
+		uiFontSize: "0.75rem",
 		uiLineHeight: "inherit",
 	},
 	themeCssSelector(theme, { styleVariants }) {
