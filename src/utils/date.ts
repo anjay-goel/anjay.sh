@@ -14,8 +14,13 @@ const railFormatter = new Intl.DateTimeFormat("en-US", {
 	timeZone,
 });
 
-const stampFormatter = new Intl.DateTimeFormat("en-US", {
-	month: "long",
+const railDayFormatter = new Intl.DateTimeFormat("en-US", {
+	day: "numeric",
+	month: "short",
+	timeZone,
+});
+
+const railYearFormatter = new Intl.DateTimeFormat("en-US", {
 	year: "numeric",
 	timeZone,
 });
@@ -53,9 +58,12 @@ export function formatRailDate(date: Date): string {
 	return railFormatter.format(date);
 }
 
-/** Featured-card stamp: `March 2026`. */
-export function formatStampDate(date: Date): string {
-	return stampFormatter.format(date);
+export function formatRailDay(date: Date): string {
+	return railDayFormatter.format(date);
+}
+
+export function formatRailYear(date: Date): string {
+	return railYearFormatter.format(date);
 }
 
 /** Article byline date: `5 March 2026`. */

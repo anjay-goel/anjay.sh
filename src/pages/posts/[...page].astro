@@ -42,10 +42,13 @@ const totalCount = page.total;
 ---
 
 <PageLayout meta={meta}>
-	<section class="writing" aria-labelledby="writing-label">
-		<div class="section-label" id="writing-label">Writing · {totalCount} posts</div>
+	<section class="writing" aria-labelledby="writing-title">
+		<header class="page-head">
+			<h1 class="page-title" id="writing-title">Writing</h1>
+			<p class="page-count">{totalCount} {totalCount === 1 ? "post" : "posts"}</p>
+		</header>
 		<div class="timeline">
-			<PostList posts={page.data} />
+			<PostList posts={page.data} headingLevel="h3" groupByYear />
 		</div>
 		{
 			(paginationProps.prevUrl || paginationProps.nextUrl) && (
@@ -84,8 +87,6 @@ const totalCount = page.total;
 		padding: 8px 4px;
 		font-family: var(--font-sans);
 		font-size: var(--text-meta);
-		letter-spacing: var(--tracking-label);
-		text-transform: uppercase;
 		color: hsl(var(--theme-text-muted));
 		text-decoration: underline;
 		text-decoration-color: hsl(var(--theme-text) / 0.35);

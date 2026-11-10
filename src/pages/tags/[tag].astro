@@ -29,15 +29,16 @@ const meta = {
 ---
 
 <PageLayout meta={meta}>
-	<section class="tag-archive" aria-labelledby="tag-label">
+	<section class="tag-archive" aria-labelledby="tag-title">
 		<nav class="crumbs" aria-label="Breadcrumb">
 			<a data-astro-prefetch href={withBase("/tags/")}>Tags</a>
 			<span class="sep" aria-hidden="true">/</span>
 			<span class="current" aria-current="page">#{tag}</span>
 		</nav>
-		<div class="section-label" id="tag-label">
-			#{tag} · {count} {count === 1 ? "post" : "posts"}
-		</div>
+		<header class="page-head">
+			<h1 class="page-title" id="tag-title">#{tag}</h1>
+			<p class="page-count">{count} {count === 1 ? "post" : "posts"}</p>
+		</header>
 		<div class="timeline">
 			<PostList posts={posts} />
 		</div>
@@ -57,12 +58,18 @@ const meta = {
 		margin-bottom: 18px;
 	}
 	.crumbs a {
+		position: relative;
 		color: hsl(var(--theme-text-muted));
 		text-decoration: underline;
 		text-decoration-color: hsl(var(--theme-text) / 0.35);
 		text-decoration-thickness: 1px;
 		text-underline-offset: 3px;
 		transition: color 0.2s ease, text-decoration-color 0.2s ease;
+	}
+	.crumbs a::before {
+		content: "";
+		position: absolute;
+		inset: -8px -6px;
 	}
 	.crumbs a:hover {
 		color: hsl(var(--theme-accent));

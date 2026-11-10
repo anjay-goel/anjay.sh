@@ -1,42 +1,52 @@
 ---
-import type { CollectionEntry } from "astro:content";
+import { Icon } from "astro-icon/components";
 import CollectionCover from "@/components/art/CollectionCover.astro";
 import { collectionsCopy } from "@/content/copy/collections";
 import {
 	type CollectionDoc,
 	collectionCountLabel,
 	collectionHref,
-	orderCollectionPosts,
+	previewCollectionPosts,
 } from "@/data/collections";
-import { getPostHref } from "@/data/post";
-import { toRoman } from "@/utils/roman";
+import { getAllPosts, getPostHref } from "@/data/post";
 
 interface Props {
 	collections: CollectionDoc[];
-	posts: CollectionEntry<"post">[];
 }
 
-const { collections, posts } = Astro.props;
-const CARD_ITEMS = 3;
+const { collections } = Astro.props;
+const posts = await getAllPosts();
 
-const partTitle = (title: string, collection: CollectionDoc) => {
-	const i = title.indexOf(": ");
-	return title.startsWith(collection.data.title) && i > 0 ? title.slice(i + 2) : title;
+const COVER_HEIGHT = 132;
+const ART_HEIGHT = 100;
+const ART_WIDTH = 188;
+const SLIDE_POSTS = 3;
+
+const artHeight = (cover: ImageMetadata) =>
+	Math.round(Math.min(ART_HEIGHT, (ART_WIDTH * cover.height) / cover.width));
+
+const shortTitle = (title: string, collection: CollectionDoc) => {
+	const prefix = `${collection.data.title}, `;
+	return collection.data.kind === "series" && title.startsWith(prefix)
+		? title.slice(prefix.length)
+		: title;
 };
 
-const cards = collections.map((c) => {
-	const series = c.data.kind === "series";
-	const ordered = orderCollectionPosts(c, posts);
-	const items = ordered.slice(0, CARD_ITEMS).map((p, i) => ({
-		href: getPostHref(p),
-		title: series ? partTitle(p.data.title, c) : p.data.title,
-		marker: series ? toRoman(i + 1) : undefined,
-	}));
+const slides = collections.map((collection) => {
+	const shown = previewCollectionPosts(collection, posts, SLIDE_POSTS);
+	const ordered = collection.data.kind === "series";
 	return {
-		collection: c,
-		href: series && ordered[0] ? getPostHref(ordered[0]) : collectionHref(c),
-		count: collectionCountLabel(c),
-		items,
+		collection,
+		href: collectionHref(collection),
+		ordered,
+		listId: `collection-posts-${collection.id}`,
+		listLabel: ordered ? collectionsCopy.parts : collectionsCopy.recentPosts,
+		allLabel: collectionsCopy.all(collection.data.posts.length),
+		allName: collectionsCopy.allIn(collectionCountLabel(collection), collection.data.title),
+		items: shown.map((post) => ({
+			href: getPostHref(post),
+			title: shortTitle(post.data.title, collection),
+		})),
 	};
 });
 ---
@@ -49,8 +59,9 @@ const cards = collections.map((c) => {
 				type="button"
 				class="carousel-btn"
 				aria-label={collectionsCopy.previous}
-				data-carousel-prev
+				aria-controls="collections-track"
 				aria-disabled="true"
+				data-carousel-prev
 			>
 				<svg
 					viewBox="0 0 24 24"
@@ -61,13 +72,14 @@ const cards = collections.map((c) => {
 					stroke-width="1.75"
 					stroke-linecap="round"
 					stroke-linejoin="round"
-					aria-hidden="true"><path d="M15 6l-6 6l6 6"></path></svg
+					aria-hidden="true"><path d="M14.5 6l-6 6l6 6"></path></svg
 				>
 			</button>
 			<button
 				type="button"
 				class="carousel-btn"
 				aria-label={collectionsCopy.next}
+				aria-controls="collections-track"
 				data-carousel-next
 			>
 				<svg
@@ -79,52 +91,57 @@ const cards = collections.map((c) => {
 					stroke-width="1.75"
 					stroke-linecap="round"
 					stroke-linejoin="round"
-					aria-hidden="true"><path d="M9 6l6 6l-6 6"></path></svg
+					aria-hidden="true"><path d="M9.5 6l6 6l-6 6"></path></svg
 				>
 			</button>
 		</div>
 	</div>
 
-	<ul class="track" role="list" data-carousel-track>
+	<ul
+		class="track"
+		id="collections-track"
+		role="list"
+		style={`--cover-height: ${COVER_HEIGHT}px`}
+		data-carousel-track
+	>
 		{
-			cards.map((card) => (
-				<li class="slide">
-					<article class="card">
-						<div class="card-cover" aria-hidden="true">
-							<CollectionCover src={card.collection.data.cover} />
-						</div>
-						<div class="card-body">
-							<h3 class="card-title">
-								<a href={collectionHref(card.collection)} data-astro-prefetch>
-									{card.collection.data.title}
-								</a>
-							</h3>
-							<p class="card-count">{card.count}</p>
-							<p class="card-desc">
-								{card.collection.data.shortDescription ?? card.collection.data.description}
-							</p>
-							<ol class="card-items" role="list">
-								{card.items.map((item) => (
-									<li>
-										<a class="card-item" href={item.href} data-astro-prefetch>
-											{item.marker && (
-												<span class="card-item-marker">
-													<span class="sr-only">{collectionsCopy.part(item.marker)}</span>
-													<span aria-hidden="true">{item.marker}</span>
-												</span>
-											)}
-											<span class="card-item-title">{item.title}</span>
-										</a>
-									</li>
-								))}
-							</ol>
-							<a class="card-cta" href={card.href} data-astro-prefetch>
-								{card.collection.data.cta ?? card.collection.data.title} →
+			slides.map((slide) => {
+				const PostsList = slide.ordered ? "ol" : "ul";
+				return (
+					<li class="slide">
+						<a class="slide-art" href={slide.href} tabindex="-1" aria-hidden="true">
+							<CollectionCover
+								src={slide.collection.data.cover}
+								height={artHeight(slide.collection.data.cover)}
+							/>
+						</a>
+						<h3 class="slide-title">
+							<a href={slide.href} data-astro-prefetch>
+								{slide.collection.data.title}
+							</a>
+						</h3>
+						<p class="slide-desc">
+							{slide.collection.data.shortDescription ?? slide.collection.data.description}
+						</p>
+						<div class="slide-list-head">
+							<span id={slide.listId}>{slide.listLabel}</span>
+							<a class="slide-all" href={slide.href} aria-label={slide.allName} data-astro-prefetch>
+								{slide.allLabel}
+								<Icon name="tabler:arrow-right" aria-hidden="true" />
 							</a>
 						</div>
-					</article>
-				</li>
-			))
+						<PostsList class="slide-posts" role="list" aria-labelledby={slide.listId}>
+							{slide.items.map((item) => (
+								<li>
+									<a href={item.href} title={item.title} data-astro-prefetch>
+										<span>{item.title}</span>
+									</a>
+								</li>
+							))}
+						</PostsList>
+					</li>
+				);
+			})
 		}
 	</ul>
 </section>
@@ -136,28 +153,52 @@ const cards = collections.map((c) => {
 		const next = document.querySelector<HTMLButtonElement>("[data-carousel-next]");
 		if (!track || !prev || !next) return;
 
-		const update = () => {
-			const max = track.scrollWidth - track.clientWidth;
-			const fits = max < 24;
-			prev.setAttribute("aria-disabled", String(fits || track.scrollLeft <= 1));
-			next.setAttribute("aria-disabled", String(fits || track.scrollLeft >= max - 1));
-		};
+		const slides = Array.from(track.children) as HTMLElement[];
+		const first = slides[0];
+		const last = slides[slides.length - 1];
+		if (!first || !last) return;
 
-		const step = () => {
-			const slide = track.querySelector<HTMLElement>("li");
-			const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-			return slide ? slide.offsetWidth + gap : track.clientWidth;
+		const end = () =>
+			Math.max(
+				0,
+				Math.min(track.scrollWidth - track.clientWidth, last.offsetLeft - first.offsetLeft),
+			);
+		const step = () => (slides[1] ? slides[1].offsetLeft - first.offsetLeft : track.clientWidth);
+
+		const update = () => {
+			const atStart = track.scrollLeft <= 1;
+			const atEnd = track.scrollLeft >= end() - 1;
+			prev.setAttribute("aria-disabled", String(atStart));
+			next.setAttribute("aria-disabled", String(atEnd));
+			track.toggleAttribute("data-scrolled", !atStart);
+			track.toggleAttribute("data-at-end", atEnd);
 		};
 
 		const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+		let target: number | null = null;
+		let settle = 0;
+
 		const bind = (button: HTMLButtonElement, dir: number) =>
 			button.addEventListener("click", () => {
 				if (button.getAttribute("aria-disabled") === "true") return;
-				track.scrollBy({ left: dir * step(), behavior: reduced.matches ? "auto" : "smooth" });
+				const size = step();
+				const from = target ?? track.scrollLeft;
+				target = Math.max(0, Math.min(end(), (Math.round(from / size) + dir) * size));
+				track.scrollTo({ left: target, behavior: reduced.matches ? "auto" : "smooth" });
 			});
 
 		bind(prev, -1);
 		bind(next, 1);
+
+		track.addEventListener("focusin", (event) => {
+			const link = event.target as HTMLElement;
+			const slide = slides.find((s) => s.contains(link));
+			if (!slide || !link.matches(":focus-visible")) return;
+			const box = track.getBoundingClientRect();
+			const rect = slide.getBoundingClientRect();
+			if (rect.left >= box.left - 1 && rect.right <= box.right + 1) return;
+			track.scrollTo({ left: Math.min(end(), slide.offsetLeft - first.offsetLeft) });
+		});
 
 		let frame = 0;
 		track.addEventListener(
@@ -165,6 +206,10 @@ const cards = collections.map((c) => {
 			() => {
 				cancelAnimationFrame(frame);
 				frame = requestAnimationFrame(update);
+				window.clearTimeout(settle);
+				settle = window.setTimeout(() => {
+					target = null;
+				}, 150);
 			},
 			{ passive: true },
 		);
@@ -177,6 +222,7 @@ const cards = collections.map((c) => {
 
 <style>
 	.collections {
+		display: flow-root;
 		margin-bottom: 84px;
 	}
 	.collections-head {
@@ -184,209 +230,229 @@ const cards = collections.map((c) => {
 		align-items: center;
 		justify-content: space-between;
 		gap: 16px;
-		margin-bottom: 24px;
+		margin-bottom: 28px;
 	}
 	.collections-head .section-label {
 		margin-bottom: 0;
 	}
 	.carousel-controls {
 		display: flex;
-		gap: 6px;
+		gap: 8px;
+		margin-block: -7px;
 	}
 	.carousel-btn {
-		display: flex;
+		position: relative;
+		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: 32px;
-		height: 32px;
+		width: 34px;
+		height: 34px;
 		padding: 0;
 		border: 1px solid var(--hairline);
 		border-radius: 50%;
 		background: transparent;
 		color: hsl(var(--theme-text-muted));
 		cursor: pointer;
+		-webkit-tap-highlight-color: transparent;
 		transition:
 			color 0.2s ease,
-			border-color 0.2s ease;
+			border-color 0.2s ease,
+			opacity 0.2s ease;
 	}
-	.carousel-btn:hover:not([aria-disabled="true"]) {
+	.carousel-btn::before {
+		content: "";
+		position: absolute;
+		inset: -6px -4px;
+	}
+	.carousel-btn:hover {
 		border-color: hsl(var(--theme-accent));
 		color: hsl(var(--theme-accent));
 	}
-	.carousel-btn[aria-disabled="true"] {
-		color: var(--faint);
-		cursor: default;
-	}
 	.carousel-btn:focus-visible {
 		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 2px;
+		outline-offset: 3px;
 	}
+	.carousel-btn[aria-disabled="true"] {
+		border-color: var(--hairline);
+		color: hsl(var(--theme-text-muted));
+		opacity: 0.4;
+		cursor: default;
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		.carousel-btn {
+			transition:
+				color 0.2s ease,
+				border-color 0.2s ease,
+				opacity 0.2s ease,
+				transform 0.18s ease;
+		}
+		.carousel-btn:not([aria-disabled="true"]):active {
+			transform: scale(0.96);
+		}
+	}
+
 	.track {
-		--slide-gap: 18px;
+		--slide-gap: 56px;
 		--slide-peek: 24px;
+		--bleed-start: 8px;
+		--bleed-end: 16px;
+		--fade-start: 0px;
+		--fade-end: calc(var(--slide-peek) + var(--bleed-end));
 		display: flex;
 		gap: var(--slide-gap);
-		margin: -4px 0 0;
-		padding: 4px 0 8px;
+		margin: -4px calc(-1 * var(--bleed-end)) -6px calc(-1 * var(--bleed-start));
+		padding: 4px var(--bleed-end) 6px var(--bleed-start);
 		list-style: none;
 		overflow-x: auto;
+		overflow-y: hidden;
 		scroll-snap-type: x mandatory;
+		scroll-padding-inline: var(--bleed-start) var(--bleed-end);
 		scrollbar-width: none;
+		mask-image: linear-gradient(
+			to right,
+			transparent,
+			#000 var(--fade-start),
+			#000 calc(100% - var(--fade-end)),
+			transparent
+		);
+	}
+	.track[data-scrolled] {
+		--fade-start: var(--bleed-start);
+	}
+	.track[data-at-end] {
+		--fade-end: 0px;
+	}
+	.track:has(a:focus-visible) {
+		--fade-start: 0px;
 	}
 	.track::-webkit-scrollbar {
 		display: none;
 	}
+	.track::after {
+		content: "";
+		flex: 0 0 var(--slide-peek);
+	}
 	.slide {
-		display: flex;
+		position: relative;
 		flex: 0 0 calc((100% - 2 * var(--slide-gap) - var(--slide-peek)) / 2);
+		min-width: 0;
 		scroll-snap-align: start;
 	}
-	.card {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		flex: 1;
-		min-width: 0;
-		border: 1px solid var(--hairline);
-		border-radius: 10px;
-		background: var(--surface);
-		overflow: hidden;
-		transition: border-color 0.2s ease;
-	}
-	.card:hover {
-		border-color: hsl(var(--theme-text) / 0.3);
-	}
-	.card-cover {
-		height: 104px;
-		isolation: isolate;
-		border-bottom: 1px solid var(--hairline);
-		background: var(--surface-raised);
-	}
-	.card-body {
-		display: flex;
-		flex-direction: column;
-		flex: 1;
-		padding: 16px 18px 14px;
-	}
-	.card-title {
-		margin: 0;
-		font-family: var(--font-sans);
-		font-size: var(--title-s);
-		font-weight: var(--title-weight);
-		line-height: 1.35;
-		letter-spacing: -0.011em;
-	}
-	.card-title a {
-		color: inherit;
-		text-decoration: none;
-		transition: color 0.2s ease;
-	}
-	.card-title a::after {
+	.slide + .slide::before {
 		content: "";
 		position: absolute;
-		inset: 0;
-		z-index: 1;
+		inset-block: 0;
+		left: calc(var(--slide-gap) / -2);
+		width: 1px;
+		background: var(--hairline);
 	}
-	.card:hover .card-title a {
-		color: hsl(var(--theme-accent));
+	.slide a {
+		-webkit-tap-highlight-color: transparent;
 	}
-	.card-items,
-	.card-cta {
-		position: relative;
-		z-index: 2;
-	}
-	.card-title a:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
-		border-radius: 3px;
-	}
-	.card-count {
-		margin: 2px 0 5px;
-		font-family: var(--font-sans);
-		font-size: var(--text-meta);
-		font-weight: 400;
-		letter-spacing: 0;
-		color: hsl(var(--theme-text-muted));
-	}
-	.card-desc {
-		display: -webkit-box;
-		margin: 0 0 8px;
-		font-size: var(--text-sub);
-		line-height: 1.5;
-		color: hsl(var(--theme-text-muted));
-		overflow: hidden;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 2;
-		line-clamp: 2;
-	}
-	.card-items {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-	.card-item {
-		display: flex;
-		align-items: baseline;
-		gap: 12px;
-		padding: 7px 0;
-		border-top: 1px solid var(--hairline);
-		color: inherit;
-		text-decoration: none;
-	}
-	.card-items li:last-child .card-item {
-		border-bottom: 1px solid var(--hairline);
-	}
-	.card-item:focus-visible {
+	.slide a:focus-visible {
 		outline: 2px solid hsl(var(--theme-accent));
 		outline-offset: 2px;
 		border-radius: 3px;
 	}
-	.card-item-marker {
-		flex: 0 0 22px;
+	.slide a:active {
+		opacity: 0.7;
+	}
+	.slide-art {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: var(--cover-height);
+		margin-bottom: 8px;
+		padding-inline: 16px;
+		border-radius: 4px;
+		isolation: isolate;
+		background-color: var(--surface);
+		transition: background-color 0.35s ease;
+	}
+	.slide-title {
+		margin: 0;
 		font-family: var(--font-sans);
+		font-size: var(--title-m);
+		font-weight: var(--title-weight);
+		line-height: 1.3;
+		letter-spacing: -0.011em;
+	}
+	.slide-title a {
+		display: inline-block;
+		margin-inline: -4px;
+		padding: 3px 4px;
+		color: hsl(var(--theme-text));
+	}
+	.slide-title a:focus-visible {
+		outline-offset: 0;
+	}
+	.slide-title a:hover,
+	.slide-art:hover + .slide-title a,
+	.slide-posts a:hover,
+	.slide-all:hover {
+		color: hsl(var(--theme-accent));
+	}
+	.slide-desc {
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+		line-clamp: 3;
+		overflow: hidden;
+		min-height: 2.9em;
+		margin: 2px 0 0;
+		font-size: var(--text-small);
+		line-height: 1.45;
+		color: hsl(var(--theme-text-muted));
+		text-wrap: pretty;
+	}
+	.slide-list-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 12px;
+		margin-top: 14px;
+		padding-bottom: 6px;
 		font-size: var(--text-meta);
+		font-weight: 500;
+		line-height: 1.4;
 		color: hsl(var(--theme-text-muted));
 	}
-	.card-item-title {
-		display: -webkit-box;
-		flex: 1;
-		min-width: 0;
-		font-family: var(--font-sans);
+	.slide-all {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3em;
+		margin-block: -6px;
+		padding-block: 6px;
+		color: inherit;
+		font-variant-numeric: tabular-nums;
+	}
+	.slide-all :global(svg) {
+		width: 1em;
+		height: 1em;
+	}
+	.slide-posts {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.slide-posts li {
+		border-top: 1px solid var(--hairline);
+	}
+	.slide-posts a {
+		display: block;
+		padding-block: 7px;
 		font-size: var(--text-small);
-		font-weight: 400;
-		line-height: 1.4;
-		overflow: hidden;
+		font-weight: 500;
+		line-height: 1.3334;
+		color: hsl(var(--theme-text));
+	}
+	.slide-posts span {
+		display: -webkit-box;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 2;
 		line-clamp: 2;
-		transition: color 0.2s ease;
-	}
-	.card-item:hover .card-item-title {
-		color: hsl(var(--theme-accent));
-	}
-	.card-cta {
-		align-self: flex-start;
-		margin-top: auto;
-		padding-top: 10px;
-		font-family: var(--font-sans);
-		font-size: var(--text-small);
-		color: hsl(var(--theme-text-muted));
-		text-decoration: underline;
-		text-decoration-color: hsl(var(--theme-text) / 0.35);
-		text-decoration-thickness: 1px;
-		text-underline-offset: 3px;
-		transition:
-			color 0.2s ease,
-			text-decoration-color 0.2s ease;
-	}
-	.card-cta:hover {
-		color: hsl(var(--theme-accent));
-		text-decoration-color: hsl(var(--theme-accent));
-	}
-	.card-cta:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
-		border-radius: 3px;
+		overflow: hidden;
+		text-wrap: pretty;
 	}
 
 	@media (max-width: 720px) {
@@ -394,25 +460,25 @@ const cards = collections.map((c) => {
 			margin-bottom: 64px;
 		}
 		.track {
-			--slide-gap: 12px;
-			--slide-peek: 28px;
-			margin-inline: calc(-1 * max(22px, env(safe-area-inset-left)));
-			padding-inline: max(22px, env(safe-area-inset-left));
-			scroll-padding-inline: max(22px, env(safe-area-inset-left));
+			--slide-gap: calc(2 * var(--bleed-start) + 2px);
+			--bleed-start: max(22px, env(safe-area-inset-left));
+			--bleed-end: max(22px, env(safe-area-inset-right));
 		}
+	}
+
+	@media (max-width: 560px) {
 		.slide {
-			flex-basis: min(280px, calc(100% - var(--slide-gap) - var(--slide-peek)));
+			flex-basis: calc(100% - var(--slide-gap) - var(--slide-peek));
 		}
 	}
 
 	@media (max-width: 420px) {
-		.carousel-controls {
-			display: none;
+		.collections-head {
+			margin-bottom: 26px;
 		}
 		.track {
-			margin-inline: calc(-1 * max(16px, env(safe-area-inset-left)));
-			padding-inline: max(16px, env(safe-area-inset-left));
-			scroll-padding-inline: max(16px, env(safe-area-inset-left));
+			--bleed-start: max(16px, env(safe-area-inset-left));
+			--bleed-end: max(16px, env(safe-area-inset-right));
 		}
 	}
 </style>

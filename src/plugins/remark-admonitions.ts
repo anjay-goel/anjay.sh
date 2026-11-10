@@ -64,7 +64,7 @@ export const remarkAdmonitions: Plugin<[], Root> = () => (tree) => {
 		const admonitionType = node.name;
 		if (!isAdmonition(admonitionType)) return;
 
-		let title: string = admonitionType;
+		let title: string = admonitionType.charAt(0).toUpperCase() + admonitionType.slice(1);
 		let titleNode: PhrasingContent[] = [{ type: "text", value: title }];
 
 		const firstChild = node.children[0];

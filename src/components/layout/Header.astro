@@ -18,16 +18,6 @@ const isActive = (path: string) => {
 	if (path === "/") return url.pathname === target;
 	return url.pathname === target || url.pathname.startsWith(target);
 };
-
-const navIcons: Record<string, string> = {
-	"/": '<path d="M2.5 6.5 8 2l5.5 4.5V13a1 1 0 0 1-1 1h-2.5v-4h-4v4H3.5a1 1 0 0 1-1-1Z"/>',
-	"/posts/":
-		'<path d="M3 2.5h7l3 3V13a.5.5 0 0 1-.5.5h-9.5a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5Z"/><path d="M10 2.5V5.5h3"/><path d="M5.5 8.5h5"/><path d="M5.5 11h3.5"/>',
-	"/showcase/":
-		'<rect x="2" y="4.5" width="12" height="8.5" rx="1"/><path d="M5.5 4.5V3a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v1.5"/>',
-	"/about/":
-		'<circle cx="8" cy="6" r="2.5"/><path d="M3 13c.6-2.4 2.6-3.5 5-3.5s4.4 1.1 5 3.5"/>',
-};
 ---
 
 <header class="site-header" id="main-header">
@@ -50,17 +40,7 @@ const navIcons: Record<string, string> = {
 						data-astro-prefetch
 						href={withBase(link.path)}
 					>
-						<svg
-							aria-hidden="true"
-							viewBox="0 0 16 16"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="1.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							set:html={navIcons[link.path] ?? ""}
-						/>
-						<span>{link.title}</span>
+						{link.title}
 					</a>
 				))
 			}
@@ -78,6 +58,7 @@ const navIcons: Record<string, string> = {
 		margin-bottom: 56px;
 	}
 	.wordmark {
+		position: relative;
 		display: inline-flex;
 		align-items: center;
 		font-family: var(--font-mono);
@@ -87,6 +68,11 @@ const navIcons: Record<string, string> = {
 		color: hsl(var(--theme-text));
 		white-space: nowrap;
 		transition: color 0.2s ease, border-color 0.2s ease;
+	}
+	.wordmark::before {
+		content: "";
+		position: absolute;
+		inset: -8px -6px;
 	}
 	.wordmark-prefix {
 		color: hsl(var(--theme-text-muted));
@@ -113,6 +99,12 @@ const navIcons: Record<string, string> = {
 	}
 	.wordmark:hover {
 		color: hsl(var(--theme-accent));
+	}
+	.wordmark:focus-visible,
+	.nav a:focus-visible {
+		outline: 2px solid hsl(var(--theme-accent));
+		outline-offset: 3px;
+		border-radius: 3px;
 	}
 	.header-right {
 		display: flex;
@@ -144,14 +136,6 @@ const navIcons: Record<string, string> = {
 		height: 1px;
 		background: transparent;
 	}
-	.nav a svg {
-		display: inline-block;
-		width: 14px;
-		height: 14px;
-		stroke: currentColor;
-		vertical-align: -2px;
-		margin-right: 6px;
-	}
 	.nav a:hover {
 		color: hsl(var(--theme-accent));
 	}
@@ -174,7 +158,7 @@ const navIcons: Record<string, string> = {
 			column-gap: 14px;
 			row-gap: 14px;
 		}
-		.wordmark { grid-area: wordmark; }
+		.wordmark { grid-area: wordmark; justify-self: start; }
 		.header-right { display: contents; }
 		.theme-toggle { grid-area: theme; justify-self: end; }
 		.nav {
@@ -187,9 +171,9 @@ const navIcons: Record<string, string> = {
 			/* Add top tap padding; desktop rule keeps the indicator space below. */
 			padding-top: 6px;
 		}
-		.nav a svg {
-			width: 13px;
-			height: 13px;
+		.nav a::after {
+			left: 0;
+			right: 0;
 		}
 	}
 
@@ -208,9 +192,6 @@ const navIcons: Record<string, string> = {
 		}
 		.nav {
 			gap: 18px;
-		}
-		.nav a svg {
-			display: none;
 		}
 	}
 </style>

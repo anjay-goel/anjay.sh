@@ -63,11 +63,12 @@ export const menuLinks: { path: string; title: string }[] = [
 
 export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
 	styleOverrides: {
+		borderColor: "transparent",
 		borderRadius: "4px",
 		codeBackground: ({ theme }) => (theme.type === "light" ? "#f6f7f9" : "#1b1c20"),
 		codeFontFamily: "var(--font-mono)",
 		codeFontSize: "0.875rem",
-		codeLineHeight: "1.7142857rem",
+		codeLineHeight: "1.6",
 		codePaddingInline: "1rem",
 		frames: {
 			editorActiveTabBackground: ({ theme }) => (theme.type === "light" ? "#f6f7f9" : "#1b1c20"),
@@ -86,6 +87,6 @@ export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
 		}
 		return `[data-theme="${theme.name}"]`;
 	},
-	themes: ["min-dark", "min-light"],
+	themes: ["github-dark", "min-light"],
 	useThemedScrollbars: false,
 };

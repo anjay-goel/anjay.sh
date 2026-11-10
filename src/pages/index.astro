@@ -8,8 +8,9 @@ import { getAllPosts, getPostHref, getPostSortDate, sortMDByDate } from "@/data/
 import { showcase } from "@/data/showcase";
 import PageLayout from "@/layouts/Base.astro";
 import { siteConfig } from "@/site-config";
-import { formatRailDate, formatStampDate } from "@/utils/date";
+import { formatRailDate } from "@/utils/date";
 import { absoluteUrl, withBase } from "@/utils/path";
+import { Icon } from "astro-icon/components";
 import { Schema } from "astro-seo-schema";
 
 const allPosts = await getAllPosts();
@@ -70,7 +71,6 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 							<span class="post-dot" aria-hidden="true" />
 						</div>
 						<div class="post-body">
-							<div class="post-stamp">Latest<span class="stamp-date"> · {formatStampDate(getPostSortDate(featured))}</span></div>
 							<h2 class="post-title">
 								<a class="post-cardlink" data-astro-prefetch href={getPostHref(featured)}>
 									{featured.data.title}</a>{featured.data.externalUrl && <ExternalIcon />}
@@ -78,8 +78,8 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 							<p class="post-excerpt">{featured.data.description}</p>
 							{!!featured.data.tags?.length && (
 								<div class="post-meta">
-									{featured.data.tags.map((t, i) => (
-										<Fragment>{i > 0 && <span class="dot">·</span>}<a class="tag" href={withBase(`/tags/${encodeURIComponent(t)}/`)}>{t}</a></Fragment>
+									{featured.data.tags.map((t) => (
+										<a class="tag" href={withBase(`/tags/${encodeURIComponent(t)}/`)}>{t}</a>
 									))}
 								</div>
 							)}
@@ -90,15 +90,21 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 
 			<PostList posts={rest} startIndex={1} headingLevel="h3" />
 
-			<div class="archive-link" style={`--i: ${rest.length + 1}`}>
-				<a data-astro-prefetch href={withBase("/posts/")}
-					>View all {archiveCount} posts →</a
-				>
-			</div>
+			<a class="post archive" data-astro-prefetch href={withBase("/posts/")} style={`--i: ${rest.length + 1}`}>
+				<div class="post-rail">
+					<span class="post-date">Archive</span>
+					<span class="post-dot" aria-hidden="true" />
+				</div>
+				<div class="post-body">
+					<span class="post-title">
+						All {archiveCount} posts<span class="archive-arrow"><Icon name="tabler:arrow-right" aria-hidden="true" /></span>
+					</span>
+				</div>
+			</a>
 		</div>
 	</section>
 
-	<Collections collections={collections} posts={allPosts} />
+	<Collections collections={collections} />
 
 	{showcase.length > 0 && (
 		<section class="work" aria-labelledby="work-label">
@@ -139,9 +145,12 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		margin-bottom: 84px;
 	}
 	/* ---------- Featured post ---------- */
+	.post.featured {
+		--post-gap: 53px;
+		--post-title-size: var(--title-l);
+	}
 	.post.featured .post-body {
 		position: relative;
-		padding-bottom: 56px;
 	}
 	/* Title is the post link; its ::after stretches over the whole card body so
 	   clicking anywhere opens the post, while the tag links sit above it. */
@@ -156,20 +165,12 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		z-index: 1;
 	}
 	.post.featured .post-cardlink:focus-visible {
+		outline: none;
+	}
+	.post.featured:has(.post-cardlink:focus-visible) {
 		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
-		border-radius: 3px;
-	}
-	.post.featured .post-stamp {
-		font-family: var(--font-sans);
-		font-size: var(--text-meta);
-		letter-spacing: var(--tracking-label);
-		text-transform: uppercase;
-		color: hsl(var(--theme-text-muted));
-		margin-bottom: 12px;
-	}
-	.post.featured .stamp-date {
-		display: none;
+		outline-offset: 4px;
+		border-radius: 4px;
 	}
 	.post.featured .post-title {
 		font-size: var(--title-l);
@@ -199,6 +200,10 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 	.post.featured .post-meta {
 		position: relative;
 		z-index: 2;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0 2px;
+		margin: -4px -6px;
 		font-family: var(--font-sans);
 		font-size: var(--text-meta);
 		color: hsl(var(--theme-text-muted));
@@ -206,6 +211,7 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		font-feature-settings: "tnum";
 	}
 	.post.featured .post-meta .tag {
+		padding: 4px 6px;
 		color: inherit;
 		text-decoration: none;
 		transition: color 0.2s ease;
@@ -221,12 +227,8 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 	}
 	.post.featured .post-meta .tag:focus-visible {
 		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 2px;
+		outline-offset: -4px;
 		border-radius: 3px;
-	}
-	.post.featured .post-meta .dot {
-		color: var(--faint);
-		margin: 0 8px;
 	}
 	.post.featured .post-dot {
 		--rail-dot-size: 11px;
@@ -237,26 +239,22 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		border-color: hsl(var(--theme-accent));
 	}
 
-	.archive-link {
-		grid-column: 2;
-		margin-top: 8px;
-		font-family: var(--font-sans);
-		font-size: var(--text-small);
-		color: hsl(var(--theme-text-muted));
+	.post.archive {
+		--post-gap: 0px;
 	}
-	.archive-link a {
+	.post.archive .post-title {
+		display: block;
+		margin: 0;
+	}
+	.archive-arrow {
 		display: inline-block;
-		padding: 6px 0;
-		color: hsl(var(--theme-text-muted));
-		text-decoration: underline;
-		text-decoration-color: hsl(var(--theme-text) / 0.35);
-		text-decoration-thickness: 1px;
-		text-underline-offset: 3px;
-		transition: color 0.2s ease, text-decoration-color 0.2s ease;
+		margin-left: 0.3em;
+		vertical-align: -0.16em;
 	}
-	.archive-link a:hover {
-		color: hsl(var(--theme-accent));
-		text-decoration-color: hsl(var(--theme-accent));
+	.archive-arrow :global(svg) {
+		display: block;
+		width: 1em;
+		height: 1em;
 	}
 
 	.work {
@@ -270,21 +268,9 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 		overflow: hidden;
 	}
 
-	.archive-link a:focus-visible {
-		outline: 2px solid hsl(var(--theme-accent));
-		outline-offset: 3px;
-		border-radius: 3px;
-	}
-
 	@media (max-width: 720px) {
 		.hero {
 			margin-bottom: 56px;
-		}
-		.post.featured .post-rail {
-			display: none;
-		}
-		.post.featured .stamp-date {
-			display: inline;
 		}
 		.post.featured .post-body {
 			padding-bottom: 24px;
@@ -300,8 +286,8 @@ const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 			line-height: 1.55;
 			margin: 0 0 10px;
 		}
-		.archive-link {
-			margin-top: 0;
+		.post.archive {
+			padding-bottom: 0;
 		}
 	}
 

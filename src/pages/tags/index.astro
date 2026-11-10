@@ -13,8 +13,11 @@ const meta = {
 ---
 
 <PageLayout meta={meta}>
-	<section class="tags-index" aria-labelledby="tags-label">
-		<div class="section-label" id="tags-label">Tags · {tags.length}</div>
+	<section class="tags-index" aria-labelledby="tags-title">
+		<header class="page-head">
+			<h1 class="page-title" id="tags-title">Tags</h1>
+			<p class="page-count">{tags.length} {tags.length === 1 ? "tag" : "tags"}</p>
+		</header>
 		<ul class="tag-run">
 			{
 				tags.map(([tag, count]) => (
@@ -45,6 +48,7 @@ const meta = {
 		font-family: var(--font-sans);
 	}
 	.tag-run a {
+		position: relative;
 		display: inline-flex;
 		align-items: baseline;
 		gap: 5px;
@@ -53,6 +57,11 @@ const meta = {
 		font-size: var(--text-small);
 		letter-spacing: 0.01em;
 		transition: color 0.2s ease;
+	}
+	.tag-run a::before {
+		content: "";
+		position: absolute;
+		inset: -5px -8px;
 	}
 	.tag-run .name::before {
 		content: "#";

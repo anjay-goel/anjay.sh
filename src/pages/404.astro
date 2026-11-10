@@ -95,12 +95,18 @@ const meta = {
 		list-style: none;
 	}
 	.dirs a {
+		position: relative;
 		color: hsl(var(--theme-accent));
 		text-decoration: underline;
 		text-decoration-color: hsl(var(--theme-accent) / 0.4);
 		text-decoration-thickness: 1px;
 		text-underline-offset: 3px;
 		transition: text-decoration-color 0.2s ease;
+	}
+	.dirs a::before {
+		content: "";
+		position: absolute;
+		inset: -4px -8px;
 	}
 	.dirs a:hover {
 		text-decoration-color: hsl(var(--theme-accent));

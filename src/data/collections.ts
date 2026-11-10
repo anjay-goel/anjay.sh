@@ -1,5 +1,6 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import { collectionsCopy } from "@/content/copy/collections";
+import { sortMDByDate } from "@/data/post";
 import { withBase } from "@/utils/path";
 
 export type CollectionDoc = CollectionEntry<"collections">;
@@ -26,4 +27,14 @@ export function orderCollectionPosts<T extends { id: string }>(
 ): T[] {
 	const byId = new Map(posts.map((p) => [p.id, p]));
 	return collection.data.posts.map((p) => byId.get(p.id)).filter((p): p is T => p !== undefined);
+}
+
+export function previewCollectionPosts(
+	collection: CollectionDoc,
+	posts: CollectionEntry<"post">[],
+	limit: number,
+): CollectionEntry<"post">[] {
+	const ordered = orderCollectionPosts(collection, posts);
+	const sorted = collection.data.kind === "series" ? ordered : sortMDByDate([...ordered]);
+	return sorted.slice(0, limit);
 }
