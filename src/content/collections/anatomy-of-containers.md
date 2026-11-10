@@ -4,7 +4,7 @@ kind: series
 description: Containers from scratch, to convince myself that it's really just a fancy process
 shortDescription: "Containers from scratch, to convince myself that it's really just a fancy process"
 cta: Start with Part I
-order: 4
+order: 3
 cover: ../../assets/covers/anatomy-of-containers.png
 posts:
   - anatomy-of-containers-i

@@ -1,6 +1,6 @@
+import PlexSansRegular from "@/assets/fonts/ibmplexsans-regular.ttf";
+import PlexSansSemiBold from "@/assets/fonts/ibmplexsans-semibold.ttf";
 import JetBrainsMono from "@/assets/fonts/jetbrainsmono-regular.ttf";
-import NewsreaderRegular from "@/assets/fonts/newsreader-regular.ttf";
-import NewsreaderSemiBold from "@/assets/fonts/newsreader-semibold.ttf";
 import { getAllPosts, getReadingTime } from "@/data/post";
 import { authorName, siteConfig } from "@/site-config";
 import { formatBylineDate, formatEyebrowDate } from "@/utils/date";
@@ -11,8 +11,8 @@ import { html } from "satori-html";
 
 const ogOptions: SatoriOptions = {
 	fonts: [
-		{ data: Buffer.from(NewsreaderRegular), name: "Newsreader", style: "normal", weight: 400 },
-		{ data: Buffer.from(NewsreaderSemiBold), name: "Newsreader", style: "normal", weight: 600 },
+		{ data: Buffer.from(PlexSansRegular), name: "IBM Plex Sans", style: "normal", weight: 400 },
+		{ data: Buffer.from(PlexSansSemiBold), name: "IBM Plex Sans", style: "normal", weight: 600 },
 		{ data: Buffer.from(JetBrainsMono), name: "JetBrains Mono", style: "normal", weight: 400 },
 	],
 	height: 630,
@@ -35,22 +35,22 @@ const markup = (props: {
 	tagsLine: string;
 	host: string;
 }) =>
-	html`<div tw="flex flex-col w-full h-full px-20 py-16" style="background-color: #131416; font-family: Newsreader;">
-		<p tw="text-2xl mb-10 tracking-widest uppercase" style="font-family: JetBrains Mono; color: #9fc3e6;">
+	html`<div tw="flex flex-col w-full h-full px-20 py-16" style="background-color: #131416; font-family: IBM Plex Sans;">
+		<p tw="text-2xl mb-10" style="color: #9fc3e6;">
 			${props.eyebrow}
 		</p>
 		<h1 tw="${titleClass(props.title)}" style="color: #e4e7ec; font-weight: 600;">
 			${props.title}
 		</h1>
-		<p tw="text-2xl mb-4" style="font-family: JetBrains Mono; color: #a1a7b0;">
+		<p tw="text-2xl mb-4" style="color: #a1a7b0;">
 			${props.byline}
 		</p>
-		<p tw="text-xl tracking-wider uppercase" style="font-family: JetBrains Mono; color: #9fc3e6;">
+		<p tw="text-xl" style="color: #7d838c;">
 			${props.tagsLine}
 		</p>
 		<div tw="flex flex-1"></div>
 		<div tw="flex justify-end w-full">
-			<p tw="text-lg tracking-wide" style="font-family: JetBrains Mono; color: #6b717a;">
+			<p tw="text-lg" style="font-family: JetBrains Mono; color: #6b717a;">
 				${props.host}
 			</p>
 		</div>
@@ -75,7 +75,7 @@ export async function GET(context: APIContext) {
 			eyebrow: `Posts${SEP}${formatEyebrowDate(date)}`,
 			title,
 			byline: bylineParts.join(SEP),
-			tagsLine: tags.join(SEP),
+			tagsLine: tags.map((tag) => `#${tag}`).join("   "),
 			host,
 		}),
 		ogOptions,
