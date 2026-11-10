@@ -34,10 +34,6 @@ export const siteConfig: SiteConfig = {
 		category: "General",
 		categoryId: "DIC_kwDOFnLNWs4CQ8t3",
 	},
-	analytics: {
-		googleAnalyticsId: "G-YMCFXDNKXR",
-		goatcounterUrl: "https://anjaygoel.goatcounter.com/count",
-	},
 };
 
 export const authorName = siteConfig.profile?.name ?? siteConfig.author;

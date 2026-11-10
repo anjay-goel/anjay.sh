@@ -47,7 +47,10 @@ for (const heading of entries) {
 		--outline-ring-width: 2px;
 		--outline-ring-offset: 3px;
 		--outline-indent: 0.875rem;
-		--outline-marker-width: 2px;
+		--outline-rail-width: 1px;
+		--outline-marker-width: 3px;
+		--outline-marker-height: 1.25em;
+		--outline-rail-inset: calc((var(--outline-marker-width) - var(--outline-rail-width)) / 2);
 		display: none;
 	}
 
@@ -79,7 +82,8 @@ for (const heading of entries) {
 		padding: 0;
 	}
 	.post-outline > ol {
-		box-shadow: inset 1px 0 0 var(--hairline);
+		background: linear-gradient(var(--hairline), var(--hairline)) no-repeat var(--outline-rail-inset) 0 /
+			var(--outline-rail-width) 100%;
 	}
 	.post-outline a {
 		display: block;
@@ -95,8 +99,9 @@ for (const heading of entries) {
 	}
 	.post-outline a[aria-current] {
 		color: hsl(var(--theme-text));
+		font-weight: 500;
 		background: linear-gradient(hsl(var(--theme-text)), hsl(var(--theme-text))) no-repeat left center /
-			var(--outline-marker-width) 1em;
+			var(--outline-marker-width) var(--outline-marker-height);
 	}
 	.post-outline a:hover {
 		color: hsl(var(--theme-accent));

@@ -95,6 +95,13 @@ const isActive = (path: string) =>
 		align-items: center;
 		gap: 22px;
 	}
+	@media (min-width: 721px) {
+		.header-right > :global(.theme-toggle) {
+			--optical-rise: 1.5px;
+			position: relative;
+			top: calc(-1 * var(--optical-rise));
+		}
+	}
 	.nav {
 		display: flex;
 		align-items: baseline;

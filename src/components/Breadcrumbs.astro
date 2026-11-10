@@ -17,7 +17,7 @@ const { items } = Astro.props;
 			<>
 				{idx > 0 && <>{" "}<span class="sep" aria-hidden="true">/</span>{" "}</>}
 				{item.href ? (
-					<a class="link hit-area" data-astro-prefetch href={item.href}>{item.label}</a>
+					<a class="link link--quiet hit-area" data-astro-prefetch href={item.href}>{item.label}</a>
 				) : (
 					<span class="current" aria-current="page">{item.label}</span>
 				)}
@@ -30,7 +30,6 @@ const { items } = Astro.props;
 	.crumbs {
 		margin-bottom: var(--crumbs-gap, 18px);
 		font-size: var(--text-meta);
-		letter-spacing: 0.04em;
 		color: hsl(var(--theme-text-muted));
 	}
 	.sep {

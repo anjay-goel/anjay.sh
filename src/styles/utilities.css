@@ -39,6 +39,9 @@
 	color: hsl(var(--theme-accent));
 	text-decoration-color: hsl(var(--theme-accent));
 }
+.link--quiet:not(:hover) {
+	text-decoration-color: transparent;
+}
 .link--accent {
 	color: hsl(var(--theme-accent));
 	text-decoration-color: hsl(var(--theme-accent) / 0.4);
