@@ -10,25 +10,25 @@ coverImage:
 
 A while ago, I stumbled upon some LinkedIn copy-pasta about Go 1.25 finally making `GOMAXPROCS` 'container-aware'.
 For some reason, if you try to get CPU or memory info from within a container, you get the host's total
-resources. This is probably one of the few instances where containers behave differently, and I didn't really
-understand why.
+resources. This is probably one of the few instances where containers behave differently from a standalone machine, and
+I didn't really understand why.
 
-Despite relying on k8s almost daily for quite a while now, my understanding of how containers work had been fairly
-limited. Partly because these abstractions work so well and there is so much to learn about simply using k8s itself that
-I never thought of looking beneath the abstraction layers. The broad statements I came across while learning Docker like
+Despite relying on k8s almost daily for quite a while now, my understanding of how containers work has been fairly
+limited. Partly because these abstractions work so well that I never needed to look underneath and partly because there is so
+much to learn about simply using k8s itself. The broad statements I came across while learning Docker like
 "containers don't do virtualization," "they don't have a hypervisor layer like VMs," and "they sit directly on the host
 OS kernel" didn't offer much real insight either.
 
-So for that reason, the statement "containers are just fancy processes" really clicked for me.
+So the statement "containers are just fancy processes" really clicked for me.
 At the risk of over-simplifying, they essentially package the whole application along with all its user-space
 dependencies and run them as isolated processes on the host's kernel.
 
-In this series of blogs, I hope to share an anatomy of containers that I have learnt by tinkering around in the
+In this series of blogs, I hope to share what I have learnt about the anatomy of containers by tinkering around in the
 past few weeks. Rather than diving deep into a specific topic, it's meant to provide a bird's eye view of
-containers and the surrounding ecosystem. I'll include resources to explore particular areas in more detail. A lot
-if not all of this was new to me, so feel free to correct me if I goof something up.
+containers and the surrounding ecosystem. I'll include resources to explore particular areas in more detail. A lot,
+if not all, of this was new to me, so feel free to correct me if I goof something up.
 
-PS: Much of this first blog is borrowed from this highly recommended series
+Note: Much of this first blog is borrowed from this highly recommended series
 of [videos by Liz Rice](https://www.youtube.com/watch?v=8fi7uSYlOdc&vl=en).
 
 ## The Kernel Features That Allow Containerisation
@@ -57,8 +57,8 @@ or via the `setns` syscall to join an existing namespace. The namespaces of a pr
 symlinks under `/proc/<pid>/ns`. A few important namespaces for isolation are:
 
 * PID (`pid`): Isolates the set of processes & PIDs. Processes can only see other processes in the same or child
-  namespace. The first process inside this namespace starts with PID 1 in the new namespace and is considered
-  the [init process](https://en.wikipedia.org/wiki/Init) in this new namespace. All the signals (SIGTERM, SIGINT,
+  namespace. The first process inside this namespace starts with PID 1 and is considered
+  the [init process](https://en.wikipedia.org/wiki/Init). All the signals (SIGTERM, SIGINT,
   SIGQUIT, etc.) sent to the container are received by this init process. So it's important that this process handles
   these signals properly to manage the lifecycle of the container.
 
@@ -85,15 +85,15 @@ As mentioned earlier, cgroups allow us to restrict the resource usage (CPU, memo
 processes. This is what allows us to set resource limits in k8s & Docker. It works via a pseudo-filesystem usually
 mounted
 at `/sys/fs/cgroup`. Similar to namespaces, the file `/proc/<pid>/cgroup` in the `proc` fs contains the cgroup of a
-process. There are two versions of cgroups, we will use cgroups v2. To create a cgroup, we have to create a folder with
+process. There are two versions of cgroups; we will use cgroups v2. To create a cgroup, we have to create a folder with
 its name in this filesystem, then add PIDs in a file `cgroup.procs` inside it. Files like `memory.max`, `cpu.max` in
 this folder describe the max amount of resources this process can use. Similarly, the `cpuset.cpus` restricts which CPU
 cores the processes are allowed to run on.
 
 One interesting realization I had from this is that the CPU limits specified are shared across the cores of the host. Setting
-a container's CPU limit to 1000m in k8s doesn't mean it will have a whole core available, it simply means that it will
+a container's CPU limit to 1000m in k8s doesn't mean it will have a whole core available; it simply means that it will
 have one core's worth of CPU time available! So it's possible that your container might actually be utilizing multiple
-cores & running parallel threads even with a very low CPU limit, it would simply exhaust the limit quickly. The fact
+cores & running parallel threads even with a very low CPU limit; it would simply exhaust the limit quickly. The fact
 that resource limits are set via cgroups is also one of the biggest reasons why programs need to be container-aware.
 Traditionally, programs use the proc filesystem (e.g., `/proc/meminfo` or `/proc/cpuinfo`), which reflects the host's
 resources rather than the container's actual limits.
@@ -102,8 +102,8 @@ resources rather than the container's actual limits.
 
 Now we have a rough idea of how to create a simple container ourselves. We need to start
 a process with its own namespaces, set up cgroups for resource
-limits, [mount](https://man7.org/linux/man-pages/man2/mount.2.html) a few special filesystems like [
-`proc`](https://docs.kernel.org/filesystems/proc.html),
+limits, [mount](https://man7.org/linux/man-pages/man2/mount.2.html) a few special filesystems like
+[`proc`](https://docs.kernel.org/filesystems/proc.html),
 `tmp`, etc. and finally [`chroot`](https://wiki.archlinux.org/title/Chroot) (change the root directory of the process) to the
 new root filesystem. This simple sketch obviously leaves out tons of details, some of which I plan to discuss in part
 two.
@@ -141,7 +141,7 @@ Here's what the code below does:
 3. Clones a new child container process from the current process with new namespaces for mount, PID, UTS, etc.
 4. Adds the container process to the cgroup created earlier.
 5. Inside the cloned process, it sets up the new hostname, mounts a few special filesystems like proc, temp, etc., while
-   also [bind mounts](https://unix.stackexchange.com/questions/198590/what-is-a-bind-mount) the host dev devices like
+   also [bind mounting](https://unix.stackexchange.com/questions/198590/what-is-a-bind-mount) the host dev devices like
    `/dev/null`, `/dev/zero` to the container.
 6. Finally, it does a `chroot` to the new root filesystem and execs the command passed from the parent process.
 

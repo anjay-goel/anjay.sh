@@ -59,7 +59,7 @@ So, what to do now? The answer is simple. Just drop the unique constraint and ad
 
 ```sql
 ALTER TABLE users
-DROP CONSTRAINT unique_username;
+DROP CONSTRAINT unique_username_constraint;
 
 CREATE UNIQUE INDEX unique_username_idx
 ON users (username)

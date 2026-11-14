@@ -35,7 +35,7 @@ in the analysis (or just call it some pretty data visualisation).
 
 ### **1. Covid Stats**:
 
-&ensp;For the Covid stats, I have used the data available at [Covid19India](https://covid19india.org). Although they
+&ensp;For the Covid stats, I have used the data available at [Covid19India](https://covid19india.org). They
 have all the sources listed, if you are sceptical about it.
 
 ### **2. Death Registrations**:
@@ -47,8 +47,8 @@ registration data was public available and easily accessible for three cities:
 * Kolkata
 * Delhi, saving it for the last.
 
-&ensp; Hence I have confined my analysis to these cities. So please don't accuse me of cherry-picking :
-slightly_smiling_face: . With a little python script involving some scraping, multiprocessing and SQL, I was able to
+&ensp; Hence I have confined my analysis to these cities. So please don't accuse me of cherry-picking 🙂.
+With a little python script involving some scraping, multiprocessing and SQL, I was able to
 dump death registration data of the above cities for the past few years into nice little sqlite files. Grouping by date
 of death and counting gave the time series.
 
@@ -67,8 +67,8 @@ of death and counting gave the time series.
 
 * **Exhaustiveness of data available online**: While I have made sure to scrape properly, and have made a comparison to
   the prevailing mortality rates and census data, there is a possibility that data available online may not be
-  exhaustive. Nevertheless, the scenario of over-counting isn't possible. So the analysis at best is under-counting (
-  within a margin of error, we will never know) but true (since its gathered from official sources).
+  exhaustive. Nevertheless, the scenario of over-counting isn't possible. So the analysis at best is under-counting
+  (within a margin of error, we will never know) but true (since its gathered from official sources).
 
 **Note:** *The decline till zero (in all three cases in fact) in death registrations will be due to unavailability of
 recent data, as deaths need to be registered, data in the systems need to be updated etc.*
@@ -93,14 +93,14 @@ Fun fact, its the second oldest city civic body in the world after the City of L
 
 ![Chennai Death Registrations 2016-Present](../../assets/images/covid-19-india/chennai_16_21.png)
 
-* Data appears to be a bit irregular pre May 2018, put smoothed out later. Nevertheless, We have already tallied with
+* Data appears to be a bit irregular pre May 2018, but smoothed out later. Nevertheless, We have already tallied with
   census data, so this is not a matter of concern.
 * Visualisation doesn't suggest any significant seasonal component. Series normally oscillates around 170-200 range.
 
 ![Chennai Death Registrations 2020-2021](../../assets/images/covid-19-india/chennai_20_21.png)
 
 * The surge around the first Covid wave is very apparent. Interestingly a slight dip can be observed post national
-  lockdown and pre first wave. Probably because lockdown reduced transmission of other deceased, prevented more
+  lockdown and pre first wave. Probably because lockdown reduced transmission of other diseases, prevented more
   accidental deaths etc.
 * Daily deaths reached a peak of around 300 per day in first wave, and continued above 200 there after, until march
   2021, when unfortunately second wave stricked.
@@ -116,7 +116,7 @@ Fun fact, its the second oldest city civic body in the world after the City of L
 * The sudden spike in Jul-20 may be due to sudden accounting of Covid death tolls.
 
 * While the death registrations reached 600 per day, up from 200 usual mark, The reported Covid death tolls barely
-  crossed 100 per day. Implying the ***death tolls could be as high as 4x of whats been reported***
+  crossed 100 per day. Implying the ***death tolls could be as high as 4x of what's been reported***
 
 Lets add whole of Tamil Nadu for comparison:
 
@@ -147,7 +147,7 @@ are comparing stats for same geography.
 
 ![Kolkata Death Registrations 2016-Present](../../assets/images/covid-19-india/kolkata_20_21.png)
 
-* Death registrations remained above 200 per day flowing July 2020, before dropping down to ~150 in March 2021,
+* Death registrations remained above 200 per day following July 2020, before dropping down to ~150 in March 2021,
   following which the second wave hit.
 
 ![Kolkata Death Registrations 2016-Present](../../assets/images/covid-19-india/kolkata_21.png)
@@ -163,7 +163,7 @@ are comparing stats for same geography.
   crossed 20 in single day.
 * When the second wave hit, death registrations peaked at ~500 per day, While the reported Covid death tolls barely
   crossed 40 death per day mark.
-* This would imply that ***excess deaths are in fact ~7.5 the official death tolls during the second wave***.
+* This would imply that ***excess deaths are in fact ~7.5x the official death tolls during the second wave***.
 
 Lets add whole of West Bengal for comparison, just for fun:
 
@@ -184,7 +184,7 @@ It encompasses whole of Delhi. So again no worries here, we are indeed comparing
 
     * **Our Data (2018):** ~314
 
-      The difference is census data and the scraped data is somewhat big, There could be tons of reasons, difference in
+      The difference between census data and the scraped data is somewhat big, There could be tons of reasons, difference in
       areas covered, website not updated regularly etc (In fact the municipal corporation websites changed around may
       2020). The argument that we are undercounting at best still remains.
 
@@ -223,7 +223,7 @@ Pre Covid Age Distribution (2016-2020) of Deceased.
 ![Delhi Death Registrations Breakdown By Age](../../assets/images/covid-19-india/hist_delhi_16_20.png)
 
 * The histogram has some irregular spikes, may be due to binning the data, or perhaps how age of deceased is reported,
-  Anyway a spike on zero indicates infant moralities. Quite disheartening to see it surpass every age group.
+  Anyway a spike on zero indicates infant mortalities. Quite disheartening to see it surpass every age group.
 
 * Now lets see the distribution overtime.
 

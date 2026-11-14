@@ -115,7 +115,7 @@ but the ones you will most commonly use and encounter are given below:
 * `NS`: Specifies the authoritative server for the domain. Like in the output above.
 * `MX`: Redirects email traffic to a mail server.
 * `TXT`: Holds text data. Often used for verification purposes. For example, Google uses it for domain verification in
-  Google Search Console. `dig anjaygoel.com TXT` will the following output:
+  Google Search Console. `dig anjaygoel.com TXT` will give the following output:
   ```
   anjaygoel.com.		300	IN	TXT	"v=spf1 -all"
   anjaygoel.com.		300	IN	TXT	"google-site-verification=aTRw2UBBr_jg-Z_WM0kMf6mgXnzrCIgd54xcZtXohIk"
@@ -132,8 +132,8 @@ Let's see this in action:
 `dig facebook.com` gives me `57.144.124.1` on my PC. If I do a reverse lookup using `dig -x 57.144.124.1`, I get the
 pointer record as `edge-star-mini-shv-03-bom2.facebook.com.` (Bom as in Bombay or Mumbai). But if I do the same on a
 colab notebook, I get a different IP address, `31.13.67.35` and the reverse lookup gives me
-`edge-star-mini-shv-01-mia3.facebook.com`. (mia as in Miami) which is closer to where my colab notebook is running (
-South Carolina).
+`edge-star-mini-shv-01-mia3.facebook.com`. (mia as in Miami) which is closer to where my colab notebook is running
+(South Carolina).
 
 ## The other stuff
 

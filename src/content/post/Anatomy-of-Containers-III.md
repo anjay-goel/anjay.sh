@@ -13,8 +13,8 @@ and [part two](https://anjay.sh/posts/anatomy-of-containers-ii/), we ran our imp
 with root privileges. Despite all the isolation provided by namespaces and cgroups, the process is still running as
 root on the host. This is an issue because some things by their nature cannot be isolated by namespaces or cgroups.
 This includes kernel configurations, loading/unloading kernel modules, and system-wide settings like the [real-time
-clock](https://man7.org/linux/man-pages/man2/clock_gettime.2.html) (
-`CLOCK_REALTIME`). A containerized process running as root can modify these settings, affecting the host and all other
+clock](https://man7.org/linux/man-pages/man2/clock_gettime.2.html)
+(`CLOCK_REALTIME`). A containerized process running as root can modify these settings, affecting the host and all other
 containers and processes.
 
 To handle this, Linux provides a few tools. Let's start with understanding what root access

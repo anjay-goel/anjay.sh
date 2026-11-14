@@ -54,7 +54,7 @@ Separate out the platform-specific implementations into different packages. This
 Flutter. It consists of the following:
 
 - The **app-facing package**, which the plugin's user adds to their pubspec.
-- The **platform-specific package(s)** which has the native code, the app-facing package depeneds on these packages.
+- The **platform-specific package(s)** which has the native code, the app-facing package depends on these packages.
 - And the **platform interface package**, which declares a common interface that any platform package must implement to
   support the app-facing package.
 
@@ -145,7 +145,7 @@ my_app 1.0.0+1
 Notice how adding a single package leads to a cascade of redundant dependencies meant for different platforms, which are
 not even the targets of `my_app`!
 
-Observe that `mixpanel_flutter` depends on `js ^0.7.0`. While `my_app` also has a transitive dependency
+Observe that `mixpanel_flutter` depends on `js ^0.7.1`. While `my_app` also has a transitive dependency
 on `facebook_auth_desktop` which in turn has a transitive dependency on `flutter_secure_storage_web`!
 And since `flutter_secure_storage_web` uses `js ^0.6.3`, it's incompatible with  `mixpanel_flutter`. Thus causing the
 dependency conflict.

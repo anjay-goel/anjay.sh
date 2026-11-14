@@ -12,12 +12,12 @@ hood. So, I decided to do a deep dive and summarize it in this (somewhat lengthy
 
 The internals of non-blocking I/O are complex but fascinating. To understand it, this blog will start with a key
 Linux concept: "Everything is a file." then, briefly explore the lifecycle of a process in Linux, go over a few
-system calls like `select`, `poll`, `epoll` & `fnctl`, and finally build a simple single-threaded non-blocking echo
+system calls like `select`, `poll`, `epoll` & `fcntl`, and finally build a simple single-threaded non-blocking echo
 server in C to see these ideas in action.
 
 ### "Everything Is a File" in Linux
 
-This Unix philosophy that allows us to treat almost every resource on the system like devices,
+This is a Unix philosophy that allows us to treat almost every resource on the system like devices,
 socket connections, pipes, and more as a file. It gives us a simple and consistent way to interact with these resources:
 by
 reading from and writing to them, just like regular files! This is done via something called a file descriptor (FD).
@@ -100,7 +100,7 @@ A typical process lifecycle in linux looks like this:
   `TASK_UNINTERRUPTIBLE`).
 * Once the operation is done, the device triggers an [interrupt (IRQ)](https://en.wikipedia.org/wiki/Interrupt_request).
 * The kernel runs the interrupt's
-  corresponding [interrupt's handler (ISR)](https://en.wikipedia.org/wiki/Interrupt_handler), which
+  corresponding [handler (ISR)](https://en.wikipedia.org/wiki/Interrupt_handler), which
   wakes up the task that requested the IO  (`TASK_RUNNING`).
 * The task eventually completes execution and enters the zombie state until the parent process reads its exit status
   (`TASK_ZOMBIE`).

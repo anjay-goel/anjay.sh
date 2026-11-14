@@ -37,10 +37,10 @@ the student body. Their vote tally is given below:
 
 | Candidate | Votes |
 |-----------|-------|
-| Nehru     | 20%   |
-| Patel     | 19%   |
-| Azad      | 20%   |
-| Shastri   | 21%   |
+| Nehru     | 25%   |
+| Patel     | 24%   |
+| Azad      | 25%   |
+| Shastri   | 26%   |
 
 Under plurality voting, Shastri wins the election. An obvious flaw of plurality voting is that a candidate can win with
 very few votes. If the number of candidates increases to $N$, a candidate can win with as little as a single vote more
@@ -59,7 +59,7 @@ people more closely aligned with Patel than Nehru voted for Patel instead. The f
 | Shastri   | 48%   |
 
 Under plurality voting, Shastri wins the election easily. Let's see what has happened here. By being closer to Nehru on
-the political spectrum, Patel took a larger chuck out of voters who prefer Nehru to Shastri. Patel's nomination leaves
+the political spectrum, Patel took a larger chunk out of voters who prefer Nehru to Shastri. Patel's nomination leaves
 the majority (the 47% and the 5% who would have chosen Nehru over Shastri in the absence of Patel) dissatisfied with the
 result. This is called the Spoiler effect or [Vote Splitting](https://en.wikipedia.org/wiki/Vote_splitting).
 
@@ -72,7 +72,7 @@ preference.
 Despite his best intentions, Patel realizes the problem and drops out of the race the following year. After observing
 the whole fiasco, no third candidate stood up (or was forced to sit down) for elections ever since. The election thus
 reverts back to its status quo of Nehru vs. Shastri. As we can observe, this voting system tends to reduce the number of
-candidates two. This is called [Duverger's law](https://en.wikipedia.org/wiki/Duverger%27s_law). This is not always
+candidates to two. This is called [Duverger's law](https://en.wikipedia.org/wiki/Duverger%27s_law). This is not always
 true, but more often is the case.
 
 The problems above can be summarized by the following statement that I quote from Wikipedia:
@@ -110,7 +110,7 @@ a [Condorcet paradox](https://en.wikipedia.org/wiki/Condorcet_paradox). Let's il
 | 2nd | Azad    | Nehru   | Patel   |
 | 3rd | Nehru   | Patel   | Azad    |
 
-In Patel vs Azad, Patel wins 2 vs 1; in Azad vs Nehru, Azad wins 2 vs 1 yet in Nehru vs Patel, Nehru wins 2 vs 1. It's
+In Patel vs Azad, Patel wins 2 vs 1; in Azad vs Nehru, Azad wins 2 vs 1 yet in Nehru vs Patel, Nehru wins 2 vs 1.
 This leads to a paradox! From transitive individual preferences, we have arrived at cyclical societal preferences!
 
 ### [Borda count](https://en.wikipedia.org/wiki/Borda_count)
@@ -135,10 +135,10 @@ Lets see the above two criteria with an example:
 | 1st | Patel   | Azad    | Shastri |
 | 2nd | Azad    | Shastri | Patel   |
 | 3rd | Nehru   | Nehru   | Nehru   |
-| 4rd | Shastri | Patel   | Azad    |
+| 4th | Shastri | Patel   | Azad    |
 
-Out of, say, 100 votes, the final score of the candidates will be Patel (194), Azad (198), Nehru (100), and Shastri (
-108). Hence, Azad wins the election despite Patel having a majority! This violates the majority criterion. Also, notice
+Out of, say, 100 votes, the final score of the candidates will be Patel (194), Azad (198), Nehru (100), and Shastri
+(108). Hence, Azad wins the election despite Patel having a majority! This violates the majority criterion. Also, notice
 that if Nehru is eliminated, Patel wins the election. Thus, this voting system violates the IIA property too.
 
 ### [Instant Runoff Voting](https://en.wikipedia.org/wiki/Instant-runoff_voting)
@@ -161,13 +161,13 @@ as discussed previously in plurality voting, we get the following preference pro
 | 3rd | Shastri | Nehru   | Shastri | Nehru   |
 
 Patel gets only 5% (4% + 1%) of the votes, thus placing him last in the third position. The votes of those who voted for
-Patel are distributed among their second preferences. Therefore in the next round, the tally is as follows: Nehru: 51% (
-the original 47% and 4% who put Nehru as their second choice) and Shastri: 49% (48% + 1% from second choice).
+Patel are distributed among their second preferences. Therefore in the next round, the tally is as follows: Nehru: 51%
+(the original 47% and 4% who put Nehru as their second choice) and Shastri: 49% (48% + 1% from second choice).
 
 Now Shastri is eliminated (gets 2nd position), and Nehru wins the election. And the majority is happy with this outcome.
 While this voting system does not entirely eliminate the problem of tactical voting and spoiler effect that we discussed
 above, it does reduce them to a great extent. In fact, it can be shown that no ranked voting system is resistant to
-tactical voting! A result know
+tactical voting! A result known
 as [Gibbard-Satterthwaite Theorem](https://en.wikipedia.org/wiki/Gibbard%E2%80%93Satterthwaite_theorem). Also this
 voting system satisfies the majority criterion but violates IIA and Condorcet winner criterion. It also violates another
 important property we wish any voting system should have, aka Monotonicity.
@@ -200,15 +200,15 @@ have gone to a fourth candidate or been thrown away into oblivion, yet the outco
 ### The limitations
 
 The four criteria that I have shown above are called fairness criteria. These are some of the properties that we expect
-a good voting system will fulfill. Yet non of the four voting methods that we saw earlier satisfies all of them
+a good voting system will fulfill. Yet none of the four voting methods that we saw earlier satisfies all of them
 simultaneously. Unfortunately, as it turns out, no ordinal voting system can satisfy all of them simultaneously. This
-famous result is know as [Arrow's Impossibility Theorem](https://en.wikipedia.org/wiki/Arrow%27s_impossibility_theorem)
+famous result is known as [Arrow's Impossibility Theorem](https://en.wikipedia.org/wiki/Arrow%27s_impossibility_theorem)
 
 We have yet to address other problems that are not about the voting systems themselves. They are about how the
 preferences (aka the votes) were collected. Remember, we asked the voters to list the candidates in order of their
 preference. In doing so, we inherently have made some assumptions such
-as [Transitivity of preferences](https://en.wikipedia.org/wiki/Preference_(economics)). That is, for any two
-choices $a$ & $b$, we have $a\succeq b$ (read it as "a is at-least as good as b, if not better")
+as [Transitivity of preferences](https://en.wikipedia.org/wiki/Preference_(economics)). That is, for any three
+choices $a$, $b$ & $c$, $a\succeq b$ (read it as "a is at-least as good as b, if not better")
 and $b\succeq c$  $\implies$ $a\succeq c$ . Is this always the case? If I prefer $a$ over $b$ & $b$ over $c$, does it
 always mean I prefer $a$ over $c$. Can the opposite not be the case? Another assumption
 is [Completeness of preferences](https://en.wikipedia.org/wiki/Preference_(economics)). That is, Given two choices, $a$

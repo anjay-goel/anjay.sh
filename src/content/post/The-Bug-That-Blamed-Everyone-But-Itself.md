@@ -5,9 +5,9 @@ tags: [ programming, rca ]
 description: "RCA of a bug that hid behind a perfectly normal-looking failure for months, quietly getting worse the whole time."
 ---
 
-I've written a few of these RCA posts before, they're a fun chance to look back & tell the whole story. This one's
-interesting for a slightly different reason though: how long it took to even realize there *was* a bug in the first
-place. It hid behind a perfectly normal-looking failure mode, silently influenced a bunch of the architectural
+I've written a few of these RCA posts before. They're a fun chance to look back & tell the whole story. This one's
+interesting for a slightly different reason though. It took us a long time to even realize there was a bug in the first
+place! It hid behind a perfectly normal-looking failure mode, silently influenced a bunch of the architectural
 decisions, and just kept getting worse the whole time.
 
 ## The backstory
@@ -22,13 +22,13 @@ nothing that pushed them to the limits of their context windows & thinking level
 
 Within a few weeks I had a POC, and within a month it was in production. The initial version was primitive & shabby,
 with a success rate (the % of jobs that ran end to end and produced usable output) well under 70%. While I
-chipped away at most of the failures over time, one category stuck around: the Gemini API calls failing, for all sorts
+chipped away at most of the failures over time, one category stuck around. The Gemini API calls kept failing for all sorts
 of reasons: rate-limits, timeouts, valid but incorrect structured responses.
 
-So I turned to folks in the company with far more LLM experience than me. The advice was reasonable: add a timeout to
+So I turned to folks in the company with far more LLM experience than me. The advice was reasonable. Add a timeout to
 the client, set `vertexai=True`, add a proper `ThinkingConfig`, validate the JSON outputs. And if it still fails? Just
 add retries! And it was good advice. You can't expect an API running trillion-parameter models to work perfectly every
-time, they're bound to glitch once in a while, right? So every Gemini call went behind a tenacity retry decorator. And
+time; they're bound to glitch once in a while, right? So every Gemini call went behind a tenacity retry decorator. And
 it worked, the success rate shot up.
 
 ## Death by a thousand retries
@@ -53,8 +53,8 @@ split it into chunks, process them and then reconcile the results later. Reconci
 merged output was never quite as good as one-shotting the whole video, but it was what needed to be done. This change
 worked pretty well in all the test runs on my PC. But once it hit production, we started seeing the same `ReadTimeout`
 failures again. The timeouts got less frequent, but more chunks just meant more single points of failure. Ultimately it
-didn't help much. It was an architecturally sound decision, one that would let us scale beyond just two hours of input,
-it just didn't fix the actual problem.
+didn't help much. It was an architecturally sound decision, one that would let us scale beyond just two hours of input.
+It just didn't fix the actual problem.
 
 At this point I could sense something was wrong. The inputs now being fed to Gemini were well within its capabilities;
 it shouldn't have been timing out at all. And I'd always had a nagging feeling that somehow the pipeline ran better on
@@ -62,21 +62,21 @@ my local setup; all my local testing worked perfectly and took few to no retries
 ignore: clearly, there was a mismatch between the local and production environments.
 
 I searched online, found a single
-possibly-related [Github Issue](https://github.com/googleapis/python-genai/issues/1893), tried its solutions in vain.
+possibly-related [GitHub Issue](https://github.com/googleapis/python-genai/issues/1893), tried its solutions in vain.
 After brainstorming, I came up with a few ideas of my own (btw, Claude didn't like most of them): setting
-`max_keepalive_connections` to 0 to force a new connection every time, initialising a fresh client per call, etc. The
-hypothesis: if this was an issue with a stale client or a pooled connection gone bad, forcing a brand-new connection
+`max_keepalive_connections` to 0 to force a new connection every time, initialising a fresh client per call, etc. My
+hypothesis was that if this was an issue with a stale client or a pooled connection gone bad, forcing a brand-new connection
 each time might fix it. As Claude expected, this didn't work at all.
 
 ## The smoking gun
 
 Defeated, I went back to Claude. One thing it kept pushing was to try setting some socket options in the client's
-underlying HTTP transport. I'd been brushing it off: blaming the client was already a stretch, and going all the way
+underlying HTTP transport. I'd been brushing it off. Blaming the client was already a stretch, and going all the way
 down to TCP socket options felt absurd. Surely it can't be the client? Millions of people must be using it; if there were
 a bug, someone would've found it by now.
 
 Anyway, having eliminated everything else, I finally read what Claude was saying properly. The more I read, the more it
-made sense. Its argument: since the job ran in a K8s cluster on the cloud, the egress almost certainly went out through
+made sense. It argued that since the job ran in a K8s cluster on the cloud, the egress almost certainly went out through
 a NAT gateway, and NAT gateways usually have a "TCP idle-timeout" that drops connections after they've been idle for a
 while.
 
@@ -95,7 +95,7 @@ connection never sat idle long enough to get dropped.
 
 So I went and checked our NAT gateway's config, and sure enough, its idle-timeout was set to the default 4 minutes. It
 almost seemed too good to be true. If this was really it, how did it work at all until now? And how did no one else
-know, or tell me? It also meant all the tweaks we had done, cranking the timeout up past 15-20 minutes, were pointless,
+know, or tell me? It also meant all the tweaks we had done, cranking the timeout up past 15-20 minutes, were pointless;
 the connection was already dead at the 4-minute mark regardless!
 
 To fully convince myself, I wrote a test script that ran on the same production environment, with & without the
@@ -120,10 +120,10 @@ reached almost 100% & the jobs that sometimes took over a day are all now comple
 The most annoying thing about this whole fiasco is how every layer seems to have misled us. The NAT gateway dropped the
 connection silently (surely by design for a good reason, but still). The client raised a `ReadTimeout`, pinning
 the blame on the server for failing to respond in time (from its perspective, completely correct). And none of our "fixes" addressed the root cause, yet each seemed to help just enough to keep us looking in the wrong place: retries
-masked the errors (at the cost of processing time), and switching to a streaming response actually sped things up (lower time to first byte). All of it convinced us that the real problem was that the calls were simply too heavy for
+masked the errors (at the cost of processing time), and switching to a streaming response actually sped things up (by lowering time to first byte). All of it convinced us that the real problem was that the calls were simply too heavy for
 Gemini to handle.
 
-Apparently, this behaviour of NAT gateways, and the use of TCP keepalive probes for the same are fairly well
+Apparently, this behaviour of NAT gateways and the use of TCP keepalive probes for the same are fairly well
 documented. But it's unlikely to be on anyone's shortlist of possible causes unless you've experienced it before,
 especially when the bug sits so far from the domain you're actually working in. I'm not sure if I'd ever have pinpointed
 it without Claude's help.
